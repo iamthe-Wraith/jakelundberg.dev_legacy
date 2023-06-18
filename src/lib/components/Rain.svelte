@@ -50,9 +50,9 @@
       const drop: IDrop = {
         x: Math.random() * canvasWidth,
         y: Math.random() * canvasHeight,
-        length: Math.random() * 1.5,
+        length: Math.random() * 1.8 + 0.5,
         moveX: 0,
-        moveY: Math.random() * 10 + 28,
+        moveY: Math.random() * 10 + 40,
       }
 
       drops.push(drop);
