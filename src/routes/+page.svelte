@@ -8,16 +8,16 @@
       enabled: true,
       layers: {
         1: {
-          threshold: 0.004,
+          threshold: -0.004,
         },
         2: {
-          threshold: 0.002,
+          threshold: -0.002,
         },
         3: {
-          threshold: 0.001,
+          threshold: -0.001,
         },
         4: {
-          threshold: 0.0005,
+          threshold: -0.0005,
         },
       },
     }
