@@ -19,33 +19,41 @@
         3: {
           threshold: 0.001,
         },
+        4: {
+          threshold: 0.0005,
+        },
       },
     }
   }
 
-  const parallax = {
+  let parallax = {
     forestLayer1: { x: 0, y: 0 },
     forestLayer2: { x: 0, y: 0 },
     forestLayer3: { x: 0, y: 0 },
+    forestLayer4: { x: 0, y: 0 },
   }
 
   let prefersReducedMotion = true;
 
   $: {
     if (!prefersReducedMotion) {
-      parallax.forestLayer1 = {
-        x: $MousePos.relativeCoords.x * config.parallax.layers[1].threshold,
-        y: $MousePos.relativeCoords.y * config.parallax.layers[1].threshold
-      }
-
-      parallax.forestLayer2 = {
-        x: $MousePos.relativeCoords.x * config.parallax.layers[2].threshold,
-        y: $MousePos.relativeCoords.y * config.parallax.layers[2].threshold
-      }
-
-      parallax.forestLayer3 = {
-        x: $MousePos.relativeCoords.x * config.parallax.layers[3].threshold,
-        y: $MousePos.relativeCoords.y * config.parallax.layers[3].threshold
+      parallax = {
+        forestLayer1: {
+          x: $MousePos.relativeCoords.x * config.parallax.layers[1].threshold,
+          y: $MousePos.relativeCoords.y * config.parallax.layers[1].threshold
+        },
+        forestLayer2: {
+          x: $MousePos.relativeCoords.x * config.parallax.layers[2].threshold,
+          y: $MousePos.relativeCoords.y * config.parallax.layers[2].threshold
+        },
+        forestLayer3: {
+          x: $MousePos.relativeCoords.x * config.parallax.layers[3].threshold,
+          y: $MousePos.relativeCoords.y * config.parallax.layers[3].threshold
+        },
+        forestLayer4: {
+          x: $MousePos.relativeCoords.x * config.parallax.layers[4].threshold,
+          y: $MousePos.relativeCoords.y * config.parallax.layers[4].threshold
+        }
       }
     }
   }
@@ -59,27 +67,44 @@
   <img
     class="layer forest-layer-4"
     src="https://res.cloudinary.com/dxpwpno1e/image/upload/v1687102029/forest-layer-4_nyo3ko.png"
+    style={`
+      transform: translate3d(${parallax.forestLayer4.x}%, ${parallax.forestLayer4.y}%, 0);
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    `}
     alt="A forest of leafless trees surrounding a dark path that forks to the left and right after a short distance."
   />
 
   <img
     class="layer forest-layer-3"
     src="https://res.cloudinary.com/dxpwpno1e/image/upload/v1687102029/forest-layer-3_mmcl3h.png"
-    style={`transform: translate3d(${parallax.forestLayer3.x}%, ${parallax.forestLayer3.y}%, 0);`}
+    style={`
+      transform: translate3d(${parallax.forestLayer3.x}%, ${parallax.forestLayer3.y}%, 0);
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    `}
     alt="A forest of leafless trees surrounding a dark path that forks to the left and right after a short distance."
   />
 
   <img
     class="layer forest-layer-2"
     src="https://res.cloudinary.com/dxpwpno1e/image/upload/v1687102029/forest-layer-2_q0k1gq.png"
-    style={`transform: translate3d(${parallax.forestLayer2.x}%, ${parallax.forestLayer2.y}%, 0);`}
+    style={`
+      transform: translate3d(${parallax.forestLayer2.x}%, ${parallax.forestLayer2.y}%, 0);
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    `}
     alt="A forest of leafless trees surrounding a dark path that forks to the left and right after a short distance."
   />
 
   <img
     class="layer forest-layer-1"
     src="https://res.cloudinary.com/dxpwpno1e/image/upload/v1687102029/forest-layer-1_xr7zlr.png"
-    style={`transform: translate3d(${parallax.forestLayer1.x}%, ${parallax.forestLayer1.y}%, 0);`}
+    style={`
+      transform: translate3d(${parallax.forestLayer1.x}%, ${parallax.forestLayer1.y}%, 0);
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    `}
     alt="A forest of leafless trees surrounding a dark path that forks to the left and right after a short distance."
   />
 
@@ -101,13 +126,12 @@
 <style lang="scss">
   .scene-container {
     width: 100vw;
-    min-width: 40rem;
     height: 100vh;
     background: #16171c;
   }
 
   .layer {
-    position: absolute;
+    position: fixed;
     top: -1.5%;
     left: -1.5%;
     display: block;
