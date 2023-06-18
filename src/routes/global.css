@@ -1,28 +1,61 @@
+@font-face {
+  font-family: "OneTwoTreesRegular";
+  src: url('/fonts/CfOneTwoTreesRegular-4LGp.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "SpookyMagic";
+  src: url('/fonts/SpookyMagic.ttf') format('truetype');
+}
+
 body {
   --dark-100: #000000;
   --dark-300: #0A0A0A;
   --dark-500: #303030;
   
   /* TREES */
-  --tree-100: #0E0A07;
+  --tree-100: #0A0F10;
+  --tree-300: #0F1B22;
+  --tree-500: #162E36;
+  --tree-700: #2A4A54;
+    
+  /* --tree-100: #0E0A07;
   --tree-400: #181411;
-  --tree-700: #29211A;
+  --tree-700: #29211A; */
 
   /* GROUND */
-  --dirt-100: #000000;
+  --dirt-100: #010101;
+  --dirt-400: #14171A;
+  --dirt-700: #1C1F22;
+
+  /* --ground-100: #020B0D;
+  --ground-300: #081E1B;
+  --ground-500: #172C21;
+  --ground-700: #204130;
+  --ground-900: #375847; */
+
+  /* --dirt-100: #000000;
   --dirt-300: #030303;
   --dirt-500: #110F0D;
   --dirt-700: #211F1D;
-  --dirt-900: #312E2B;
+  --dirt-900: #312E2B; */
 
   /* GRASS */
-  --grass-100: #0C0F0C;
+  --grass-100: #0A0F10;
+  --grass-400: #112024;
+  --grass-700: #1A2A32;
+
+  /* --grass-100: #0C0F0C;
   --grass-400: #121C11;
-  --grass-700: #1F301D;
+  --grass-700: #1F301D; */
 
   margin: 0;
   padding: 0;
   background: var(--dark-500);
   overflow: hidden;
   box-sizing: border-box;
+}
+
+h1 {
+  font-family: SpookyMagic;
 }

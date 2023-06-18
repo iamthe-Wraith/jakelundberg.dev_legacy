@@ -43,17 +43,15 @@ const onResize = () => {
 
 export const MousePos = readable(initMouse, (set) => {
   const onMouseMove = (e: MouseEvent) => {
-    console.log('onMouseMove');
-
     const x = e.clientX;
     const y = e.clientY;
 
-    const relX = Math.floor(x - screen.center.x);
-    const relY = Math.floor(y - screen.center.y);
-
     set({
       coords: { x, y },
-      relativeCoords: { x: relX, y: relY },
+      relativeCoords: {
+        x: Math.floor(x - screen.center.x),
+        y: Math.floor(y - screen.center.y)
+      },
     });
   };
 

@@ -1,45 +1,175 @@
 <script lang="ts">
-  import tree1 from '$assets/tree-1.png';
   import { MousePos } from '$lib/stores/mouse';
+  import forestLayer1 from '$assets/forest-layer-1.png';
+  import forestLayer2 from '$assets/forest-layer-2.png';
+  import forestLayer3 from '$assets/forest-layer-3.png';
+  import forestLayer4 from '$assets/forest-layer-4.png';
 	import { onMount } from 'svelte';
-
-  const layer1ParallaxThreshold = 0.04;
 
   const config = {
     parallax: {
       enabled: true,
       layers: {
         1: {
-          threshold: layer1ParallaxThreshold,
+          threshold: 0.004,
+        },
+        2: {
+          threshold: 0.002,
+        },
+        3: {
+          threshold: 0.001,
         },
       },
     }
   }
 
   const parallax = {
-    tree1: { x: 0, y: 0 },
+    forestLayer1: { x: 0, y: 0 },
+    forestLayer2: { x: 0, y: 0 },
+    forestLayer3: { x: 0, y: 0 },
   }
+
+  let prefersReducedMotion = true;
 
   $: {
-    parallax.tree1 = {
-      x: $MousePos.relativeCoords.x * config.parallax.layers[1].threshold,
-      y: $MousePos.relativeCoords.y * config.parallax.layers[1].threshold
+    if (!prefersReducedMotion) {
+      parallax.forestLayer1 = {
+        x: $MousePos.relativeCoords.x * config.parallax.layers[1].threshold,
+        y: $MousePos.relativeCoords.y * config.parallax.layers[1].threshold
+      }
+
+      parallax.forestLayer2 = {
+        x: $MousePos.relativeCoords.x * config.parallax.layers[2].threshold,
+        y: $MousePos.relativeCoords.y * config.parallax.layers[2].threshold
+      }
+
+      parallax.forestLayer3 = {
+        x: $MousePos.relativeCoords.x * config.parallax.layers[3].threshold,
+        y: $MousePos.relativeCoords.y * config.parallax.layers[3].threshold
+      }
     }
   }
+
+  onMount(() => {
+    prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  })
 </script>
 
-<img
-  class="tree1"
-  src={tree1}
-  style={`transform: translate3d(calc(-45% + ${parallax.tree1.x}px), ${parallax.tree1.y}px, 0);`}
-  alt="A crooked, leafless tree with a few branches rising from a barren mound of soil with a few small patches of grass."
-/>
+<div class="scene-container">
+  <img
+    class="layer forest-layer-4"
+    src="https://res.cloudinary.com/dxpwpno1e/image/upload/v1687102029/forest-layer-4_nyo3ko.png"
+    alt="A forest of leafless trees surrounding a dark path that forks to the left and right after a short distance."
+  />
 
-<style>
-  .tree1 {
+  <img
+    class="layer forest-layer-3"
+    src="https://res.cloudinary.com/dxpwpno1e/image/upload/v1687102029/forest-layer-3_mmcl3h.png"
+    style={`transform: translate3d(${parallax.forestLayer3.x}%, ${parallax.forestLayer3.y}%, 0);`}
+    alt="A forest of leafless trees surrounding a dark path that forks to the left and right after a short distance."
+  />
+
+  <img
+    class="layer forest-layer-2"
+    src="https://res.cloudinary.com/dxpwpno1e/image/upload/v1687102029/forest-layer-2_q0k1gq.png"
+    style={`transform: translate3d(${parallax.forestLayer2.x}%, ${parallax.forestLayer2.y}%, 0);`}
+    alt="A forest of leafless trees surrounding a dark path that forks to the left and right after a short distance."
+  />
+
+  <img
+    class="layer forest-layer-1"
+    src="https://res.cloudinary.com/dxpwpno1e/image/upload/v1687102029/forest-layer-1_xr7zlr.png"
+    style={`transform: translate3d(${parallax.forestLayer1.x}%, ${parallax.forestLayer1.y}%, 0);`}
+    alt="A forest of leafless trees surrounding a dark path that forks to the left and right after a short distance."
+  />
+
+  <div class="layer ui-layer">
+    <div class="ui-header">
+
+    </div>
+    <div class="ui-main">
+      <div class="greeting">
+        <h1>Lorem ipsum <span>dolor sit amet</span>.</h1>
+      </div>
+    </div>
+    <div class="ui-footer">
+      
+    </div>
+  </div>
+</div>
+
+<style lang="scss">
+  .scene-container {
+    width: 100vw;
+    min-width: 40rem;
+    height: 100vh;
+    background: #16171c;
+  }
+
+  .layer {
     position: absolute;
+    top: -1.5%;
+    left: -1.5%;
+    display: block;
+    width: 106%;
+    height: 106%;
+    margin: -1.5%;
+    object-fit: cover;
+  }
+
+  .ui-layer {
     top: 0;
     left: 0;
-    height: 107%;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    z-index: 6;
+  }
+
+  .ui-header,
+  .ui-footer {
+    height: 7vh;
+    background: oklch(27.94% 0 314 / 50%)
+  }
+
+  .ui-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .greeting {
+      width: 100%;
+      max-width: 50vw;  
+
+      h1 {
+        color: white;
+        font-size: 3rem;
+        text-align: center;
+
+        span {
+          color: #1d9227;
+        }
+      }
+    }
+  }
+
+  .forest-layer-1 {
+    z-index: 5;
+  }
+
+  .forest-layer-2 {
+    z-index: 4;
+  }
+
+  .forest-layer-3 {
+    z-index: 3;
+  }
+
+  .forest-layer-4 {
+    z-index: 2;
   }
 </style>
