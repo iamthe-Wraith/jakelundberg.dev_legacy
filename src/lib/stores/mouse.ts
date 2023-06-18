@@ -1,4 +1,5 @@
 import { readable } from 'svelte/store';
+import { browser } from '$app/environment';
 
 interface IMousePos {
   x: number;
@@ -42,6 +43,8 @@ const onResize = () => {
 }
 
 export const MousePos = readable(initMouse, (set) => {
+  if (!browser) return;
+
   const onMouseMove = (e: MouseEvent) => {
     const x = e.clientX;
     const y = e.clientY;

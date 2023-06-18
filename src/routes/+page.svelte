@@ -1,9 +1,6 @@
 <script lang="ts">
+	import Rain from '$components/Rain.svelte';
   import { MousePos } from '$lib/stores/mouse';
-  import forestLayer1 from '$assets/forest-layer-1.png';
-  import forestLayer2 from '$assets/forest-layer-2.png';
-  import forestLayer3 from '$assets/forest-layer-3.png';
-  import forestLayer4 from '$assets/forest-layer-4.png';
 	import { onMount } from 'svelte';
 
   const config = {
@@ -108,6 +105,10 @@
     alt="A forest of leafless trees surrounding a dark path that forks to the left and right after a short distance."
   />
 
+  <div class="layer rain-layer">
+    <Rain maxDrops={10} />
+  </div>
+
   <div class="layer ui-layer">
     <div class="ui-header">
 
@@ -149,7 +150,7 @@
     width: 100vw;
     height: 100vh;
     margin: 0;
-    z-index: 6;
+    z-index: 10;
   }
 
   .ui-header,
@@ -164,21 +165,35 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
 
-    .greeting {
-      width: 100%;
-      max-width: 50vw;  
+  .greeting {
+    width: 90vw;
 
-      h1 {
-        color: white;
-        font-size: 3rem;
-        text-align: center;
+    h1 {
+      color: white;
+      font-size: 2rem;
+      text-align: center;
 
-        span {
-          color: #1d9227;
-        }
+      span {
+        color: #1d9227;
       }
     }
+
+    @media (min-width: 768px) {
+      width: 50vw;
+
+      h1 {
+        font-size: 3rem;
+      }
+    }
+  }
+
+  .rain-layer {
+    top: 0;
+    left: 0;
+    margin: 0;
+    z-index: 6;
   }
 
   .forest-layer-1 {
