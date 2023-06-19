@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 
+  export let id = 'rain';
   export let width = 0;
   export let height = 0;
   export let maxDrops = 20;
@@ -97,4 +98,4 @@
   }
 </script>
 
-<canvas id="rain" />
+<canvas id={id} />
