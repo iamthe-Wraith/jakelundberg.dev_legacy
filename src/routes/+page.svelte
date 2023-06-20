@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ParallaxForest from '$components/scenes/ParallaxForest.svelte';
   import Rain from '$components/Rain.svelte';
+	import Nav from '$components/Nav.svelte';
 </script>
 
 <ParallaxForest />
@@ -10,16 +11,10 @@
 </div>
 
 <div class="layer ui-layer">
-  <div class="ui-header">
-
-  </div>
   <div class="ui-main">
     <div class="greeting">
       <h1>Lorem ipsum <span>dolor sit amet</span>.</h1>
     </div>
-  </div>
-  <div class="ui-footer">
-    
   </div>
 </div>
 
@@ -53,12 +48,6 @@
     z-index: 10;
   }
 
-  .ui-header,
-  .ui-footer {
-    height: 7vh;
-    background: oklch(27.94% 0 314 / 50%)
-  }
-
   .ui-main {
     flex: 1;
     display: flex;
@@ -76,7 +65,7 @@
       text-align: center;
 
       span {
-        color: #1d9227;
+        color: var(--primary-500);
       }
     }
 

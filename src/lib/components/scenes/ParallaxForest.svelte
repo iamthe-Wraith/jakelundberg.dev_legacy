@@ -7,10 +7,10 @@
       enabled: true,
       layers: {
         1: {
-          threshold: -0.004,
+          threshold: -0.003,
         },
         2: {
-          threshold: -0.002,
+          threshold: -0.0015,
         },
         3: {
           threshold: -0.001,
@@ -110,6 +110,7 @@
     width: 100vw;
     height: 100vh;
     background: #16171c;
+    background-image: linear-gradient(360deg in oklch, oklch(20% 0.01 273) 13% 13%, oklch(15% 0.00 284) 113% 113%);
   }
 
   .layer {
