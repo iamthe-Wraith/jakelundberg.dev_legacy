@@ -34,9 +34,9 @@
     },
     blog: {
       icon: 'ion:newspaper-outline',
-      title: 'Blog',
-      name: 'blog',
-      href: '/blog',
+      title: 'Writing',
+      name: 'writing',
+      href: '/writing',
       isActive: false,
       desc: 'Writing',
     },
@@ -68,6 +68,8 @@
 
   let mounted = false;
   let engagedItemTitle = '';
+  let checkbox: HTMLInputElement;
+  let navOverlay: HTMLDivElement;
 
   const engagedItemTitleVisibility = tweened(0, {
     duration: 200,
@@ -88,6 +90,7 @@
     Object.keys(navItems).forEach((key) => {
       drawActiveSvg(navItems[key].name);
       drawEngageableSvg(navItems[key].name);
+      drawLabelTextLine(navItems[key].name);
     });
   });
 
@@ -123,6 +126,20 @@
     svg.appendChild(circle);
   };
 
+  function drawLabelTextLine(name: string) {
+    const id = `rough-${name}-label`;
+    const svg = document.getElementById(id) as unknown as SVGSVGElement
+    const rect = svg.getBoundingClientRect();
+    const roughSvg = rough.svg(svg);
+
+    const line = roughSvg.line(0, (rect.height / 2), rect.width, (rect.height / 2), {
+      stroke: 'oklch(80% 0.18 80.47)',
+      strokeWidth: 2,
+      roughness: 1.5,
+    });
+    svg.appendChild(line);
+  }
+
   function onEngaged(navItem: INavItem, engaged: boolean) {
     if (engaged && !navItem.isActive) {
       engagedItemTitle = navItem.desc;
@@ -132,6 +149,10 @@
     }
 
     return () => {}
+  }
+
+  function onLinkClick() {
+    checkbox.checked = false;
   }
 </script>
 
@@ -143,54 +164,191 @@
   {/each}
 </svelte:head>
 
-<nav>
-  {#each Object.values(navItems) as navItem}
-    <span class="link-label" id={navItem.name}>{navItem.desc}</span>
-    <a
-      href={navItem.href}
-      class={navItem.isActive ? 'active' : ''}
-      aria-disabled={navItem.isActive}
-      aria-labelledby={navItem.name}
-      tabindex={navItem.isActive ? -1 : 0}
-      on:mouseenter={onEngaged(navItem, true)}
-      on:mouseleave={onEngaged(navItem, false)}
-      on:focus={onEngaged(navItem, true)}
-      on:blur={onEngaged(navItem, false)}
+<input type="checkbox" id="nav-checkbox" class="nav-checkbox" bind:this={checkbox} />
+
+<label for="nav-checkbox" class="nav-toggle" aria-label="navigation toggle">
+  <span class="toggle-nav-open">
+    <Icon icon="ion:menu-outline" />
+  </span>
+  <span class="toggle-nav-close">
+    <Icon icon="ion:close-outline" />
+  </span>
+</label>
+
+<div class="nav-overlay">
+  <nav class="primary-nav">  
+    {#each Object.values(navItems) as navItem}
+      <div class="nav-item-container">
+        <a
+          class="nav-item-label-link {navItem.isActive ? 'active-label' : ''}"
+          href={navItem.href}
+          on:click={onLinkClick}
+        >
+          {navItem.desc}
+          <svg id={`rough-${navItem.name}-label`} class="rough-label" />
+        </a>
+        <a
+          id={navItem.name}
+          href={navItem.href}
+          class="nav-item-icon-link {navItem.isActive ? 'active' : ''}"
+          aria-disabled={navItem.isActive}
+          aria-labelledby={navItem.name}
+          tabindex={navItem.isActive ? -1 : 0}
+          on:click={onLinkClick}
+          on:mouseenter={onEngaged(navItem, true)}
+          on:mouseleave={onEngaged(navItem, false)}
+          on:focus={onEngaged(navItem, true)}
+          on:blur={onEngaged(navItem, false)}
+        >
+          <svg id="rough-{navItem.name}-active" class="rough-active" />
+          <svg id="rough-{navItem.name}-engageable" class="rough-engageable" />
+          <span>
+            <Icon icon={navItem.icon} />
+          </span>
+        </a>
+      </div>
+    {/each}
+    <div
+      class="engaged-item-title"
+      style="opacity: {$engagedItemTitleVisibility}; transform: translate3d({$engagedItemTitleVisibility * -20}px, 0, 0); transform-style: preserve-3d;"
     >
-      <svg id={`rough-${navItem.name}-active`} class="rough-active" />
-      <svg id={`rough-${navItem.name}-engageable`} class="rough-engageable" />
-      <span>
-        <Icon icon={navItem.icon} />
-      </span>
-    </a>
-  {/each}
-  <div
-    class="engaged-item-title"
-    style="opacity: {$engagedItemTitleVisibility}; transform: translate3d({$engagedItemTitleVisibility * -20}px, 0, 0); transform-style: preserve-3d;"
-  >
-    {engagedItemTitle}
-  </div>
-</nav>
+      {engagedItemTitle}
+    </div>
+  </nav>
+</div>
 
 <style lang="scss">
+  .nav-checkbox {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    appearance: none;
+
+    &:checked ~ .nav-toggle {
+      .toggle-nav-open {
+        display: none;
+      }
+
+      .toggle-nav-close {
+        display: block;
+      }
+    }
+  }
+
+  .nav-toggle {
+    position: relative;
+    font-size: 2rem;
+    color: white;
+    line-height: 0;
+    z-index: 1001;
+
+    .toggle-nav-open {
+      display: block;
+    }
+
+    .toggle-nav-close {
+      display: none;
+    }
+
+    @media (min-width: 769px) {
+      display: none;
+    }
+  }
+
+  .nav-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-grow: 1;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: .25s ease-in-out;
+
+    @media (min-width: 769px) {
+      position: static;
+      display: block;
+      flex-grow: 0;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .nav-checkbox:checked ~ .nav-overlay,
+  .nav-checkbox:checked ~ .nav-overlay {
+    visibility: visible;
+    opacity: 1;
+  }
+
   nav {
     position: relative;
     display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 4rem 1rem 1rem;
+    /* background: oklch(0% 0 3 / 45%); */
+    background-image: linear-gradient(0deg in oklab, oklch(0% 0 3 / 35%) 0%, oklch(0% 0 3 / 95%) 100%);
+
+    @media (min-width: 769px) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      background: none;
+    }
+  }
+
+  .nav-item-container {
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
   }
 
-  .link-label {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    visibility: hidden;
+  .nav-item-label-link {
+    position: relative;
+    color: white;
+    margin-right: 0.5rem;
+    padding: 0 0.5rem;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    text-decoration: none;
+
+    &.active-label {
+      .rough-label {
+        opacity: 1;
+        transition: opacity 0.25s ease-in-out;
+      }
+    }
+
+    .rough-label {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @media (min-width: 769px) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      visibility: hidden;
+    }
   }
 
-  a {
+  .nav-item-icon-link {
     position: relative;
     display: flex;
     align-items: center;
@@ -255,10 +413,15 @@
     position: absolute;
     top: 100%;
     right: -20px;
+    display: none;
     font-family: var(--font-primary);
     font-size: 0.8rem;
     color: var(--secondary-500);
     text-align: right;
     overflow: hidden;
+
+    @media (min-width: 769px) {
+      display: block;
+    }
   }
 </style>
