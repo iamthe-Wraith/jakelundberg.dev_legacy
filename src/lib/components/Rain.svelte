@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 
+  export let id = 'rain';
   export let width = 0;
   export let height = 0;
   export let maxDrops = 20;
@@ -50,9 +51,9 @@
       const drop: IDrop = {
         x: Math.random() * canvasWidth,
         y: Math.random() * canvasHeight,
-        length: Math.random() * 1.5,
+        length: Math.random() * 1.8 + 0.5,
         moveX: 0,
-        moveY: Math.random() * 10 + 28,
+        moveY: Math.random() * 10 + 40,
       }
 
       drops.push(drop);
@@ -97,4 +98,4 @@
   }
 </script>
 
-<canvas id="rain" />
+<canvas id={id} />
