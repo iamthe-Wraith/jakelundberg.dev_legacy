@@ -1,0 +1,37 @@
+@font-face {
+  font-family: "OneTwoTreesRegular";
+  src: url('/fonts/CfOneTwoTreesRegular-4LGp.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "SpookyMagic";
+  src: url('/fonts/SpookyMagic.ttf') format('truetype');
+}
+
+body {
+  --dark-100: #000000;
+  --dark-300: #0A0A0A;
+  --dark-500: #303030;
+  
+  --primary-500: oklch(55.29% 0.215 145.06);
+
+  --secondary-500: oklch(80% 0.18 80.47);
+
+  --font-primary: SpookyMagic;
+
+  margin: 0;
+  padding: 0;
+  background: var(--dark-500);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+body * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-family: var(--font-primary);
+}
