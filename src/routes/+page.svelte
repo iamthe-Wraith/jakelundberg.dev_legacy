@@ -1,7 +1,6 @@
 <script lang="ts">
-	import ParallaxForest from '$components/scenes/ParallaxForest.svelte';
+  import ParallaxForest from '$components/scenes/ParallaxForest.svelte';
   import Rain from '$components/Rain.svelte';
-	import Nav from '$components/Nav/Nav.svelte';
 </script>
 
 <ParallaxForest />
