@@ -26,10 +26,10 @@ let screen: IScreen = {
   }
 };
 
-let initMouse: IMouse = {
+const initMouse: IMouse = {
   coords: { x: 0, y: 0 },
   relativeCoords: { x: 0, y: 0 },
-}
+};
 
 const onResize = () => {
   screen = {
@@ -39,8 +39,8 @@ const onResize = () => {
       x: Math.floor(window.innerWidth / 2),
       y: Math.floor(window.innerHeight / 2),
     }
-  }
-}
+  };
+};
 
 export const MousePos = readable(initMouse, (set) => {
   if (!browser) return;
@@ -63,7 +63,7 @@ export const MousePos = readable(initMouse, (set) => {
 
   onResize();
 
-	return () => {
+  return () => {
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('resize', onResize);
   };

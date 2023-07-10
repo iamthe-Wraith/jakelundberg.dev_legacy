@@ -60,7 +60,7 @@ export interface IGHVideoIssue extends IBaseGHIssue {
 
 export const isSuggested = (issue: IGHIssue) => {
   return issue.labels.filter((label) => (label as IGHLabel).name === GitHub.Labels.Suggested).length > 0;
-}
+};
 
 export const getArticles = (learnings: IGHIssue[]): IArticle[] => {
   const articles = learnings.filter((issue) => {
@@ -77,13 +77,13 @@ export const getArticles = (learnings: IGHIssue[]): IArticle[] => {
           ...(issue as unknown as IGHArticleIssue).body,
           isSuggested: isSuggested(issue),
           title: issue.title,
-        }
+        };
       }
     })
     .filter((article) => article !== null);
 
   return articles as IArticle[];
-}
+};
 
 export const getBooks = (learnings: IGHIssue[]): IBook[] => {
   const books = learnings.filter((issue) => {
@@ -100,13 +100,13 @@ export const getBooks = (learnings: IGHIssue[]): IBook[] => {
           ...(issue as unknown as IGHBookIssue).body,
           isSuggested: isSuggested(issue),
           title: issue.title,
-        }
+        };
       }
     })
     .filter((book) => book !== null);
 
   return books as IBook[];
-}
+};
 
 export const getCourses = (learnings: IGHIssue[]): ICourse[] => {
   const courses = learnings.filter((issue) => {
@@ -123,13 +123,13 @@ export const getCourses = (learnings: IGHIssue[]): ICourse[] => {
           ...(issue as unknown as IGHCourseIssue).body,
           isSuggested: isSuggested(issue),
           title: issue.title,
-        }
+        };
       }
     })
     .filter((article) => article !== null);
 
   return courses as ICourse[];
-}
+};
 
 export const getVideos = (learnings: IGHIssue[]): IVideo[] => {
   const videos = learnings.filter((issue) => {
@@ -146,13 +146,13 @@ export const getVideos = (learnings: IGHIssue[]): IVideo[] => {
           ...(issue as unknown as IGHCourseIssue).body,
           isSuggested: isSuggested(issue),
           title: issue.title,
-        }
+        };
       }
     })
     .filter((article) => article !== null);
 
   return videos as IVideo[];
-}
+};
 
 export const parseIssueBody = (issue: IGHIssue): IArticle | IBook | ICourse | null => {
   let parsed = null;
@@ -171,7 +171,7 @@ export const parseIssueBody = (issue: IGHIssue): IArticle | IBook | ICourse | nu
   }
 
   return parsed;
-}
+};
 
 const getAllLearnings = async (): Promise<IGHIssue[]> => {
   const response = await octokit.request('GET /repos/{owner}/{repo}/issues{?state}', {
@@ -205,7 +205,7 @@ const getAllLearnings = async (): Promise<IGHIssue[]> => {
       return { ...issue, body };
     })
     .filter((issue: IGHIssue) => issue.body);
-}
+};
 
 export const getLearning = async () => {
   const learnings = await getAllLearnings();

@@ -114,7 +114,7 @@ describe('GitHub Service', () => {
           ]
         },
         {
-          body: { invalid: "invalid field" },
+          body: { invalid: 'invalid field' },
           labels: [
             {
               name: GitHub.Labels.Article
@@ -126,7 +126,7 @@ describe('GitHub Service', () => {
       const res = getArticles(issues);
       expect(res).toEqual([]);
     });
-  })
+  });
 
   describe('getBooks', () => {
     it('should return an array of book specific issues', () => {
@@ -243,7 +243,7 @@ describe('GitHub Service', () => {
           ]
         },
         {
-          body: { invalid: "invalid field" },
+          body: { invalid: 'invalid field' },
           labels: [
             {
               name: GitHub.Labels.Book
@@ -255,7 +255,7 @@ describe('GitHub Service', () => {
       const res = getBooks(issues);
       expect(res).toEqual([]);
     });
-  })
+  });
 
   describe('getCourses', () => {
     it('should return an array of course specific issues', () => {
@@ -368,7 +368,7 @@ describe('GitHub Service', () => {
           ]
         },
         {
-          body: { invalid: "invalid field" },
+          body: { invalid: 'invalid field' },
           labels: [
             {
               name: GitHub.Labels.Course
@@ -380,7 +380,7 @@ describe('GitHub Service', () => {
       const res = getCourses(issues);
       expect(res).toEqual([]);
     });
-  })
+  });
 
   describe('getVideos', () => {
     it('should return an array of video specific issues', () => {
@@ -493,7 +493,7 @@ describe('GitHub Service', () => {
           ]
         },
         {
-          body: { invalid: "invalid field" },
+          body: { invalid: 'invalid field' },
           labels: [
             {
               name: GitHub.Labels.Video
@@ -505,7 +505,7 @@ describe('GitHub Service', () => {
       const res = getVideos(issues);
       expect(res).toEqual([]);
     });
-  })
+  });
 
   describe('isSuggested', () => {
     it(`should return an array of issues that are suggested if they contain the ${GitHub.Labels.Suggested} label`, () => {
@@ -564,8 +564,8 @@ describe('GitHub Service', () => {
 
       const suggestedIssues = issues.filter(issue => isSuggested(issue));
       expect(suggestedIssues.length).toEqual(2);
-    })
-  })
+    });
+  });
 
   describe('parseIssueBody', () => {
     it('should parse an issue\'s body into JSON', () => {
@@ -597,7 +597,7 @@ describe('GitHub Service', () => {
       expect(parsedBodies[0]!.hasOwnProperty('description')).toBeTruthy();
       expect(parsedBodies[1]!.hasOwnProperty('url')).toBeTruthy();
       expect(parsedBodies[1]!.hasOwnProperty('description')).toBeTruthy();
-    })
+    });
 
     it('should return null if parsing an issue body fails', () => {
       const issues = [
@@ -623,6 +623,6 @@ describe('GitHub Service', () => {
       expect(parsedBodies).toHaveLength(2);
       expect(parsedBodies[0]).toBeNull();
       expect(parsedBodies[1]).toBeNull();
-    })
-  })
-})
+    });
+  });
+});
