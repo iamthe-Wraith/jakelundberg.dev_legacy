@@ -12,4 +12,4 @@ export const articles: IArticle[] =[
     url: 'https://www.goodreads.com/book/show/34507927-how-to-take-smart-notes',
     description: 'This book is a must-read for anyone who wants to write, think, or learn. It will transform the way you work and learn.',
   }
-]
+];

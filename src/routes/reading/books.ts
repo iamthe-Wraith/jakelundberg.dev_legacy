@@ -14,4 +14,4 @@ export const books: IBook[] =[
     cover: 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1496027154l/34507927._SY475_.jpg',
     description: 'This book is a must-read for anyone who wants to write, think, or learn. It will transform the way you work and learn.',
   }
-]
+];

@@ -111,4 +111,4 @@ test.describe('homepage', () => {
     await expect(forestLayer4).toHaveCSS('position', 'fixed');
     await expect(forestLayer4).toHaveCSS('z-index', '2');
   });
-})
+});
