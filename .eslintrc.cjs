@@ -1,23 +1,33 @@
 module.exports = {
-	root: true,
-	parser: '@typescript-eslint/parser',
-	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
-	plugins: ['svelte3', '@typescript-eslint', 'unused-imports'],
-	ignorePatterns: ['*.cjs'],
-	overrides: [{ files: ['*.svelte'], processor: 'svelte3/svelte3' }],
-	settings: {
-		'svelte3/typescript': () => require('typescript')
-	},
-	parserOptions: {
-		sourceType: 'module',
-		ecmaVersion: 2020
-	},
-	env: {
-		browser: true,
-		es2017: true,
-		node: true
-	},
-	rules: {
+  root: true,
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:svelte/recommended',
+    'prettier'
+  ],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint', 'unused-imports'],
+  parserOptions: {
+    sourceType: 'module',
+    ecmaVersion: 2020,
+    extraFileExtensions: ['.svelte']
+  },
+  env: {
+    browser: true,
+    es2017: true,
+    node: true
+  },
+  overrides: [
+    {
+      files: ['*.svelte'],
+      parser: 'svelte-eslint-parser',
+      parserOptions: {
+        parser: '@typescript-eslint/parser'
+      }
+    }
+  ],
+  rules: {
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
@@ -28,13 +38,12 @@ module.exports = {
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
     '@typescript-eslint/restrict-template-expressions': 'off',
-    "semi": "off",
-    "@typescript-eslint/semi": "warn",
+    '@typescript-eslint/semi': 'warn',
     indent: 'off',
     'jsx-quotes': ['error', 'prefer-single'],
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
     'unused-imports/no-unused-imports': ['error'],
-	}
+  }
 };
