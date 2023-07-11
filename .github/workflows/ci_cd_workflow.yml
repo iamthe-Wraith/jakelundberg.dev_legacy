@@ -18,6 +18,7 @@ jobs:
     env:
       GH_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
       PUBLIC_SENTRY_DSN: ""
+      PUBLIC_APP_ENV: "test"
 
     steps:
       - uses: actions/checkout@v3
