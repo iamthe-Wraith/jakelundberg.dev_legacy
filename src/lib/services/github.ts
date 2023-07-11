@@ -1,4 +1,4 @@
-import { GITHUB_API_TOKEN } from '$env/static/private';
+import { GH_API_TOKEN } from '$env/static/private';
 import { GitHub } from '$lib/constants/github';
 import { Octokit } from '@octokit/core';
 
@@ -8,7 +8,7 @@ import { Octokit } from '@octokit/core';
  * am already tracking.
  */
 
-const octokit = new Octokit({ auth: GITHUB_API_TOKEN });
+const octokit = new Octokit({ auth: GH_API_TOKEN });
 
 interface ILearningMedium {
   title: string;
