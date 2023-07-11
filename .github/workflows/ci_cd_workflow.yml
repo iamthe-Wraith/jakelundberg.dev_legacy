@@ -39,6 +39,7 @@ jobs:
 
   tests_e2e:
     name: Run end-to-end tests
+    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
