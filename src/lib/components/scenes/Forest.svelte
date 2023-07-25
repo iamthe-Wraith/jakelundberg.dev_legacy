@@ -19,12 +19,14 @@
   let rect: DOMRect;
 
   let scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x030303, 10, 30);
+  scene.fog = new THREE.Fog(0x030303, 10, 35);
 
   let renderer: THREE.WebGLRenderer;
   let camera: THREE.PerspectiveCamera;
 
   let mouse = new THREE.Vector2();
+
+  let torch: THREE.PointLight;
 
   onMount(async () => {
     main = document.querySelector('main') as HTMLElement;
@@ -81,7 +83,16 @@
 
     camera.lookAt(mouse.x * viewabilityThreshold, mouse.y * viewabilityThreshold, 0);
 
+    animateTorchLight();
+
     render();
+  }
+
+  function animateTorchLight() {
+    if (!torch) return;
+    if (Math.random() > 0.8 || torch.intensity > 0.6) {
+      torch.intensity = 0.2 + (Math.random() * 0.3);
+    }
   }
 
   function loadForest() {
@@ -115,7 +126,7 @@
               if ((child as THREE.Light).name === 'moon') {
                 const moon = child as THREE.DirectionalLight;
 
-                moon.intensity = 0.5;
+                moon.intensity = 0.3;
                 moon.castShadow = true;
                 moon.shadow!.bias = -.001;
                 moon.shadow!.mapSize.width = 2048;
@@ -123,10 +134,10 @@
               }
               
               if ((child as THREE.Light).name === 'torch') {
-                const torch = child as THREE.PointLight;
+                torch = child as THREE.PointLight;
 
                 torch.distance = 28;
-                torch.intensity = 0.5;
+                torch.intensity = 0.4;
                 torch.castShadow = true;
                 torch.shadow.radius = 6;
                 torch.shadow!.bias = -.001;
