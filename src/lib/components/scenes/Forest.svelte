@@ -8,7 +8,7 @@
   import { assets } from '$app/paths';
 
   const isDevelopment = PUBLIC_APP_ENV === 'development';
-  const canvasId = 'forest-rain';
+  const canvasId = 'forest';
   const viewabilityThreshold = 3;
 
   let moonHelper: THREE.DirectionalLightHelper;
