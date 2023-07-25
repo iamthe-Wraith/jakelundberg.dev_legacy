@@ -1,26 +1,25 @@
 <script lang="ts" type="module">
   import { onMount } from 'svelte';
   import * as THREE from 'three'
-  import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
   import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
   import Stats from 'three/examples/jsm/libs/stats.module';
   import { PUBLIC_APP_ENV } from '$env/static/public';
   import { assets } from '$app/paths';
 
+  export let onLoad: (loaded: number, total: number) => void = () => {};
+  export let onError: (error: Error) => void = () => {};
+
   const isDevelopment = PUBLIC_APP_ENV === 'development';
   const canvasId = 'forest';
   const viewabilityThreshold = 3;
 
-  let moonHelper: THREE.DirectionalLightHelper;
-  let controls: OrbitControls;
   let stats: Stats;
 
   let main: HTMLElement;
   let rect: DOMRect;
 
   let scene = new THREE.Scene();
-  // scene.fog = new THREE.Fog(0x030303, 10, 30);
-  scene.fog = new THREE.FogExp2(0x030303, 0.05);
+  scene.fog = new THREE.Fog(0x030303, 10, 30);
 
   let renderer: THREE.WebGLRenderer;
   let camera: THREE.PerspectiveCamera;
@@ -45,15 +44,8 @@
     renderer.setSize(rect.width, rect.height);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    
-    console.log('isDevelopment: ', isDevelopment);
 
-    if (isDevelopment) {
-      controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-    }
-
-    loadForest();
+    loadForest().catch(onError);
 
     window.addEventListener('resize', onWindowResize, false);
     function onWindowResize() {
@@ -74,7 +66,7 @@
       mouse.y = -(event.clientY / rect.height) * 2 + 1;
     }
     
-    if (PUBLIC_APP_ENV === 'development') {
+    if (isDevelopment) {
      stats = new Stats();
      document.body.appendChild(stats.dom);
     }
@@ -85,8 +77,6 @@
   function animate() {
     requestAnimationFrame(animate);
 
-    controls?.update();
-    moonHelper?.update();
     stats?.update();
 
     camera.lookAt(mouse.x * viewabilityThreshold, mouse.y * viewabilityThreshold, 0);
@@ -130,11 +120,6 @@
                 moon.shadow!.bias = -.001;
                 moon.shadow!.mapSize.width = 2048;
                 moon.shadow!.mapSize.height = 2048;
-
-                if (PUBLIC_APP_ENV === 'development') {
-                  moonHelper = new THREE.DirectionalLightHelper(moon);
-                  scene.add(moonHelper);
-                }
               }
               
               if ((child as THREE.Light).name === 'torch') {
@@ -149,17 +134,15 @@
                 torch.shadow!.mapSize.height = 2048;
               }
             }
-          })
+          });
 
           scene.add(gltf.scene);
           resolve(true);
         },
         (xhr) => {
-          // TODO: add prop to pass in loading progress to calling component
-          console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+          onLoad?.(xhr.loaded, xhr.total);
         },  
         (error) => {
-          console.log('error loading forest');
           reject(error);
         }
       )

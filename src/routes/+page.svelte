@@ -1,13 +1,24 @@
 <script lang="ts">
   import Forest from '$components/scenes/Forest.svelte';
-  import Rain from '$components/Rain.svelte';
+  
+  let displayScene = true;
+
+  function onSceneError(error: Error) {
+    console.error(error);
+    displayScene = false;
+  }
+
+  function onSceneLoad(loaded: number, total: number) {
+    console.log((loaded / total) * 100 + '% loaded');
+  }
 </script>
 
-<Forest />
-
-<div class="layer rain-layer">
-  <!-- <Rain maxDrops={50} /> -->
-</div>
+{#if displayScene}
+  <Forest
+    onLoad={onSceneLoad}
+    onError={onSceneError}
+  />
+{/if}
 
 <div class="layer ui-layer">
   <div class="ui-main">
