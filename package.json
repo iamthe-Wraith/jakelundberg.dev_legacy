@@ -20,6 +20,7 @@
     "@playwright/test": "^1.36.0",
     "@sveltejs/adapter-auto": "^2.0.0",
     "@sveltejs/kit": "^1.5.0",
+    "@types/three": "^0.154.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "eslint": "^8.28.0",
@@ -43,6 +44,7 @@
     "@sentry/sveltekit": "^7.57.0",
     "@sveltejs/adapter-node": "^1.2.4",
     "dotenv": "^16.0.3",
-    "roughjs": "^4.5.2"
+    "roughjs": "^4.5.2",
+    "three": "^0.154.0"
   }
 }

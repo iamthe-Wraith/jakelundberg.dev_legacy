@@ -1,12 +1,12 @@
 <script lang="ts">
-  import ParallaxForest from '$components/scenes/ParallaxForest.svelte';
+  import Forest from '$components/scenes/Forest.svelte';
   import Rain from '$components/Rain.svelte';
 </script>
 
-<ParallaxForest />
+<Forest />
 
 <div class="layer rain-layer">
-  <Rain maxDrops={10} />
+  <!-- <Rain maxDrops={50} /> -->
 </div>
 
 <div class="layer ui-layer">

@@ -4,7 +4,7 @@
   export let id = 'rain';
   export let width = 0;
   export let height = 0;
-  export let maxDrops = 20;
+  export let maxDrops = 100;
 
   interface IDrop {
     x: number;
@@ -12,6 +12,8 @@
     length: number;
     moveX: number;
     moveY: number;
+    end: number;
+    strokeAlpha: number;
   }
 
   let canvas: HTMLCanvasElement;
@@ -43,18 +45,21 @@
     canvas.height = canvasHeight;
 
     ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-    ctx.strokeStyle = 'rgba(174,194,224,0.5)';
     ctx.lineWidth = 1;
     ctx.lineCap = 'round';
 
     for (let i = 0; i < rainMaxDrops; i++) {
+      const end = Math.random() * canvasHeight / 2;
+
       const drop: IDrop = {
         x: Math.random() * canvasWidth,
         y: Math.random() * canvasHeight,
         length: Math.random() * 1.8 + 0.5,
         moveX: 0,
-        moveY: Math.random() * 10 + 40,
-      }
+        moveY: Math.random() * 10 + 45,
+        end: canvasHeight - end,
+        strokeAlpha: 0.5 - (end / canvasHeight),
+      };
 
       drops.push(drop);
     }
@@ -69,6 +74,7 @@
       ctx.beginPath();
       ctx.moveTo(drop.x, drop.y);
       ctx.lineTo(drop.x + drop.length * drop.moveX, drop.y + drop.length * drop.moveY);
+      ctx.strokeStyle = `rgba(174,194,224,${drop.strokeAlpha})`;
       ctx.stroke();
     }
     moveDrops();
@@ -80,7 +86,7 @@
 
       drop.x += drop.moveX;
       drop.y += drop.moveY;
-      if(drop.x > canvasWidth || drop.y > canvasHeight) {
+      if(drop.x > canvasWidth || drop.y > drop.end) {
         drop.x = Math.random() * canvasWidth;
         drop.y = -20;
       }
