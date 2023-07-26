@@ -153,6 +153,7 @@
         <a
           class="nav-item-label-link {navItem.isActive ? 'active-label' : ''}"
           href={navItem.href}
+          target={navItem.target || '_self'}
           on:click={onLinkClick}
         >
           {navItem.desc}
@@ -161,6 +162,7 @@
         <a
           id={navItem.name}
           href={navItem.href}
+          target={navItem.target || '_self'}
           class="nav-item-icon-link {navItem.isActive ? 'active' : ''}"
           aria-disabled={navItem.isActive}
           aria-labelledby={navItem.name}
