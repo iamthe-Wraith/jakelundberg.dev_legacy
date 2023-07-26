@@ -2,6 +2,11 @@
   import { MousePos } from '$lib/stores/mouse';
 	import { onMount } from 'svelte';
 
+  /**
+   * this is the old hand drawn parallax forest scene that is not in use currently,
+   * but keeping it around in case I want to use it again in the future.
+   */
+
   const config = {
     parallax: {
       enabled: true,

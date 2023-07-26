@@ -1,13 +1,40 @@
 <script lang="ts">
-  import ParallaxForest from '$components/scenes/ParallaxForest.svelte';
-  import Rain from '$components/Rain.svelte';
+  import Forest from '$components/scenes/Forest.svelte';
+	import type { ILoad } from '$components/scenes/types';
+  
+  let displayScene = true;
+
+  let loaded = 0;
+  let total = 0;
+
+  function onSceneError(error: Error) {
+    console.error(error);
+    displayScene = false;
+  }
+
+  function onSceneLoad(loading: Record<string, ILoad>) {
+    const l = Object.values(loading).reduce((acc, curr) => {
+      acc.loaded += curr.loaded;
+      acc.total += curr.total;
+      return acc;
+    }, {
+      loaded: 0,
+      total: 0
+    });
+
+    loaded = l.loaded;
+    total = l.total;
+
+    console.log((loaded / total) * 100 + '% loaded');
+  }
 </script>
 
-<ParallaxForest />
-
-<div class="layer rain-layer">
-  <Rain maxDrops={10} />
-</div>
+{#if displayScene}
+  <Forest
+    onLoad={onSceneLoad}
+    onError={onSceneError}
+  />
+{/if}
 
 <div class="layer ui-layer">
   <div class="ui-main">
