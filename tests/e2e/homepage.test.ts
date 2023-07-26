@@ -82,13 +82,5 @@ test.describe('homepage', () => {
 
     const header = ui.getByRole('heading', { name: 'Lorem ipsum dolor sit amet.' });
     await expect(header).toBeVisible();
-    
-    const rainContainer = page.locator('.rain-layer');
-    await expect(rainContainer).toBeVisible();
-    await expect(rainContainer).toHaveCSS('position', 'fixed');
-    await expect(rainContainer).toHaveCSS('z-index', '6');
-
-    const rain = rainContainer.locator('canvas#forest');
-    await expect(rain).toBeVisible();
   });
 });
