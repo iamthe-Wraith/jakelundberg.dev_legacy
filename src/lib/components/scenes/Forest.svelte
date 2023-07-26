@@ -5,8 +5,16 @@
   import Stats from 'three/examples/jsm/libs/stats.module';
   import { PUBLIC_APP_ENV } from '$env/static/public';
   import { assets } from '$app/paths';
+	import type { ILoad } from './types';
 
-  export let onLoad: (loaded: number, total: number) => void = () => {};
+  interface IFlame {
+    mesh: THREE.Mesh;
+    speed: number;
+    duration: number;
+    lifespan: number;
+  }
+
+  export let onLoad: (data: Record<string, ILoad>) => void = ({}) => {};
   export let onError: (error: Error) => void = () => {};
 
   const isDevelopment = PUBLIC_APP_ENV === 'development';
@@ -14,6 +22,10 @@
   const viewabilityThreshold = 3;
 
   let stats: Stats;
+
+  let load: Record<string, ILoad> = {};
+
+  $: onLoad(load);
 
   let main: HTMLElement;
   let rect: DOMRect;
@@ -26,7 +38,15 @@
 
   let mouse = new THREE.Vector2();
 
-  let torch: THREE.PointLight;
+  let torch: THREE.Mesh;
+  let torchLight: THREE.PointLight;
+  let flames: IFlame[] = [];
+  const flameCount = 30;
+  const flameColors = [
+    0xefc909,
+    0xdd6802,
+    0xdd5202
+  ];
 
   onMount(async () => {
     main = document.querySelector('main') as HTMLElement;
@@ -40,6 +60,7 @@
     );
 
     camera.position.set(1, 0.6, 18.3)
+    scene.add(camera);
 
     renderer = new THREE.WebGLRenderer({ canvas: document.getElementById(canvasId) as HTMLCanvasElement });
     renderer.setClearColor(scene.fog!.color);
@@ -47,7 +68,11 @@
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    loadForest().catch(onError);
+    Promise.all([
+      loadForest(),
+      loadTorch(),
+    ])
+      .catch(onError);
 
     window.addEventListener('resize', onWindowResize, false);
     function onWindowResize() {
@@ -56,6 +81,9 @@
 
       camera.aspect = rect.width / rect.height;
       camera.updateProjectionMatrix();
+
+      positionTorch();
+
       renderer.setSize(rect.width, rect.height);
 
       render();
@@ -83,17 +111,80 @@
 
     camera.lookAt(mouse.x * viewabilityThreshold, mouse.y * viewabilityThreshold, 0);
 
-    animateTorchLight();
+    animateTorch();
 
     render();
   }
 
-  function animateTorchLight() {
-    if (!torch) return;
-    if (Math.random() > 0.8 || torch.intensity > 0.6) {
-      torch.intensity = 0.2 + (Math.random() * 0.3);
+  function animateTorch() {
+    if (!torchLight || !flames.length) return;
+
+    if (Math.random() > 0.85 || torchLight.intensity > 0.45) {
+      const intensity = 0.3 + (Math.random() * 0.15);
+      torchLight.intensity = intensity;
+    }
+
+    for (let i = 0; i < flames.length; i++) {
+      let flame = flames[i];
+
+      if (flame.duration > flame.lifespan) {
+        torch.remove(flame.mesh);
+        const f = initFlame();
+        flames[i] = f;
+      }
+
+      flame.duration += 1;
+      (flame.mesh.material as THREE.Material).opacity = 1 - (flame.duration / flame.lifespan);
+
+      const scaleDegradation = 0.97;
+      flame.mesh.geometry.scale(
+        scaleDegradation,
+        scaleDegradation,
+        scaleDegradation
+      );
+
+      flame.mesh.position.set(
+        flame.mesh.position.x + ((flame.duration / flame.lifespan) * 0.05),
+        flame.mesh.position.y + flame.speed,
+        flame.mesh.position.z + ((flame.duration / flame.lifespan) * 0.05),
+      );
     }
   }
+
+  function initFlame() {
+    const color = flameColors[Math.round(Math.random() * (flameColors.length - 1))];
+
+    const mesh = new THREE.Mesh(
+      new THREE.BoxGeometry(1.4, 1, 1.15),
+      new THREE.MeshStandardMaterial({
+        color, 
+        emissive: color, 
+        emissiveIntensity: 5, 
+        transparent: true, 
+        opacity: Math.random() 
+      })
+    );
+
+    torch.add(mesh);
+
+    mesh.position.set(
+      Math.random() * 0.55 * (Math.random() > 0.5 ? 1 : -1),
+      1.1,
+      Math.random() * 0.55 * (Math.random() > 0.5 ? 1 : -1),
+    );
+
+    mesh.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 7.5);
+
+    const scale = Math.random() * 0.55;
+    mesh.geometry.scale(scale, scale, scale);
+
+    return {
+      mesh,
+      speed: 0.04 + (Math.random() * 0.01),
+      duration: 0,
+      lifespan: Math.random() * 25,
+    }
+  };
 
   function loadForest() {
     return new Promise((resolve, reject) => {
@@ -134,15 +225,15 @@
               }
               
               if ((child as THREE.Light).name === 'torch') {
-                torch = child as THREE.PointLight;
+                const l = child as THREE.PointLight;
 
-                torch.distance = 28;
-                torch.intensity = 0.4;
-                torch.castShadow = true;
-                torch.shadow.radius = 6;
-                torch.shadow!.bias = -.001;
-                torch.shadow!.mapSize.width = 2048;
-                torch.shadow!.mapSize.height = 2048;
+                l.distance = 28;
+                l.intensity = 0; // 0.4;
+                l.castShadow = true;
+                l.shadow.radius = 6;
+                l.shadow!.bias = -.001;
+                l.shadow!.mapSize.width = 2048;
+                l.shadow!.mapSize.height = 2048;
               }
             }
           });
@@ -151,13 +242,71 @@
           resolve(true);
         },
         (xhr) => {
-          onLoad?.(xhr.loaded, xhr.total);
+          load = {
+            ...load,
+            forest: { loaded: xhr.loaded, total: xhr.total }
+          }
         },  
         (error) => {
           reject(error);
         }
       )
     })
+  }
+
+  function loadTorch() {
+    return new Promise((resolve, reject) => {
+      const loader = new GLTFLoader();
+      loader.load(
+        `${assets}/torch.glb`,
+        function (gltf) {
+          gltf.scene.traverse(function (child) {
+            const m = child as THREE.Mesh;
+
+            if (m.name === 'torch') {
+              torch = m;
+              camera.add(gltf.scene);
+
+              torch.castShadow = true;
+              torch.receiveShadow = true;
+              torch.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / -7.5);
+
+              positionTorch();
+
+              for (let i = 0; i < flameCount; i++) {                
+                flames.push(initFlame());
+              }
+
+              torchLight = new THREE.PointLight(0xffd08f, 0.4);
+              torchLight.distance = 25;
+
+              torch.add(torchLight);
+
+              torchLight.position.set(0, 1, 0);
+            }
+          });
+
+          resolve(true);
+        },
+        (xhr) => {
+          load = {
+            ...load,
+            torch: { loaded: xhr.loaded, total: xhr.total }
+          }
+        },  
+        (error) => {
+          reject(error);
+        }
+      )
+    })
+  }
+
+  function positionTorch() {
+    let x = ((rect.width / 2) / rect.height) * 0.2;
+    let y = -0.13;
+    let z = -0.18;
+
+    torch.position.set(x, y, z);
   }
 
   function render() {
