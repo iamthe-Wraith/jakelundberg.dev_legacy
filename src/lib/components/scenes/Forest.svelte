@@ -195,10 +195,6 @@
           gltf.scene.traverse(function (child) {
             const m = child as THREE.Mesh;
 
-            if (m.name === 'rain') {
-              console.log('m: ', m);
-            }
-
             if (m.isMesh || m.name === 'fallen-log-1001') {
               const m = child as THREE.Mesh; 
               switch (m.name) {
@@ -214,7 +210,7 @@
             const l = child as THREE.Light;
 
             if (l.isLight || (l.parent as THREE.Light)?.isLight) {
-              if ((child as THREE.Light).name === 'moon') {
+              if (l.name === 'moon') {
                 const moon = child as THREE.DirectionalLight;
 
                 moon.intensity = 0.3;
@@ -224,7 +220,7 @@
                 moon.shadow!.mapSize.height = 2048;
               }
               
-              if ((child as THREE.Light).name === 'torch') {
+              if (l.name === 'torch') {
                 const l = child as THREE.PointLight;
 
                 l.distance = 28;
