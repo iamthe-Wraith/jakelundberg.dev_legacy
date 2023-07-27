@@ -7,14 +7,13 @@
   import { PUBLIC_APP_ENV } from '$env/static/public';
   import { assets } from '$app/paths';
 	import type { ILoad } from './types';
-	import { arraySlice } from 'three/src/animation/AnimationUtils';
 
   export let onLoad: (data: Record<string, ILoad>) => void = ({}) => {};
   export let onError: (error: Error) => void = () => {};
 
   const isDevelopment = PUBLIC_APP_ENV === 'development';
   const canvasId = 'forest';
-  const viewabilityThreshold = 3;
+  const viewabilityThreshold = 4;
 
   let stats: Stats;
 
@@ -31,6 +30,8 @@
 
   let renderer: THREE.WebGLRenderer;
   let camera: THREE.PerspectiveCamera;
+  let spotLight: THREE.SpotLight;
+  let spotLightHelper: THREE.SpotLightHelper;
 
   let mouse = new THREE.Vector2();
 
@@ -60,6 +61,28 @@
     Promise.all([
       loadCemetery(),
     ])
+      .then(() => {
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.005);
+        scene.add(ambientLight);
+
+        spotLight = new THREE.SpotLight(0xffffff, 1, 18, Math.PI * 2.15, Math.PI * 0.04);
+        
+        spotLight.castShadow = true;
+        spotLight.intensity = 1
+        spotLight.shadow!.bias = -.001;
+        spotLight.shadow!.mapSize.width = 2048;
+        spotLight.shadow!.mapSize.height = 2048;
+        spotLight.shadow.camera.near = 0.5;
+        spotLight.shadow.camera.far = 5000;
+        spotLight.shadow.focus = 1;
+
+        scene.add(spotLight);
+        scene.add(spotLight.target);
+
+        spotLight.position.set(0, 2.5, 38);
+
+        spotLight.target.position.z = 37;
+      })
       .catch(onError);
 
     window.addEventListener('resize', onWindowResize, false);
@@ -94,10 +117,13 @@
     requestAnimationFrame(animate);
 
     stats?.update();
+    spotLightHelper?.update();
 
-    // camera.lookAt(mouse.x * viewabilityThreshold, mouse.y * viewabilityThreshold, 0);
+    if (isDevelopment) controls.update();
 
-    controls?.update();
+    spotLight?.position?.set(0 + (mouse.x * 0.8), 2.5 + mouse.y * 0.8, 38);
+    spotLight?.target?.position?.set(spotLight.position.x + (mouse.x * 0.8), spotLight.position.y + (mouse.y * 0.8), spotLight.position.z - 1)
+    camera.lookAt(mouse.x * viewabilityThreshold, mouse.y * viewabilityThreshold, 0);
 
     render();
   }
@@ -112,50 +138,29 @@
           gltf.scene.traverse(function (child) {
             const m = child as THREE.Mesh;
 
+            m.traverse(function(node) {
+              if ((node as THREE.Mesh).isMesh) {
+                m.castShadow = true;
+              }
+            })
+
             if (m.isMesh) {
               const m = child as THREE.Mesh;
 
-              if (Array.isArray(m.material)) {
-                m.material[0].transparent = false;
-                m.material[0].depthWrite = true;
-
-                m.material[0].side = THREE.FrontSide;
-              } else {
-                m.material.transparent = false;
-                m.material.depthWrite = true;
-
-                m.material.side = THREE.FrontSide;
-              }
-
               switch (m.name) {
                 case 'ground':
-                  console.log('m: ', m);
+                  m.geometry.computeVertexNormals();
                   m.receiveShadow = true;
                   break
                 default:
+                  m.geometry.computeVertexNormals();
                   m.castShadow = true;
                   m.receiveShadow = true;
-              }
+                }
             }
           });
 
           scene.add(gltf.scene);
-
-          const ambientLight = new THREE.AmbientLight(0xffffff, 0.005);
-          scene.add(ambientLight);
-
-          // const pointLight = new THREE.PointLight( 0xffffff, 1 );
-          // pointLight.position.set( 0, 5, 28 );
-          // pointLight.castShadow = true;
-          // pointLight.intensity = 0.3
-          // pointLight.shadow!.bias = -.001;
-          // pointLight.shadow!.mapSize.width = 2048;
-          // pointLight.shadow!.mapSize.height = 2048;
-
-          // scene.add( pointLight );
-
-          // const lightHelper = new THREE.PointLightHelper(pointLight, 1);
-          // scene.add(lightHelper);
 
           resolve(true);
         },
