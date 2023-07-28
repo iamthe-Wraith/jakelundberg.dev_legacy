@@ -62,7 +62,11 @@
     camera.position.set(1, 0.6, 18.3)
     scene.add(camera);
 
-    renderer = new THREE.WebGLRenderer({ canvas: document.getElementById(canvasId) as HTMLCanvasElement });
+    renderer = new THREE.WebGLRenderer({
+      canvas: document.getElementById(canvasId) as HTMLCanvasElement,
+      antialias: true
+    });
+    renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setClearColor(scene.fog!.color);
     renderer.setSize(rect.width, rect.height);
     renderer.shadowMap.enabled = true;
