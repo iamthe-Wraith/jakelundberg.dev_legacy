@@ -1,5 +1,6 @@
 <script lang="ts">
-	import Cemetery from "$components/scenes/Cemetery.svelte";
+	import UiLayer from "$components/layers/UILayer.svelte";
+import Cemetery from "$components/scenes/Cemetery.svelte";
 	import type { ILoad } from "$components/scenes/types";
 
   let displayScene = true;
@@ -36,4 +37,28 @@
   />
 {/if}
 
-<div>Projects</div>
+<UiLayer>
+  <div class="ui-main">
+    <h1>projects</h1>
+  </div>
+</UiLayer>
+
+<style lang="scss">
+  .ui-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  h1 {
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+
+    span {
+      color: var(--primary-500);
+    }
+  }
+</style>

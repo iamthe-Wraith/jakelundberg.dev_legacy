@@ -1,4 +1,5 @@
 <script lang="ts">
+  import UiLayer from '$components/layers/UILayer.svelte';
   import Forest from '$components/scenes/Forest.svelte';
 	import type { ILoad } from '$components/scenes/types';
   
@@ -36,44 +37,15 @@
   />
 {/if}
 
-<div class="layer ui-layer">
+<UiLayer>
   <div class="ui-main">
     <div class="greeting">
       <h1>Lorem ipsum <span>dolor sit amet</span>.</h1>
     </div>
   </div>
-</div>
+</UiLayer>
 
 <style lang="scss">
-  .layer {
-    position: fixed;
-    top: -1.5%;
-    left: -1.5%;
-    display: block;
-    width: 106%;
-    height: 106%;
-    margin: -1.5%;
-    object-fit: cover;
-  }
-
-  .rain-layer {
-    top: 0;
-    left: 0;
-    margin: 0;
-    z-index: 6;
-  }
-
-  .ui-layer {
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    z-index: 10;
-  }
-
   .ui-main {
     flex: 1;
     display: flex;

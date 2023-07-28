@@ -18,7 +18,7 @@
   export let onError: (error: Error) => void = () => {};
 
   const isDevelopment = PUBLIC_APP_ENV === 'development';
-  const canvasId = 'forest';
+  const canvasId = 'cemetery';
   const viewabilityThreshold = 7;
   const userPos = {
     x: 0, 
@@ -46,7 +46,7 @@
 
   let mouse = new THREE.Vector2();
 
-  const wispsCount = 3;
+  const wispsCount = 4;
   const wisps: IWisp[] = [];
 
   onMount(async () => {
