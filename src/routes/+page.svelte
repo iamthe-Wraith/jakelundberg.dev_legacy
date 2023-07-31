@@ -1,12 +1,17 @@
 <script lang="ts">
+	import Loading from '$components/Loading.svelte';
   import UiLayer from '$components/layers/UILayer.svelte';
   import Forest from '$components/scenes/Forest.svelte';
 	import type { ILoad } from '$components/scenes/types';
   
+  let amountLoaded = 0;
+  let totalToLoad = 0;
+  let isLoaded = false;
   let displayScene = true;
 
-  let loaded = 0;
-  let total = 0;
+  $: {
+    isLoaded = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
+  }
 
   function onSceneError(error: Error) {
     console.error(error);
@@ -23,10 +28,8 @@
       total: 0
     });
 
-    loaded = l.loaded;
-    total = l.total;
-
-    console.log((loaded / total) * 100 + '% loaded');
+    amountLoaded = l.loaded;
+    totalToLoad = l.total;
   }
 </script>
 
@@ -37,13 +40,17 @@
   />
 {/if}
 
-<UiLayer>
-  <div class="ui-main">
-    <div class="greeting">
-      <h1>Lorem ipsum <span>dolor sit amet</span>.</h1>
+{#if isLoaded}
+  <UiLayer>
+    <div class="ui-main">
+      <div class="greeting">
+        <h1>Lorem ipsum <span>dolor sit amet</span>.</h1>
+      </div>
     </div>
-  </div>
-</UiLayer>
+  </UiLayer>
+{:else}
+  <Loading />
+{/if}
 
 <style lang="scss">
   .ui-main {

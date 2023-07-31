@@ -3,18 +3,8 @@
 </div>
 
 <style lang="scss">
-  .layer {
-    position: fixed;
-    top: -1.5%;
-    left: -1.5%;
-    display: block;
-    width: 106%;
-    height: 106%;
-    margin: -1.5%;
-    object-fit: cover;
-  }
-
   .ui-layer {
+    position: fixed;
     top: 0;
     left: 0;
     display: flex;

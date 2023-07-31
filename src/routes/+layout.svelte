@@ -1,6 +1,12 @@
 <script lang="ts">
 	import Nav from '$components/Nav/Nav.svelte';
+	import { quotes } from '$lib/stores/quotes';
+	import type { LayoutData } from './$types';
   import './global.css';
+
+  export let data: LayoutData;
+
+  $: if (data?.quotes) quotes.set(data.quotes);
 </script>
 
 <main>

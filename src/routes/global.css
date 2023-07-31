@@ -1,6 +1,12 @@
 @font-face {
-  font-family: "OneTwoTreesRegular";
-  src: url('/fonts/CfOneTwoTreesRegular-4LGp.ttf') format('truetype');
+  font-family: "OpenSans";
+  src: url('/fonts/OpenSans.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "OpenSans";
+  src: url('/fonts/OpenSans-Italic.ttf') format('truetype');
+  font-style: italic;
 }
 
 @font-face {
@@ -12,12 +18,17 @@ body {
   --dark-100: #000000;
   --dark-300: #0A0A0A;
   --dark-500: #303030;
+
+  --light-100: #d1d1d1;
+  --light-500: #eaeaea;
+  --light-900: #FFFFFF;
   
   --primary-500: oklch(55.29% 0.215 145.06);
 
   --secondary-500: oklch(80% 0.18 80.47);
 
   --font-primary: SpookyMagic;
+  --font-secondary: OpenSans;
 
   margin: 0;
   padding: 0;
@@ -30,8 +41,15 @@ body * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: var(--font-secondary);
 }
 
-h1 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.header-font {
   font-family: var(--font-primary);
 }
