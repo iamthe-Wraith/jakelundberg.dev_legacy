@@ -11,6 +11,10 @@ const config: PlaywrightTestConfig = {
     ['html', { open: 'never' }],
     [process.env.CI ? 'github' : 'list'],
   ],
+  retries: 1,
+  use: {
+    trace: 'retain-on-failure',
+  },
   projects: [
     {
       name: 'chromium',
