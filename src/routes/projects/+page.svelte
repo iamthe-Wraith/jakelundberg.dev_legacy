@@ -69,9 +69,5 @@
     color: white;
     font-size: 2rem;
     text-align: center;
-
-    span {
-      color: var(--primary-500);
-    }
   }
 </style>
