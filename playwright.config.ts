@@ -15,6 +15,8 @@ const config: PlaywrightTestConfig = {
   use: {
     trace: 'retain-on-failure',
   },
+  expect: { timeout: 10000 }, // expect assertions timeout at 10 seconds
+  timeout: 30000, // test timeout at 30 seconds
   projects: [
     {
       name: 'chromium',
