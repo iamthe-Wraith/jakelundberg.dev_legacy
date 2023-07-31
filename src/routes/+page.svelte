@@ -16,6 +16,7 @@
   function onSceneError(error: Error) {
     console.error(error);
     displayScene = false;
+    isLoaded = true;
   }
 
   function onSceneLoad(loading: Record<string, ILoad>) {

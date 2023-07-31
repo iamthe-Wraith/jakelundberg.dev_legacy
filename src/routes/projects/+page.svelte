@@ -21,6 +21,7 @@ import UiLayer from "$components/layers/UILayer.svelte";
   function onSceneError(error: Error) {
     console.error(error);
     displayScreen = false;
+    isLoaded = true;
   }
 
   function onSceneLoad(loading: Record<string, ILoad>) {
