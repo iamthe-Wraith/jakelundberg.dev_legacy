@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Loading from '$components/Loading.svelte';
+  import Loading from '$components/Loading.svelte';
   import UiLayer from '$components/layers/UILayer.svelte';
   import Forest from '$components/scenes/Forest.svelte';
-	import type { ILoad } from '$components/scenes/types';
+  import type { ILoad } from '$components/scenes/types';
   
   let amountLoaded = 0;
   let totalToLoad = 0;

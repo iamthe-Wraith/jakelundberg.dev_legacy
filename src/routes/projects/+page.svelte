@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Loading from "$components/Loading.svelte";
-import UiLayer from "$components/layers/UILayer.svelte";
+  import Loading from "$components/Loading.svelte";
+  import UiLayer from "$components/layers/UILayer.svelte";
   import Cemetery from "$components/scenes/Cemetery.svelte";
   import type { ILoad } from "$components/scenes/types";
   import type { PageData } from './$types';

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { quotes } from "$lib/stores/quotes";
-	import type { IQuote } from "$lib/types/quotes";
-	import { onMount } from "svelte";
+  import { quotes } from "$lib/stores/quotes";
+  import type { IQuote } from "$lib/types/quotes";
+  import { onMount } from "svelte";
 
   export let text: string = 'loading';
 
