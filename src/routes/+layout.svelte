@@ -1,8 +1,8 @@
 <script lang="ts">
   import './global.css';
-	import Nav from '$components/Nav/Nav.svelte';
+  import Nav from '$components/Nav/Nav.svelte';
   import type { LayoutData } from './$types';
-	import { setContext } from 'svelte';
+  import { setContext } from 'svelte';
 
   export let data: LayoutData;
 
