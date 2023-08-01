@@ -55,6 +55,12 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run tests
         run: npm run test
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-e2e-report
+          path: playwright-e2e-report/
+          retention-days: 30
 
   tests_component:
     name: Run component tests
@@ -74,3 +80,9 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run tests
         run: npm run test-ct
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-component-report
+          path: playwright-component-report/
+          retention-days: 30
