@@ -314,4 +314,10 @@
   }
 </script>
 
-<canvas id={canvasId}></canvas>
+<canvas 
+  id={canvasId}
+  on:error={e => {
+    console.error('canvas error: ', e);
+    onError(new Error('canvas error'));
+  }}
+></canvas>
