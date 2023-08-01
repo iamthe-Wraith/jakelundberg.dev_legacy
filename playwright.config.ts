@@ -7,6 +7,16 @@ const config: PlaywrightTestConfig = {
   },
   testDir: 'tests/e2e',
   testMatch: /(.+\.)?(test|spec)\.[jt]s/,
+  reporter: [
+    ['html', { open: 'never' }],
+    [process.env.CI ? 'github' : 'list'],
+  ],
+  retries: 1,
+  use: {
+    trace: 'retain-on-failure',
+  },
+  expect: { timeout: 10000 }, // expect assertions timeout at 10 seconds
+  timeout: 30000, // test timeout at 30 seconds
   projects: [
     {
       name: 'chromium',
