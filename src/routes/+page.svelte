@@ -1,6 +1,6 @@
 <script lang="ts">
   import Forest from '$components/scenes/Forest.svelte';
-	import type { ILoad } from '$components/scenes/types';
+  import type { ILoad } from '$components/scenes/types';
   import UILayer from '$components/layers/UILayer.svelte';
   
   let displayScene = true;
