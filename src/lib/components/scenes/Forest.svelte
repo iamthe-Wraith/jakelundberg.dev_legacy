@@ -52,6 +52,11 @@
     main = document.querySelector('main') as HTMLElement;
     rect = main.getBoundingClientRect();
 
+    const canvas = document.createElement('canvas');
+    canvas.id = canvasId;
+
+    main.appendChild(canvas);
+
     camera = new THREE.PerspectiveCamera(
       75,
       rect.width / rect.height,
@@ -62,7 +67,7 @@
     camera.position.set(1, 0.6, 18.3)
     scene.add(camera);
 
-    renderer = new THREE.WebGLRenderer({ canvas: document.getElementById(canvasId) as HTMLCanvasElement });
+    renderer = new THREE.WebGLRenderer({ canvas });
     renderer.setClearColor(scene.fog!.color);
     renderer.setSize(rect.width, rect.height);
     renderer.shadowMap.enabled = true;
@@ -102,6 +107,12 @@
     }
 
     animate();
+
+    return () => {
+      window.removeEventListener('resize', onWindowResize);
+      document.removeEventListener('mousemove', onDocumentMouseMove);
+      main.removeChild(canvas);
+    }
   })
 
   function animate() {
@@ -314,10 +325,10 @@
   }
 </script>
 
-<canvas 
+<!-- <canvas 
   id={canvasId}
   on:error={e => {
     console.error('canvas error: ', e);
     onError(new Error('canvas error'));
   }}
-></canvas>
+></canvas> -->
