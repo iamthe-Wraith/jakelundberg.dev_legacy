@@ -9,11 +9,8 @@
   let displayUI = false;
   let displayScene = true;
 
-  $: {
-    displayUI = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
-  }
-
   function onSceneError(error: Error) {
+    console.error('onSceneError');
     console.error(error);
     displayScene = false;
     displayUI = true;
@@ -31,8 +28,7 @@
 
     amountLoaded = l.loaded;
     totalToLoad = l.total;
-
-    console.log((amountLoaded / totalToLoad) * 100 + '% loaded');
+    displayUI = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
   }
 </script>
 
