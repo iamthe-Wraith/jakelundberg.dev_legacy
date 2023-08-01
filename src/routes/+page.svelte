@@ -2,15 +2,21 @@
   import Forest from '$components/scenes/Forest.svelte';
   import type { ILoad } from '$components/scenes/types';
   import UILayer from '$components/layers/UILayer.svelte';
+  import Loading from '$components/Loading.svelte';
   
+  let amountLoaded = 0;
+  let totalToLoad = 0;
+  let displayUI = false;
   let displayScene = true;
 
-  let loaded = 0;
-  let total = 0;
+  $: {
+    displayUI = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
+  }
 
   function onSceneError(error: Error) {
     console.error(error);
     displayScene = false;
+    displayUI = true;
   }
 
   function onSceneLoad(loading: Record<string, ILoad>) {
@@ -23,10 +29,10 @@
       total: 0
     });
 
-    loaded = l.loaded;
-    total = l.total;
+    amountLoaded = l.loaded;
+    totalToLoad = l.total;
 
-    console.log((loaded / total) * 100 + '% loaded');
+    console.log((amountLoaded / totalToLoad) * 100 + '% loaded');
   }
 </script>
 
@@ -37,13 +43,17 @@
   />
 {/if}
 
-<UILayer>
-  <div class="ui-main">
-    <div class="greeting">
-      <h1>Lorem ipsum <span>dolor sit amet</span>.</h1>
+{#if displayUI}
+  <UILayer>
+    <div class="ui-main">
+      <div class="greeting">
+        <h1>Lorem ipsum <span>dolor sit amet</span>.</h1>
+      </div>
     </div>
-  </div>
-</UILayer>
+  </UILayer>
+{:else}
+  <Loading />
+{/if}
 
 <style lang="scss">
   .ui-main {
@@ -63,6 +73,7 @@
       text-align: center;
 
       span {
+        font-family: var(--font-primary);
         color: var(--primary-500);
       }
     }
