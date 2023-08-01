@@ -54,7 +54,7 @@ jobs:
       - name: Install playwright browsers
         run: npx playwright install --with-deps
       - name: Run tests
-        run: npm run test
+        run: npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
@@ -79,7 +79,7 @@ jobs:
       - name: Install playwright browsers
         run: npx playwright install --with-deps
       - name: Run tests
-        run: npm run test-ct
+        run: npx playwright test -c playwright-ct.config.ts
       - uses: actions/upload-artifact@v3
         if: always()
         with:
