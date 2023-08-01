@@ -1,12 +1,12 @@
 <script lang="ts">
-  import Nav from '$components/Nav/Nav.svelte';
-  import { quotes } from '$lib/stores/quotes';
-  import type { LayoutData } from './$types';
   import './global.css';
+	import Nav from '$components/Nav/Nav.svelte';
+  import type { LayoutData } from './$types';
+	import { setContext } from 'svelte';
 
   export let data: LayoutData;
 
-  $: if (data?.quotes) quotes.set(data.quotes);
+  $: if (data?.quotes) setContext('quotes', data.quotes);
 </script>
 
 <main>
