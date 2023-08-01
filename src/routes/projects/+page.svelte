@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { PUBLIC_APP_ENV } from '$env/static/public';
   import Loading from "$components/Loading.svelte";
   import UiLayer from "$components/layers/UILayer.svelte";
   import Cemetery from "$components/scenes/Cemetery.svelte";
@@ -47,7 +46,7 @@
   />
 {/if}
 
-{#if isLoaded || PUBLIC_APP_ENV === 'test'}
+{#if isLoaded}
   <UiLayer>
     <div class="ui-main">
       <h1>projects</h1>
