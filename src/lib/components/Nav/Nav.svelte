@@ -207,6 +207,10 @@
         display: block;
       }
     }
+
+    @media (min-width: 769px) {
+      display: none;
+    }
   }
 
   .nav-toggle {
