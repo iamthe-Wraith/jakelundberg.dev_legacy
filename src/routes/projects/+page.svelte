@@ -1,7 +1,8 @@
 <script lang="ts">
   import Loading from "$components/Loading.svelte";
   import UiLayer from "$components/layers/UILayer.svelte";
-  import Cemetery from "$components/scenes/Cemetery.svelte";
+	import CemetaryWelcome from "$components/scenes/Cemetery/CemeteryWelcome.svelte";
+  import Cemetery from "$components/scenes/Cemetery/Cemetery.svelte";
   import type { ILoad } from "$components/scenes/types";
 	import { processError } from "$lib/utils/errors";
   import type { PageData } from './$types';
@@ -12,6 +13,8 @@
   let totalToLoad = 0;
   let displayUI = false;
   let displayScene = true;
+
+  const selectedProject = null;
 
   $: {
     console.log('data: ', data);
@@ -51,7 +54,24 @@
 {#if displayUI}
   <UiLayer>
     <div class="ui-main">
-      <h1>projects</h1>
+      <div class="left-col">
+        <div class="welcome-mobile">
+          <CemetaryWelcome />
+        </div>
+
+        <div class="projects">
+
+        </div>
+      </div>
+      <div class="details">
+        {#if selectedProject}
+          <div>selected project goes here...</div>
+        {:else}
+          <div class="welcome-desktop">
+            <CemetaryWelcome />
+          </div>
+        {/if}
+      </div>
     </div>
   </UiLayer>
 {:else}
@@ -60,16 +80,61 @@
 
 <style lang="scss">
   .ui-main {
-    flex: 1;
     display: flex;
+    flex: 1;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
   }
 
-  h1 {
-    color: white;
-    font-size: 2rem;
-    text-align: center;
+  .left-col {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+
+    @media (min-width: 768px) {
+      justify-content: flex-start;
+      align-items: flex-start;
+      max-width: 400px;
+    }
+  }
+
+  .welcome-mobile {
+    display: flex;
+    height: 100%;
+
+    @media (min-width: 768px) {
+      display: none;
+    }
+  }
+
+  .welcome-desktop {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  
+
+    @media (min-width: 768px) {
+      display: flex;
+    }
+  }
+
+  .details {
+    display: none;
+    flex: 1;
+    border-left: 1px solid var(--dark-500);
+
+    @media (min-width: 768px) {
+      display: flex;
+    }
   }
 </style>

@@ -68,23 +68,8 @@
   .greeting {
     width: 90vw;
 
-    h1 {
-      color: white;
-      font-size: 2rem;
-      text-align: center;
-
-      span {
-        font-family: var(--font-primary);
-        color: var(--primary-500);
-      }
-    }
-
     @media (min-width: 768px) {
       width: 50vw;
-
-      h1 {
-        font-size: 3rem;
-      }
     }
   }
 </style>
