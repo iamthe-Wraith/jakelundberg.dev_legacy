@@ -67,7 +67,11 @@
     camera.position.set(1, 0.6, 18.3)
     scene.add(camera);
 
-    renderer = new THREE.WebGLRenderer({ canvas });
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true
+    });
+    renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setClearColor(scene.fog!.color);
     renderer.setSize(rect.width, rect.height);
     renderer.shadowMap.enabled = true;
@@ -206,26 +210,16 @@
           gltf.scene.traverse(function (child) {
             const m = child as THREE.Mesh;
 
-            if (m.name === 'rain') {
-              console.log('m: ', m);
-            }
-
             if (m.isMesh || m.name === 'fallen-log-1001') {
               const m = child as THREE.Mesh; 
-              switch (m.name) {
-                case 'ground':
-                  m.receiveShadow = true;
-                  break
-                default:
-                  m.castShadow = true;
-                  m.receiveShadow = true;
-              }
+              m.receiveShadow = true;
+              if (m.name !== 'ground') m.castShadow = true;
             }
             
             const l = child as THREE.Light;
 
             if (l.isLight || (l.parent as THREE.Light)?.isLight) {
-              if ((child as THREE.Light).name === 'moon') {
+              if (l.name === 'moon') {
                 const moon = child as THREE.DirectionalLight;
 
                 moon.intensity = 0.3;
@@ -235,16 +229,16 @@
                 moon.shadow!.mapSize.height = 2048;
               }
               
-              if ((child as THREE.Light).name === 'torch') {
-                const l = child as THREE.PointLight;
+              if (l.name === 'torch') {
+                const torch = child as THREE.PointLight;
 
-                l.distance = 28;
-                l.intensity = 0; // 0.4;
-                l.castShadow = true;
-                l.shadow.radius = 6;
-                l.shadow!.bias = -.001;
-                l.shadow!.mapSize.width = 2048;
-                l.shadow!.mapSize.height = 2048;
+                torch.distance = 28;
+                torch.intensity = 0; // 0.4;
+                torch.castShadow = true;
+                torch.shadow.radius = 6;
+                torch.shadow!.bias = -.001;
+                torch.shadow!.mapSize.width = 2048;
+                torch.shadow!.mapSize.height = 2048;
               }
             }
           });
@@ -324,11 +318,3 @@
     renderer.render(scene, camera)
   }
 </script>
-
-<!-- <canvas 
-  id={canvasId}
-  on:error={e => {
-    console.error('canvas error: ', e);
-    onError(new Error('canvas error'));
-  }}
-></canvas> -->
