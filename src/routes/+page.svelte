@@ -1,10 +1,10 @@
 <script lang="ts">
-  import Loading from '$components/Loading.svelte';
   import Forest from '$components/scenes/Forest.svelte';
   import type { ILoad } from '$components/scenes/types';
-	import { getContext } from 'svelte';
-	import type { IQuote } from '$lib/types/quotes';
-	import UILayer from '$components/layers/UILayer.svelte';
+  import UILayer from '$components/layers/UILayer.svelte';
+  import Loading from '$components/Loading.svelte';
+  import { getContext } from 'svelte';
+  import type { IQuote } from '$lib/types/quotes';
   
   let amountLoaded = 0;
   let totalToLoad = 0;
