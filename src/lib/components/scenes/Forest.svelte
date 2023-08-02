@@ -210,15 +210,18 @@
           gltf.scene.traverse(function (child) {
             const m = child as THREE.Mesh;
 
-            if (m.isMesh || m.name === 'fallen-log-1001') {
-              const m = child as THREE.Mesh; 
-              switch (m.name) {
-                case 'ground':
-                  m.receiveShadow = true;
-                  break
-                default:
-                  m.castShadow = true;
-                  m.receiveShadow = true;
+            if (m.isMesh) {
+              m.receiveShadow = true;
+              if (m.name !== 'ground') m.castShadow = true;
+            }
+
+            if (m.name === 'fallen-log-1001') {
+              const g = child as THREE.Group;
+              
+              for (let i = 0; i < g.children.length; i++) {
+                const c = g.children[i] as THREE.Mesh;
+                c.castShadow = true;
+                c.receiveShadow = true;
               }
             }
             
@@ -235,17 +238,7 @@
                 moon.shadow!.mapSize.height = 2048;
               }
               
-              if (l.name === 'torch') {
-                const l = child as THREE.PointLight;
-
-                l.distance = 28;
-                l.intensity = 0; // 0.4;
-                l.castShadow = true;
-                l.shadow.radius = 6;
-                l.shadow!.bias = -.001;
-                l.shadow!.mapSize.width = 2048;
-                l.shadow!.mapSize.height = 2048;
-              }
+              if (l.name === 'torch') l.visible = false;
             }
           });
 
@@ -288,8 +281,13 @@
                 flames.push(initFlame());
               }
 
-              torchLight = new THREE.PointLight(0xffd08f, 0.4);
-              torchLight.distance = 25;
+              torchLight = new THREE.PointLight(0xffd08f, 0.4, 25, 2);
+              torchLight.castShadow = true;
+              torchLight.shadow!.bias = -.001;
+              torchLight.shadow!.mapSize.width = 2048;
+              torchLight.shadow!.mapSize.height = 2048;
+              torchLight.shadow.camera.near = 0.5;
+              torchLight.shadow.camera.far = 5000;
 
               torch.add(torchLight);
 
@@ -324,11 +322,3 @@
     renderer.render(scene, camera)
   }
 </script>
-
-<!-- <canvas 
-  id={canvasId}
-  on:error={e => {
-    console.error('canvas error: ', e);
-    onError(new Error('canvas error'));
-  }}
-></canvas> -->
