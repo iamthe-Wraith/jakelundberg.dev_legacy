@@ -23,8 +23,10 @@ body {
   --light-500: #eaeaea;
   --light-900: #FFFFFF;
   
+  /* when this changes, be sure to update /lib/constants/colors as well */
   --primary-500: oklch(55.29% 0.215 145.06);
 
+  /* when this changes, be sure to update /lib/constants/colors as well */
   --secondary-500: oklch(80% 0.18 80.47);
 
   --font-primary: SpookyMagic;
