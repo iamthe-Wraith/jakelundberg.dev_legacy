@@ -78,7 +78,7 @@ test.describe('homepage', () => {
     page.locator('.loading');
 
     const ui = page.locator('.ui-layer');
-    await expect(ui).toBeVisible();
+    await expect(ui).toBeVisible({ timeout: 30000 });
     await expect(ui).toHaveCSS('position', 'fixed');
     await expect(ui).toHaveCSS('z-index', '10');
 

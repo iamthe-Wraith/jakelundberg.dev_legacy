@@ -4,8 +4,6 @@
 
   export let text: string = 'loading';
   export let quotes: IQuote[] = [];
-  
-  console.log('>>>>> quotes', quotes);
 
   let ellipsis = '';
   let quote: IQuote;
@@ -13,8 +11,6 @@
   $: if (quotes?.length && !quote) setQuote();
   
   onMount(() => {
-    console.log('>>>>> loading mounted');
-
     const ellipsisInterval = setInterval(() => {
       ellipsis = ellipsis.length >= 3 ? '' : `${ellipsis}.`;
     }, 350);

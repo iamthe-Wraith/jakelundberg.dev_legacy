@@ -23,7 +23,7 @@ export const navItems: INavItem[] = [
     name: 'projects',
     href: '/projects',
     isActive: false,
-    desc: 'Project Cemetary',
+    desc: 'Project Cemetery',
   },
   {
     icon: 'ion:newspaper-outline',

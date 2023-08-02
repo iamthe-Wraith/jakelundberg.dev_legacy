@@ -73,4 +73,14 @@ test.describe('projects', () => {
       }
     }
   });
+
+  test('has expected elements', async ({ page }) => {
+    const ui = page.locator('.ui-layer');
+    await expect(ui).toBeVisible({ timeout: 30000 });
+    await expect(ui).toHaveCSS('position', 'fixed');
+    await expect(ui).toHaveCSS('z-index', '10');
+
+    const header = ui.getByRole('heading', { name: 'projects' });
+    await expect(header).toBeVisible();
+  });
 });
