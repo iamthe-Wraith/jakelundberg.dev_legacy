@@ -53,6 +53,11 @@
     main = document.querySelector('main') as HTMLElement;
     rect = main.getBoundingClientRect();
 
+    const canvas = document.createElement('canvas');
+    canvas.id = canvasId;
+
+    main.appendChild(canvas);
+
     camera = new THREE.PerspectiveCamera(
       75,
       rect.width / rect.height,
@@ -120,6 +125,13 @@
     }
 
     animate();
+
+    return () => {
+      window.removeEventListener('resize', onWindowResize);
+      document.removeEventListener('mousemove', onDocumentMouseMove);
+      document.removeEventListener('contextmenu', onContextMenuClick);
+      main.removeChild(canvas);
+    }
   })
 
   function animate() {
@@ -282,5 +294,3 @@
     renderer.render(scene, camera)
   }
 </script>
-
-<canvas id={canvasId}></canvas>
