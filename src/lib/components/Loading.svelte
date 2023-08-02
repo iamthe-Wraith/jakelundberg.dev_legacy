@@ -1,22 +1,32 @@
 <script lang="ts">
   import type { IQuote } from "$lib/types/quotes";
-  import { getContext, onMount } from "svelte";
-  export let text: string = 'loading';
+  import { onMount } from "svelte";
 
-  const quotes = getContext<IQuote[]>('quotes');
+  export let text: string = 'loading';
+  export let quotes: IQuote[] = [];
+  
+  console.log('>>>>> quotes', quotes);
+
   let ellipsis = '';
   let quote: IQuote;
   
   $: if (quotes?.length && !quote) setQuote();
   
   onMount(() => {
-    setInterval(() => {
+    console.log('>>>>> loading mounted');
+
+    const ellipsisInterval = setInterval(() => {
       ellipsis = ellipsis.length >= 3 ? '' : `${ellipsis}.`;
     }, 350);
     
-    setInterval(setQuote, 7000);
+    const quoteInterval = setInterval(setQuote, 7000);
 
     setQuote();
+
+    return () => {
+      clearInterval(ellipsisInterval);
+      clearInterval(quoteInterval);
+    }
   });
   
   function setQuote() {
@@ -33,9 +43,9 @@
 
 <div class="loading">
   <p class="loading-indicator header-font">{text}<span>{ellipsis}</span></p>
-  <div class="sep-line"></div>
 
   {#if quote}
+    <div class="sep-line"></div>
     <div class="quote-container">
       <p class="quote">{quote.quote}</p>
       <p class="quote-author">- {quote.author}</p>

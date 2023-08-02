@@ -3,11 +3,15 @@
   import type { ILoad } from '$components/scenes/types';
   import UILayer from '$components/layers/UILayer.svelte';
   import Loading from '$components/Loading.svelte';
+	import { getContext } from 'svelte';
+	import type { IQuote } from '$lib/types/quotes';
   
   let amountLoaded = 0;
   let totalToLoad = 0;
   let displayUI = false;
   let displayScene = true;
+
+  const quotes = getContext<IQuote[]>('quotes');
 
   function onSceneError(error: Error) {
     console.error('onSceneError');
@@ -48,7 +52,7 @@
     </div>
   </UILayer>
 {:else}
-  <Loading />
+  <Loading {quotes} />
 {/if}
 
 <style lang="scss">
