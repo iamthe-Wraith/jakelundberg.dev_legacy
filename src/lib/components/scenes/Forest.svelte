@@ -67,7 +67,11 @@
     camera.position.set(1, 0.6, 18.3)
     scene.add(camera);
 
-    renderer = new THREE.WebGLRenderer({ canvas });
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true
+    });
+    renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setClearColor(scene.fog!.color);
     renderer.setSize(rect.width, rect.height);
     renderer.shadowMap.enabled = true;
@@ -206,26 +210,25 @@
           gltf.scene.traverse(function (child) {
             const m = child as THREE.Mesh;
 
-            if (m.name === 'rain') {
-              console.log('m: ', m);
+            if (m.isMesh) {
+              m.receiveShadow = true;
+              if (m.name !== 'ground') m.castShadow = true;
             }
 
-            if (m.isMesh || m.name === 'fallen-log-1001') {
-              const m = child as THREE.Mesh; 
-              switch (m.name) {
-                case 'ground':
-                  m.receiveShadow = true;
-                  break
-                default:
-                  m.castShadow = true;
-                  m.receiveShadow = true;
+            if (m.name === 'fallen-log-1001') {
+              const g = child as THREE.Group;
+              
+              for (let i = 0; i < g.children.length; i++) {
+                const c = g.children[i] as THREE.Mesh;
+                c.castShadow = true;
+                c.receiveShadow = true;
               }
             }
             
             const l = child as THREE.Light;
 
             if (l.isLight || (l.parent as THREE.Light)?.isLight) {
-              if ((child as THREE.Light).name === 'moon') {
+              if (l.name === 'moon') {
                 const moon = child as THREE.DirectionalLight;
 
                 moon.intensity = 0.3;
@@ -235,17 +238,7 @@
                 moon.shadow!.mapSize.height = 2048;
               }
               
-              if ((child as THREE.Light).name === 'torch') {
-                const l = child as THREE.PointLight;
-
-                l.distance = 28;
-                l.intensity = 0; // 0.4;
-                l.castShadow = true;
-                l.shadow.radius = 6;
-                l.shadow!.bias = -.001;
-                l.shadow!.mapSize.width = 2048;
-                l.shadow!.mapSize.height = 2048;
-              }
+              if (l.name === 'torch') l.visible = false;
             }
           });
 
@@ -288,8 +281,13 @@
                 flames.push(initFlame());
               }
 
-              torchLight = new THREE.PointLight(0xffd08f, 0.4);
-              torchLight.distance = 25;
+              torchLight = new THREE.PointLight(0xffd08f, 0.4, 25, 2);
+              torchLight.castShadow = true;
+              torchLight.shadow!.bias = -.001;
+              torchLight.shadow!.mapSize.width = 2048;
+              torchLight.shadow!.mapSize.height = 2048;
+              torchLight.shadow.camera.near = 0.5;
+              torchLight.shadow.camera.far = 5000;
 
               torch.add(torchLight);
 
@@ -324,11 +322,3 @@
     renderer.render(scene, camera)
   }
 </script>
-
-<!-- <canvas 
-  id={canvasId}
-  on:error={e => {
-    console.error('canvas error: ', e);
-    onError(new Error('canvas error'));
-  }}
-></canvas> -->
