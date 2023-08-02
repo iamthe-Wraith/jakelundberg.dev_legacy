@@ -4,14 +4,13 @@
 
 <style lang="scss">
   .ui-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     margin: 0;
     z-index: 10;
+    overflow: auto;
   }
 </style>

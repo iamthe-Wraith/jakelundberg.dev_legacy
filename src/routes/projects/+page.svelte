@@ -9,19 +9,19 @@
 
   let amountLoaded = 0;
   let totalToLoad = 0;
-  let isLoaded = false;
-  let displayScreen = true;
+  let displayUI = false;
+  let displayScene = true;
 
   $: {
     console.log('data: ', data);
   }
 
-  $: isLoaded = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
+  $: displayUI = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
 
   function onSceneError(error: Error) {
     console.error(error);
-    displayScreen = false;
-    isLoaded = true;
+    displayScene = false;
+    displayUI = true;
   }
 
   function onSceneLoad(loading: Record<string, ILoad>) {
@@ -39,14 +39,14 @@
   }
 </script>
 
-{#if displayScreen} 
+{#if displayScene} 
   <Cemetery
     onLoad={onSceneLoad}
     onError={onSceneError}
   />
 {/if}
 
-{#if isLoaded}
+{#if displayUI}
   <UiLayer>
     <div class="ui-main">
       <h1>projects</h1>
