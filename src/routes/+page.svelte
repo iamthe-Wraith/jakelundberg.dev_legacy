@@ -1,22 +1,23 @@
 <script lang="ts">
   import Loading from '$components/Loading.svelte';
-  import UiLayer from '$components/layers/UILayer.svelte';
   import Forest from '$components/scenes/Forest.svelte';
   import type { ILoad } from '$components/scenes/types';
+	import { getContext } from 'svelte';
+	import type { IQuote } from '$lib/types/quotes';
+	import UILayer from '$components/layers/UILayer.svelte';
   
   let amountLoaded = 0;
   let totalToLoad = 0;
-  let isLoaded = false;
+  let displayUI = false;
   let displayScene = true;
 
-  $: {
-    isLoaded = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
-  }
+  const quotes = getContext<IQuote[]>('quotes');
 
   function onSceneError(error: Error) {
+    console.error('onSceneError');
     console.error(error);
     displayScene = false;
-    isLoaded = true;
+    displayUI = true;
   }
 
   function onSceneLoad(loading: Record<string, ILoad>) {
@@ -31,6 +32,7 @@
 
     amountLoaded = l.loaded;
     totalToLoad = l.total;
+    displayUI = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
   }
 </script>
 
@@ -41,16 +43,16 @@
   />
 {/if}
 
-{#if isLoaded}
-  <UiLayer>
+{#if displayUI}
+  <UILayer>
     <div class="ui-main">
       <div class="greeting">
         <h1>Lorem ipsum <span>dolor sit amet</span>.</h1>
       </div>
     </div>
-  </UiLayer>
+  </UILayer>
 {:else}
-  <Loading />
+  <Loading {quotes} />
 {/if}
 
 <style lang="scss">
@@ -71,6 +73,7 @@
       text-align: center;
 
       span {
+        font-family: var(--font-primary);
         color: var(--primary-500);
       }
     }

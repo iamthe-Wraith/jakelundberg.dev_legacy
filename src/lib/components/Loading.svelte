@@ -1,36 +1,47 @@
 <script lang="ts">
-  import { quotes } from "$lib/stores/quotes";
   import type { IQuote } from "$lib/types/quotes";
   import { onMount } from "svelte";
 
   export let text: string = 'loading';
+  export let quotes: IQuote[] = [];
 
   let ellipsis = '';
   let quote: IQuote;
-
-  $: if ($quotes?.length && !quote) setQuote();
-
-  setInterval(() => {
-    ellipsis = ellipsis.length >= 3 ? '' : `${ellipsis}.`;
-  }, 350);
-
-  setInterval(setQuote, 7000);
-
+  
+  $: if (quotes?.length && !quote) setQuote();
+  
   onMount(() => {
-    setQuote();
-  });
+    const ellipsisInterval = setInterval(() => {
+      ellipsis = ellipsis.length >= 3 ? '' : `${ellipsis}.`;
+    }, 350);
+    
+    const quoteInterval = setInterval(setQuote, 7000);
 
+    setQuote();
+
+    return () => {
+      clearInterval(ellipsisInterval);
+      clearInterval(quoteInterval);
+    }
+  });
+  
   function setQuote() {
-    if (!$quotes?.length) return;
-    quote = $quotes[Math.floor(Math.random() * ($quotes.length - 1))];
+    if (!quotes?.length) return;
+    let nextQuote: IQuote;
+
+    do {
+      nextQuote = quotes[Math.floor(Math.random() * (quotes.length - 1))];
+    } while ((nextQuote.quote === quote?.quote))
+
+    quote = nextQuote;
   }
 </script>
 
 <div class="loading">
   <p class="loading-indicator header-font">{text}<span>{ellipsis}</span></p>
-  <div class="sep-line"></div>
-  
+
   {#if quote}
+    <div class="sep-line"></div>
     <div class="quote-container">
       <p class="quote">{quote.quote}</p>
       <p class="quote-author">- {quote.author}</p>
@@ -77,15 +88,15 @@
     width: 90%;
     max-width: 40rem;
     text-align: center;
-
+    
     p {
       color: var(--light-500)
     }
-
+    
     .quote {
       margin-bottom: 1rem;
     }
-
+    
     .quote-author {
       font-style: italic;
     }
