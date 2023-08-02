@@ -79,7 +79,7 @@ test.describe('homepage', () => {
 
     const ui = page.locator('.ui-layer');
     await expect(ui).toBeVisible({ timeout: 30000 });
-    await expect(ui).toHaveCSS('position', 'fixed');
+    await expect(ui).toHaveCSS('position', 'relative');
     await expect(ui).toHaveCSS('z-index', '10');
 
     const header = ui.getByRole('heading', { name: 'Lorem ipsum dolor sit amet.' });
