@@ -210,10 +210,19 @@
           gltf.scene.traverse(function (child) {
             const m = child as THREE.Mesh;
 
-            if (m.isMesh || m.name === 'fallen-log-1001') {
-              const m = child as THREE.Mesh; 
+            if (m.isMesh) {
               m.receiveShadow = true;
               if (m.name !== 'ground') m.castShadow = true;
+            }
+
+            if (m.name === 'fallen-log-1001') {
+              const g = child as THREE.Group;
+              
+              for (let i = 0; i < g.children.length; i++) {
+                const c = g.children[i] as THREE.Mesh;
+                c.castShadow = true;
+                c.receiveShadow = true;
+              }
             }
             
             const l = child as THREE.Light;
@@ -229,17 +238,7 @@
                 moon.shadow!.mapSize.height = 2048;
               }
               
-              if (l.name === 'torch') {
-                const torch = child as THREE.PointLight;
-
-                torch.distance = 28;
-                torch.intensity = 0; // 0.4;
-                torch.castShadow = true;
-                torch.shadow.radius = 6;
-                torch.shadow!.bias = -.001;
-                torch.shadow!.mapSize.width = 2048;
-                torch.shadow!.mapSize.height = 2048;
-              }
+              if (l.name === 'torch') l.visible = false;
             }
           });
 
@@ -282,8 +281,13 @@
                 flames.push(initFlame());
               }
 
-              torchLight = new THREE.PointLight(0xffd08f, 0.4);
-              torchLight.distance = 25;
+              torchLight = new THREE.PointLight(0xffd08f, 0.4, 25, 2);
+              torchLight.castShadow = true;
+              torchLight.shadow!.bias = -.001;
+              torchLight.shadow!.mapSize.width = 2048;
+              torchLight.shadow!.mapSize.height = 2048;
+              torchLight.shadow.camera.near = 0.5;
+              torchLight.shadow.camera.far = 5000;
 
               torch.add(torchLight);
 
