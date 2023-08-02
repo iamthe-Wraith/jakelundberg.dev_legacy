@@ -5,6 +5,7 @@
   import Loading from '$components/Loading.svelte';
   import { getContext } from 'svelte';
   import type { IQuote } from '$lib/types/quotes';
+	import { processError } from '$lib/utils/errors';
   
   let amountLoaded = 0;
   let totalToLoad = 0;
@@ -14,10 +15,10 @@
   const quotes = getContext<IQuote[]>('quotes');
 
   function onSceneError(error: Error) {
-    console.error('onSceneError');
-    console.error(error);
-    displayScene = false;
-    displayUI = true;
+    processError(error, () => {
+      displayScene = false;
+      displayUI = true;
+    });
   }
 
   function onSceneLoad(loading: Record<string, ILoad>) {

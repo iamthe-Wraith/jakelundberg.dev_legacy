@@ -3,6 +3,7 @@
   import UiLayer from "$components/layers/UILayer.svelte";
   import Cemetery from "$components/scenes/Cemetery.svelte";
   import type { ILoad } from "$components/scenes/types";
+	import { processError } from "$lib/utils/errors";
   import type { PageData } from './$types';
 
   export let data: PageData;
@@ -19,9 +20,10 @@
   $: displayUI = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
 
   function onSceneError(error: Error) {
-    console.error(error);
-    displayScene = false;
-    displayUI = true;
+    processError(error, () => {
+      displayScene = false;
+      displayUI = true;
+    });
   }
 
   function onSceneLoad(loading: Record<string, ILoad>) {
