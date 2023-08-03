@@ -48,7 +48,7 @@
     0xdd5202
   ];
 
-  onMount(async () => {
+  onMount(() => {
     main = document.querySelector('main') as HTMLElement;
     rect = main.getBoundingClientRect();
 

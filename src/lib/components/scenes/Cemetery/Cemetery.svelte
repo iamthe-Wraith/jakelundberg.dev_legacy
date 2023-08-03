@@ -49,7 +49,7 @@
   const wispsCount = 4;
   const wisps: IWisp[] = [];
 
-  onMount(async () => {
+  onMount(() => {
     main = document.querySelector('main') as HTMLElement;
     rect = main.getBoundingClientRect();
 

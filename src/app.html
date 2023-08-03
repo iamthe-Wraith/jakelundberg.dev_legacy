@@ -10,8 +10,8 @@
         default-src 'self' 'unsafe-inline';
         style-src 'self' 'unsafe-inline'; 
         font-src 'self'; 
-        connect-src http://localhost:5173/ ws://localhost:5173/ https://api.unisvg.com/ https://api.iconify.design/ *.sentry.io blob:; 
-        img-src http://localhost:5173/ https://res.cloudinary.com/dxpwpno1e/image/ blob:; 
+        connect-src http://localhost:5173/ ws://localhost:5173/ http://192.168.1.110:5173 ws://192.168.1.110:5173 https://api.unisvg.com/ https://api.iconify.design/ *.sentry.io blob:; 
+        img-src http://localhost:5173/ http://192.168.1.110:5173 https://res.cloudinary.com/dxpwpno1e/image/ blob:; 
         child-src blob:; 
         worker-src blob:;"
     >
