@@ -1,4 +1,4 @@
-<span>
+<span class="tag">
   <slot />
 </span>
 

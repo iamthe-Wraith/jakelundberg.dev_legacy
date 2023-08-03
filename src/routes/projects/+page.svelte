@@ -170,7 +170,7 @@
     <div class="ui-main">
       <div class="left-col">
         <div class="welcome-mobile">
-          <CemetaryWelcome />
+          <CemetaryWelcome className="mobile-cemetery-welcome" />
         </div>
 
         <div class="projects">
@@ -221,6 +221,7 @@
 
                 {#if !project.viewDetails}
                   <Button
+                    className='view-details-btn'
                     kind="primary"
                     size="small"
                     on:click={() => project.viewDetails = true}
@@ -291,7 +292,7 @@
             in:fly={{ delay: projectTransitionDelay, duration: projectTransitionDuration, x: 0, y: -100, opacity: 0, easing: quintOut }}
             out:fade={{duration: projectTransitionDelay}}
           >
-            <CemetaryWelcome />
+            <CemetaryWelcome className="desktop-cemetery-welcome" />
           </div>
         {/if}
       </div>

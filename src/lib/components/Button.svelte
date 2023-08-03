@@ -1,11 +1,12 @@
 <script lang="ts">
   export let kind: 'primary' | 'secondary' | 'neutral' = 'primary';
   export let size: 'small' | 'large' = 'large'
+  export let className: string;
 </script>
 
 <button
   on:click
-  class={`${kind} ${size}`}
+  class={`${kind} ${size} ${className}`}
 >
   <slot />
 </button>
