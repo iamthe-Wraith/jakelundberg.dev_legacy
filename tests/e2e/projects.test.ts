@@ -94,11 +94,14 @@ test.describe('projects', () => {
     const projects = await ui.locator('.project').all();
     await expect(projects.length).toBeGreaterThan(0);
 
-    await Promise.all(projects.map(async (project) => {
-      project.scrollIntoViewIfNeeded();
+    for (let i = 0; i < projects.length; i++) {
+      const project = projects[i];
+
+      await project.scrollIntoViewIfNeeded();
 
       if (isMobile) {
-        await expect(project).toHaveClass('.mobile-project');
+        await expect(project).toHaveClass(/mobile-project/);
+        await project.scrollIntoViewIfNeeded();
 
         await expect(project.locator('button.project-title')).not.toBeVisible();
         await expect(project.locator('h2.mobile-header')).toBeVisible();
@@ -107,19 +110,19 @@ test.describe('projects', () => {
         await expect(tags.length).toBeGreaterThan(0);
 
         const links = await project.locator('.links a').all();
-        expect(links.length).toBeGreaterThan(0);
+        await expect(links.length).toBeGreaterThan(0);
 
         const viewDetailsButton = project.locator('button.view-details-btn');
         await expect(viewDetailsButton).toBeVisible();
         await expect(viewDetailsButton).toHaveText('View Details');
 
         let details = project.locator('.desc.mobile-desc');
-        expect(details).not.toBeVisible();
+        await expect(details).not.toBeVisible();
 
-        viewDetailsButton.click();
+        await viewDetailsButton.click();
 
         details = project.locator('.desc.mobile-desc');
-        expect(details).toBeVisible();
+        await expect(details).toBeVisible();
       } else {
         const header = project.locator('button.project-title');
         await expect(header).toBeVisible();
@@ -127,20 +130,24 @@ test.describe('projects', () => {
 
         let tags = await project.locator('.tags .tag').all();
         await expect(tags.length).toBeGreaterThan(0);
-        await Promise.all(tags.map(async (tag) => {
+
+        for (let i = 0; i < tags.length; i++) {
+          const tag = tags[i];
           await expect(tag).not.toBeVisible();
-        }));
+        }
 
         let details = project.locator('.desc');
-        expect(details).not.toBeVisible();
+        await expect(details).not.toBeVisible();
 
         let links = await project.locator('.links a').all();
         await expect(links.length).toBeGreaterThan(0);
-        await Promise.all(links.map(async (link) => {
-          await expect(link).not.toBeVisible();
-        }));
 
-        header.click();
+        for (let i = 0; i < links.length; i++) {
+          const link = links[i];
+          await expect(link).not.toBeVisible();
+        }
+
+        await header.click();
 
         const desktopProject = page.locator('.details .project');
         await desktopProject.scrollIntoViewIfNeeded();
@@ -148,21 +155,25 @@ test.describe('projects', () => {
 
         tags = await desktopProject.locator('.tags .tag').all();
         await expect(tags.length).toBeGreaterThan(0);
-        await Promise.all(tags.map(async (tag) => {
+
+        for (let i = 0; i < tags.length; i++) {
+          const tag = tags[i];
           await expect(tag).toBeVisible();
-        }));
+        }
 
         await expect(desktopProject.locator('.desc.mobile-desc')).not.toBeVisible();
 
         details = desktopProject.locator('.desc');
-        expect(details).toBeVisible();
+        await expect(details).toBeVisible();
 
         links = await desktopProject.locator('.links a').all();
-        expect(links.length).toBeGreaterThan(0);
-        await Promise.all(links.map(async (link) => {
+        await expect(links.length).toBeGreaterThan(0);
+
+        for (let i = 0; i < links.length; i++) {
+          const link = links[i];
           await expect(link).toBeVisible();
-        }));
-      }
-    }));
+        }
+      }      
+    }
   });
 });
