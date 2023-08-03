@@ -2,7 +2,8 @@ export interface IProject {
   id: string;
   title: string;
   urls: IProjectUrls;
-  desc: string;
+  desc: string[];
+  tags?: string[];
 }
 
 export interface IProjectUrls {

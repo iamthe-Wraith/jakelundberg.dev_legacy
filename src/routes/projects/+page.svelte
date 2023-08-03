@@ -43,7 +43,7 @@
 
     // hack to get around timing issue of seps being rendered
     if (!seps.length && count < 10) {
-      setTimeout(() => drawRoughSeps(count + 1), 1000);
+      setTimeout(() => drawRoughSeps(count + 1), 100);
       return;
     }
 
@@ -165,7 +165,7 @@
       display: flex;
       justify-content: flex-start;
       align-items: flex-start;
-      max-width: 400px;
+      max-width: 320px;
     }
   }
 
