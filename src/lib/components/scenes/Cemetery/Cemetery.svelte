@@ -37,7 +37,7 @@
   let rect: DOMRect;
 
   let scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x111111, 10, 39);
+  scene.fog = new THREE.Fog(0x131316, 10, 39);
 
   let renderer: THREE.WebGLRenderer;
   let camera: THREE.PerspectiveCamera;
@@ -258,6 +258,24 @@
                   m.castShadow = true;
                   m.receiveShadow = true;
                 }
+            }
+
+            const l = child as THREE.Light;
+
+            if (l.isLight || (l.parent as THREE.Light)?.isLight) {
+              console.log('light found: ', l);
+
+              if (l.name === 'moon') {
+                const moon = child as THREE.DirectionalLight;
+
+                moon.intensity = window.innerWidth < 768 ? 0.05 : 0.01;
+                moon.castShadow = true;
+                moon.shadow!.bias = -.001;
+                moon.shadow!.mapSize.width = 2048;
+                moon.shadow!.mapSize.height = 2048;
+              }
+              
+              if (l.name === 'torch') l.visible = false;
             }
           });
 
