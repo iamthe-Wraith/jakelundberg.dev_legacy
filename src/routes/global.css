@@ -1,17 +1,62 @@
 @font-face {
-  font-family: "OpenSans";
-  src: url('/fonts/OpenSans.ttf') format('truetype');
+  font-family: "Merriweather";
+  src: url('/fonts/MerriweatherSans.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "OpenSans";
-  src: url('/fonts/OpenSans-Italic.ttf') format('truetype');
+  font-family: "Merriweather";
+  src: url('/fonts/MerriweatherSans-Italic.ttf') format('truetype');
   font-style: italic;
 }
 
 @font-face {
-  font-family: "SpookyMagic";
-  src: url('/fonts/SpookyMagic.ttf') format('truetype');
+  font-family: "Lato";
+  src: url('/fonts/Lato-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url('/fonts/Lato-Bold.ttf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url('/fonts/Lato-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url('/fonts/Lato-Italic.ttf') format('truetype');
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url('/fonts/Lato-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url('/fonts/Lato-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url('/fonts/Lato-Thin.ttf') format('truetype');
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url('/fonts/Lato-ThinItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
 }
 
 body {
@@ -29,8 +74,8 @@ body {
   /* when this changes, be sure to update /lib/constants/colors as well */
   --secondary-500: oklch(80% 0.18 80.47);
 
-  --font-primary: SpookyMagic;
-  --font-secondary: OpenSans;
+  --font-primary: Lato, sans-serif;
+  --font-secondary: Merriweather, sans-serif;
 
   margin: 0;
   padding: 0;
