@@ -258,17 +258,21 @@
                     if (candle.name.includes('mobile-candle')) {
                       candle.visible = true;
                       candle.castShadow = true;
+                      candle.receiveShadow = true;
                     } else {
                       candle.visible = false;
                       candle.castShadow = false;
+                      candle.receiveShadow = false;
                     }
                   } else {
                     if (candle.name.includes('desktop-candle')) {
                       candle.visible = true;
                       candle.castShadow = true;
+                      candle.receiveShadow = true;
                     } else {
                       candle.visible = false;
                       candle.castShadow = false;
+                      candle.receiveShadow = false;
                     }
                   }
                 }
@@ -276,10 +280,6 @@
                 m.geometry.computeVertexNormals();
                 m.receiveShadow = true;
               } else {
-                if (m.name.includes('candle')) {
-                  console.log('some candle thing is slipping through the cracks', m);
-                }
-
                 m.geometry.computeVertexNormals();
                 m.castShadow = true;
                 m.receiveShadow = true;
