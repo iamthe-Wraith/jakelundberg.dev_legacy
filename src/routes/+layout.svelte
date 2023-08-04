@@ -24,6 +24,20 @@
         worker-src blob:;"
     >
   {/if}
+
+  {#if PUBLIC_APP_ENV === 'test'}
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline';
+        font-src 'self'; 
+        connect-src http://localhost:5173 ws://localhost:5173 https://api.unisvg.com/ https://api.iconify.design/ *.sentry.io blob:; 
+        img-src http://localhost:5173 https://res.cloudinary.com/dxpwpno1e/image/ blob:; 
+        child-src blob:; 
+        worker-src blob:;"
+    >
+  {/if}
 </svelte:head>
 
 <header>
