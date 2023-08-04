@@ -1,5 +1,6 @@
 <script lang="ts">
   import './global.css';
+  import { PUBLIC_APP_ENV } from '$env/static/public';
   import Nav from '$components/Nav/Nav.svelte';
   import type { LayoutData } from './$types';
   import { setContext } from 'svelte';
@@ -8,6 +9,36 @@
 
   $: if (data?.quotes) setContext('quotes', data.quotes);
 </script>
+
+<svelte:head>
+  {#if PUBLIC_APP_ENV === 'production'}
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline';
+        font-src 'self'; 
+        connect-src http://jakelundberg.dev ws://jakelundberg.dev https://api.unisvg.com/ https://api.iconify.design/ *.sentry.io blob:; 
+        img-src http://jakelundberg.dev https://res.cloudinary.com/dxpwpno1e/image/ blob:; 
+        child-src blob:; 
+        worker-src blob:;"
+    >
+  {/if}
+
+  {#if PUBLIC_APP_ENV === 'test'}
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline';
+        font-src 'self'; 
+        connect-src http://localhost:5173 ws://localhost:5173 https://api.unisvg.com/ https://api.iconify.design/ *.sentry.io blob:; 
+        img-src http://localhost:5173 https://res.cloudinary.com/dxpwpno1e/image/ blob:; 
+        child-src blob:; 
+        worker-src blob:;"
+    >
+  {/if}
+</svelte:head>
 
 <header>
   <div />

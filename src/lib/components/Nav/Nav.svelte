@@ -6,6 +6,8 @@
   import Icon from '@iconify/svelte';
   import rough from 'roughjs';
   import { navItems as ni, type INavItem } from './nav-config';
+	import { secondaryColor } from '$lib/constants/colors';
+	import { removeChildren } from '$lib/utils/dom';
 
   let navItems = [...ni];
   let mounted = false;
@@ -46,7 +48,7 @@
     const roughSvg = rough.svg(svg);
 
     const options = {
-      stroke: 'oklch(80% 0.18 80.47)',
+      stroke: secondaryColor,
       strokeWidth: 2,
       roughness: 1.5,
     }
@@ -65,7 +67,7 @@
     removeChildren(svg);
     const roughSvg = rough.svg(svg);
     const circle = roughSvg.circle(25, 25, 40, {
-      stroke: 'oklch(80% 0.18 80.47)',
+      stroke: secondaryColor,
       strokeWidth: 2,
       roughness: 1.5,
     });
@@ -80,7 +82,7 @@
     const roughSvg = rough.svg(svg);
 
     const line = roughSvg.line(0, (rect.height / 2), rect.width, (rect.height / 2), {
-      stroke: 'oklch(80% 0.18 80.47)',
+      stroke: secondaryColor,
       strokeWidth: 2,
       roughness: 1.5,
     });
@@ -111,12 +113,6 @@
         drawEngageableSvg(navItem.name);
         drawLabelTextLine(navItem.name);
       });
-    }
-  }
-
-  function removeChildren(el: SVGSVGElement) {
-    while (el.firstChild) {
-      el.removeChild(el.firstChild);
     }
   }
 </script>

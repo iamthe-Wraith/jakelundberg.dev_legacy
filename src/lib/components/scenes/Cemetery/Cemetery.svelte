@@ -6,7 +6,7 @@
   import Stats from 'three/examples/jsm/libs/stats.module';
   import { PUBLIC_APP_ENV } from '$env/static/public';
   import { assets } from '$app/paths';
-  import type { ILoad } from './types';
+  import type { ILoad } from '../types';
 
   interface IWisp {
     mesh: THREE.Mesh;
@@ -49,7 +49,7 @@
   const wispsCount = 4;
   const wisps: IWisp[] = [];
 
-  onMount(async () => {
+  onMount(() => {
     main = document.querySelector('main') as HTMLElement;
     rect = main.getBoundingClientRect();
 
