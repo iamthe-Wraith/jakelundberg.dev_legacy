@@ -423,6 +423,7 @@
           right: 0;
           transform: translateX(0%);
           opacity: 1;
+          transition: 0.25s ease-in-out;
         }
       }
 
@@ -517,9 +518,11 @@
       height: 14px;
       opacity: 1;
       transform: translateX(-50%);
+      transition: 0.25s ease-in-out;
 
       @media (min-width: 768px) {
         opacity: 0;
+        transition: 0.25s ease-in-out;
       }
     }
 
