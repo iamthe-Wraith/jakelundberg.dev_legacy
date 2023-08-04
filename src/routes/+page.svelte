@@ -49,8 +49,8 @@
     <div class="ui-main">
       <div class="greeting">
         <h1><span>Hi, I'm</span>Jake Lundberg<span>.</span></h1>
-        <p class="sub-header header-font">I build solutions on the web.</p>
-        <p>I'm a software engineer with an uncommon passion for what I do. There are few things that bring me as much joy as digging into complex problems to find elegant solutions, or brainstorming with smart people to find the idea that will make someone's life better.</p>
+        <p class="subheader header-font">I build solutions on the web.</p>
+        <p class="intro-text">I'm a software engineer with an uncommon passion for what I do. There are few things that bring me as much joy as digging into complex problems to find elegant solutions, or brainstorming with smart people to find the idea that will make someone's life better.</p>
       </div>
     </div>
   </UILayer>
@@ -99,7 +99,7 @@
       }
     }
 
-    .sub-header {
+    .subheader {
       margin: 1rem 0;
       font-size: 1.5rem;
     }

@@ -91,7 +91,15 @@ test.describe('homepage', () => {
     await expect(ui).toHaveCSS('position', 'relative');
     await expect(ui).toHaveCSS('z-index', '10');
 
-    const header = ui.getByRole('heading', { name: 'Lorem ipsum dolor sit amet.' });
+    const header = ui.getByRole('heading', { name: 'Hi, I\'m Jake Lundberg.' });
     await expect(header).toBeVisible();
+
+    const subheader = ui.locator('.subheader');
+    await expect(subheader).toBeVisible();
+    await expect(subheader).toHaveText('I build solutions on the web.');
+
+    const introText = ui.locator('.intro-text');
+    await expect(introText).toBeVisible();
+    await expect(introText).not.toBeEmpty();
   });
 });
