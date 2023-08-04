@@ -4,10 +4,10 @@
 </script>
 
 <div class="welcome {className}" data-testid={testid}>
-  <h1>Welcome to My <span>Project Cemetery</span></h1>
+  <h1>I see you found my <span>Project Cemetery</span></h1>
   <div class="cemetery-intro" data-testid={`${testid}-intro`}>
-    <p>Not all proje<span>ct</span>s make it to p<span>r</span>oduction, sad<span>l</span>y. When they aren't A<span>+</span> work, I bury them here. Just in <span>c</span>ase I ever fee<span>l</span> the need to d<span>i</span>g them up again.</p>
-    <p>You're welcome to wander the grounds, but mind the Wisps...they <span>c</span>an be a bit fic<span>k</span>le.</p>
+    <p>Be<span>c</span>ause I love learning and <span>tr</span>ying new things, I'm a<span>l</span>ways working on something. Many of those projects end up buried here. That way I always know where they are if I ever need to dig them up again.</p>
+    <p>Of <span>c</span>ourse you're we<span>l</span>come to wander the grounds, but m<span>i</span>nd the Wisps...they <span>c</span>an be a bit fic<span>k</span>le.</p>
   </div>
 </div>
 
