@@ -37,7 +37,6 @@
   let rect: DOMRect;
 
   let scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x111111, 10, 39);
 
   let renderer: THREE.WebGLRenderer;
   let camera: THREE.PerspectiveCamera;
@@ -46,10 +45,12 @@
 
   let mouse = new THREE.Vector2();
 
-  const wispsCount = 4;
+  const wispsCount = 3;
   const wisps: IWisp[] = [];
 
   onMount(() => {
+    scene.fog = new THREE.Fog(0x131316, 10, window.innerWidth < 768 ? 45 : 39);
+
     main = document.querySelector('main') as HTMLElement;
     rect = main.getBoundingClientRect();
 
@@ -184,7 +185,7 @@
   }
 
   function initWisps() {
-    const wispColor = 0xbfbd54
+    const wispColor = 0x04cee0;
     const size = 3 + Math.random() * 7;
     const wispGeo = new THREE.SphereGeometry(0.1, size, size);
     const wispMaterial = new THREE.MeshStandardMaterial({
@@ -248,18 +249,95 @@
             if (m.isMesh) {
               const m = child as THREE.Mesh;
 
-              switch (m.name) {
-                case 'ground':
-                  m.geometry.computeVertexNormals();
-                  m.receiveShadow = true;
-                  break
-                default:
-                  m.geometry.computeVertexNormals();
-                  m.castShadow = true;
-                  m.receiveShadow = true;
+              // if (m.name.includes('mobile-candle') || m.name.includes('desktop-candle')) {
+              if (m.name.includes('candle')) {
+                if (m.name === 'candle-flame' && (m.parent?.name?.includes?.('mobile-candle') || m.parent?.name?.includes?.('desktop-candle'))) {
+                  const candle = m.parent as THREE.Mesh;
+
+                  if (window.innerWidth < 768) {
+                    if (candle.name.includes('mobile-candle')) {
+                      candle.visible = true;
+                      candle.castShadow = true;
+                      candle.receiveShadow = true;
+                    } else {
+                      candle.visible = false;
+                      candle.castShadow = false;
+                      candle.receiveShadow = false;
+                    }
+                  } else {
+                    if (candle.name.includes('desktop-candle')) {
+                      candle.visible = true;
+                      candle.castShadow = true;
+                      candle.receiveShadow = true;
+                    } else {
+                      candle.visible = false;
+                      candle.castShadow = false;
+                      candle.receiveShadow = false;
+                    }
+                  }
                 }
+              } else if (m.name === 'ground') {
+                m.geometry.computeVertexNormals();
+                m.receiveShadow = true;
+              } else {
+                m.geometry.computeVertexNormals();
+                m.castShadow = true;
+                m.receiveShadow = true;
+              }
+            }
+
+            const l = child as THREE.Light;
+
+            if (l.isLight || (l.parent as THREE.Light)?.isLight) {
+              if (l.name === 'moon') {
+                const moon = child as THREE.DirectionalLight;
+
+                moon.intensity = window.innerWidth < 768 ? 0.075 : 0.05;
+                moon.castShadow = true;
+                moon.shadow!.bias = -.001;
+                moon.shadow!.mapSize.width = 2048;
+                moon.shadow!.mapSize.height = 2048;
+              }
+              
+              if (l.name.includes('candle')) {
+                const candlelight = l as THREE.PointLight;
+
+                if (candlelight.name === 'candlelight') {
+                  candlelight.visible = false;
+                } else {
+                  if (window.innerWidth < 768) {
+                    if (candlelight.parent?.name.includes('mobile-candle')) {
+                      candlelight.intensity = 0.5;
+                      candlelight.distance = 3;
+                      candlelight.castShadow = true;
+                      candlelight.shadow!.bias = -.001;
+                      candlelight.shadow!.mapSize.width = 2048;
+                      candlelight.shadow!.mapSize.height = 2048;
+                      candlelight.shadow.camera.near = 0.5;
+                      candlelight.shadow.camera.far = 1000;
+                    } else {
+                      candlelight.visible = false;
+                    }
+                  } else {
+                    if (candlelight.parent?.name.includes('desktop-candle')) {
+                      candlelight.intensity = 0.5;
+                      candlelight.distance = 3;
+                      candlelight.castShadow = true;
+                      candlelight.shadow!.bias = -.001;
+                      candlelight.shadow!.mapSize.width = 2048;
+                      candlelight.shadow!.mapSize.height = 2048;
+                      candlelight.shadow.camera.near = 0.5;
+                      candlelight.shadow.camera.far = 1000;
+                    } else {
+                      candlelight.visible = false;
+                    }
+                  }
+                }
+              }
             }
           });
+
+          // setCandles();
 
           scene.add(gltf.scene);
 

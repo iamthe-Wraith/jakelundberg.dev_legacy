@@ -129,8 +129,14 @@
     if (!torchLight || !flames.length) return;
 
     if (Math.random() > 0.85 || torchLight.intensity > 0.45) {
-      const intensity = 0.3 + (Math.random() * 0.15);
+      const intensity = 0.4 + (Math.random() * 0.25);
       torchLight.intensity = intensity;
+
+      torchLight.position.set(
+        Math.random() / 2,
+        Math.random() / 2 + 1,
+        Math.random() / 2
+      );
     }
 
     for (let i = 0; i < flames.length; i++) {
@@ -225,7 +231,7 @@
               if (l.name === 'moon') {
                 const moon = child as THREE.DirectionalLight;
 
-                moon.intensity = 0.3;
+                moon.intensity = 0.55;
                 moon.castShadow = true;
                 moon.shadow!.bias = -.001;
                 moon.shadow!.mapSize.width = 2048;
