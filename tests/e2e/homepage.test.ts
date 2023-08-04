@@ -8,13 +8,13 @@ test.describe('homepage', () => {
     await page.goto(path);
   });
 
-  test('has navigation', async ({ page, isMobile }) => {
-    const navToggle = page.locator('.nav-toggle');
-    const navOverlay = page.locator('.nav-overlay');
-    const nav = page.locator('nav');
-    const navItemContainers = await nav.locator('.nav-item-container').all();
-
+  test('has mobile navigation', async ({ page, isMobile }) => {
     if (isMobile) {
+      const navToggle = page.locator('.nav-toggle');
+      const navOverlay = page.locator('.nav-overlay');
+      const nav = page.locator('nav');
+      const navItemContainers = await nav.locator('.nav-item-container').all();
+
       await expect(navToggle).toBeVisible();
       await expect(navOverlay).not.toBeVisible();
       await expect(nav).not.toBeVisible();
@@ -44,7 +44,16 @@ test.describe('homepage', () => {
           await expect(iconLink).toHaveClass(/active/);
         }
       }
-    } else {
+    }
+  });
+
+  test('has desktop navigation', async ({ page, isMobile }) => {
+    if (!isMobile) {
+      const navToggle = page.locator('.nav-toggle');
+      const navOverlay = page.locator('.nav-overlay');
+      const nav = page.locator('nav');
+      const navItemContainers = await nav.locator('.nav-item-container').all();
+
       await expect(navToggle).not.toBeVisible();
 
       await expect(navOverlay).toBeVisible();

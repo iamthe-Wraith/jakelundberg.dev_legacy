@@ -8,7 +8,7 @@ test.describe('projects', () => {
     await page.goto(path);
   });
 
-  test('has navigation', async ({ page, isMobile }) => {
+  test('has mobile navigation', async ({ page, isMobile }) => {
     const navToggle = page.locator('.nav-toggle');
     const navOverlay = page.locator('.nav-overlay');
     const nav = page.locator('nav');
@@ -44,7 +44,16 @@ test.describe('projects', () => {
           await expect(iconLink).toHaveClass(/active/);
         }
       }
-    } else {
+    }
+  });
+
+  test('has desktop navigation', async ({ page, isMobile }) => {
+    const navToggle = page.locator('.nav-toggle');
+    const navOverlay = page.locator('.nav-overlay');
+    const nav = page.locator('nav');
+    const navItemContainers = await nav.locator('.nav-item-container').all();
+
+    if (!isMobile) {
       await expect(navToggle).not.toBeVisible();
 
       await expect(navOverlay).toBeVisible();
@@ -84,7 +93,7 @@ test.describe('projects', () => {
       const header = ui.getByRole('heading', { name: 'Welcome to My Project Cemetery' });
       await expect(header).toBeVisible();
 
-      const intro = page.locator('.mobile-cemetery-welcome .cemetery-intro');
+      const intro = page.getByTestId('mobile-cemetery-welcome');
       await expect(intro).toBeVisible();
     }
   });
@@ -99,7 +108,7 @@ test.describe('projects', () => {
       const header = ui.getByRole('heading', { name: 'Welcome to My Project Cemetery' });
       await expect(header).toBeVisible();
 
-      const intro = page.locator('.desktop-cemetery-welcome .cemetery-intro');
+      const intro = page.getByTestId('desktop-cemetery-welcome');
       await expect(intro).toBeVisible();
     }
   });

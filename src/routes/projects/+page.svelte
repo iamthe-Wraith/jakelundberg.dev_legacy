@@ -170,7 +170,10 @@
     <div class="ui-main">
       <div class="left-col">
         <div class="welcome-mobile">
-          <CemetaryWelcome className="mobile-cemetery-welcome" />
+          <CemetaryWelcome
+            className="mobile-cemetery-welcome"
+            testid="mobile-cemetery-welcome"
+          />
         </div>
 
         <div class="projects">
@@ -292,7 +295,10 @@
             in:fly={{ delay: projectTransitionDelay, duration: projectTransitionDuration, x: 0, y: -100, opacity: 0, easing: quintOut }}
             out:fade={{duration: projectTransitionDelay}}
           >
-            <CemetaryWelcome className="desktop-cemetery-welcome" />
+            <CemetaryWelcome
+              className="desktop-cemetery-welcome"
+              testid="desktop-cemetery-welcome"
+            />
           </div>
         {/if}
       </div>
