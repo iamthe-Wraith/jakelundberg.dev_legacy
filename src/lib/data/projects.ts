@@ -11,7 +11,7 @@ export const projects: IProject[] = [
     desc: `
       <p>This site!</p>
     
-      <p>I wanted to have my own portfolio site where I could have a single place to share the things I'm working on, my experiences, and have a little fun along the way (have you found any hidden codes yet?).</p>
+      <p>I wanted to have my own portfolio site where I could have a single place to share the things I'm working on, my experiences, and have a little fun along the way (have you found any hidden keys yet?).</p>
     
       <p>I chose SvelteKit because I already knew my site wouldn't require a high degree of interaction, but I knew I needed speed and performance. When working in 3d, there is already a lot more to deal with, both in code as well as in asset file sizes, so I wanted to keep my bundle sizes as small as possible, which is an area that SvelteKit shines.</p>`,
     tags: ['sveltekit', 'typescript', 'threejs', 'blender'],
