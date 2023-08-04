@@ -49,7 +49,7 @@
     <div class="ui-main">
       <div class="greeting">
         <h1><span>Hi, I'm</span>Jake Lundberg<span>.</span></h1>
-        <p class="subheader header-font">I build solutions on the web.</p>
+        <p class="subheader header-font">I build stuff for the web.</p>
         <p class="intro-text">I'm a software engineer with an uncommon passion for what I do. There are few things that bring me as much joy as digging into complex problems to find elegant solutions, or brainstorming with smart people to find the idea that will make someone's life better.</p>
       </div>
     </div>
@@ -70,15 +70,17 @@
   }
 
   .greeting {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     width: 90vw;
     max-width: 45rem;
-    padding: 4rem 2rem 2rem;
-    border-radius: 1rem;
-    background-color: oklch(0% 0 0 / 0.5);
+    padding: 3rem 2rem 2rem;
+    border: 1px solid var(--dark-500);
+    border-radius: 0.75rem;
+    background-color: oklch(0% 0 0 / 0.75);
 
     h1 {
       position: relative;
@@ -100,12 +102,15 @@
     }
 
     .subheader {
-      margin: 1rem 0;
-      font-size: 1.5rem;
+      margin: 1rem 0 1.5rem;
+      font-size: 1.3rem;
+      text-indent: 0;
     }
 
     @media (min-width: 768px) {
+      align-items: center;
       width: 50vw;
+      background-color: oklch(0% 0 0 / 0.65);
     }
   }
 </style>
