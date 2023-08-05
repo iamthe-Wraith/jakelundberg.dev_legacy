@@ -90,7 +90,7 @@ test.describe('projects', () => {
       await expect(ui).toHaveCSS('position', 'relative');
       await expect(ui).toHaveCSS('z-index', '10');
 
-      const header = ui.getByRole('heading', { name: 'I see you found my Project Cemetery' });
+      const header = ui.getByRole('heading', { name: 'I see you found my Project Cemetery.' });
       await expect(header).toBeVisible();
 
       const intro = page.getByTestId('mobile-cemetery-welcome');
@@ -105,7 +105,7 @@ test.describe('projects', () => {
       await expect(ui).toHaveCSS('position', 'relative');
       await expect(ui).toHaveCSS('z-index', '10');
 
-      const header = ui.getByRole('heading', { name: 'I see you found my Project Cemetery' });
+      const header = ui.getByRole('heading', { name: 'I see you found my Project Cemetery.' });
       await expect(header).toBeVisible();
 
       const intro = page.getByTestId('desktop-cemetery-welcome');
