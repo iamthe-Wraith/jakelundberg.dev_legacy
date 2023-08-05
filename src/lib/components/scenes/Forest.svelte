@@ -43,6 +43,8 @@
   let torch: THREE.Mesh;
   let torchLight: THREE.PointLight;
   let flames: IFlame[] = [];
+  let torchLightCurrent = 0; // used to control the torch light flicker. when it is >= the interval, the light will flicker
+  const interval = 80 / 1000; // controls the torch light flicker speed. large number = slower flicker
   const flameCount = 50;
   const flameColors = [
     0xefc909,
@@ -130,15 +132,17 @@
   function animateTorch() {
     if (!torchLight || !flames.length) return;
     delta = clock.getDelta();
+    torchLightCurrent += delta;
 
-    if (Math.random() > 0.85 || torchLight.intensity > 0.45) {
+    if (torchLightCurrent > interval && (Math.random() > 0.85 || torchLight.intensity > 0.45)) {
+      torchLightCurrent = 0;
       const intensity = 0.4 + (Math.random() * 0.25);
       torchLight.intensity = intensity;
 
       torchLight.position.set(
-        Math.random() / 2,
-        Math.random() / 2 + 1,
-        Math.random() / 2
+        Math.random() / 4,
+        Math.random() / 4 + 1,
+        Math.random() / 4
       );
     }
 
