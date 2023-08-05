@@ -83,7 +83,7 @@ test.describe('homepage', () => {
     }
   });
 
-  test('has expected elements', async ({ page }) => {
+  test('has intro header and text', async ({ page }) => {
     page.locator('.loading');
 
     const ui = page.locator('.ui-layer');
@@ -96,7 +96,7 @@ test.describe('homepage', () => {
 
     const subheader = ui.locator('.subheader');
     await expect(subheader).toBeVisible();
-    await expect(subheader).toHaveText('I build solutions on the web.');
+    await expect(subheader).toHaveText('I build stuff for the web.');
 
     const introText = ui.locator('.intro-text');
     await expect(introText).toBeVisible();
