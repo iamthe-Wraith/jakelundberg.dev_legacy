@@ -17,6 +17,7 @@
   export let onLoad: (data: Record<string, ILoad>) => void = ({}) => {};
   export let onError: (error: Error) => void = () => {};
 
+  const clock = new THREE.Clock();
   const isDevelopment = PUBLIC_APP_ENV === 'development';
   const canvasId = 'forest';
   const viewabilityThreshold = 3;
@@ -29,6 +30,7 @@
 
   let main: HTMLElement;
   let rect: DOMRect;
+  let delta = 0;
 
   let scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0x030303, 10, 35);
@@ -41,7 +43,9 @@
   let torch: THREE.Mesh;
   let torchLight: THREE.PointLight;
   let flames: IFlame[] = [];
-  const flameCount = 30;
+  let torchLightCurrent = 0; // used to control the torch light flicker. when it is >= the interval, the light will flicker
+  const interval = 80 / 1000; // controls the torch light flicker speed. large number = slower flicker
+  const flameCount = 50;
   const flameColors = [
     0xefc909,
     0xdd6802,
@@ -127,15 +131,18 @@
 
   function animateTorch() {
     if (!torchLight || !flames.length) return;
+    delta = clock.getDelta();
+    torchLightCurrent += delta;
 
-    if (Math.random() > 0.85 || torchLight.intensity > 0.45) {
+    if (torchLightCurrent > interval && (Math.random() > 0.85 || torchLight.intensity > 0.45)) {
+      torchLightCurrent = 0;
       const intensity = 0.4 + (Math.random() * 0.25);
       torchLight.intensity = intensity;
 
       torchLight.position.set(
-        Math.random() / 2,
-        Math.random() / 2 + 1,
-        Math.random() / 2
+        Math.random() / 4,
+        Math.random() / 4 + 1,
+        Math.random() / 4
       );
     }
 
@@ -148,10 +155,10 @@
         flames[i] = f;
       }
 
-      flame.duration += 1;
+      flame.duration += delta;
       (flame.mesh.material as THREE.Material).opacity = 1 - (flame.duration / flame.lifespan);
 
-      const scaleDegradation = 0.97;
+      const scaleDegradation = 1 - delta;
       flame.mesh.geometry.scale(
         scaleDegradation,
         scaleDegradation,
@@ -159,9 +166,9 @@
       );
 
       flame.mesh.position.set(
-        flame.mesh.position.x + ((flame.duration / flame.lifespan) * 0.05),
-        flame.mesh.position.y + flame.speed,
-        flame.mesh.position.z + ((flame.duration / flame.lifespan) * 0.05),
+        flame.mesh.position.x + (((flame.duration / flame.lifespan) * 2) * delta),
+        flame.mesh.position.y + (flame.speed * delta),
+        flame.mesh.position.z + (((flame.duration / flame.lifespan) * 2) * delta),
       );
     }
   }
@@ -190,14 +197,14 @@
 
     mesh.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 7.5);
 
-    const scale = Math.random() * 0.55;
+    const scale = Math.random() * 0.50;
     mesh.geometry.scale(scale, scale, scale);
 
     return {
       mesh,
-      speed: 0.04 + (Math.random() * 0.01),
+      speed: 2 * Math.random() + 0.8,
       duration: 0,
-      lifespan: Math.random() * 25,
+      lifespan: Math.random() * 0.5,
     }
   };
 
