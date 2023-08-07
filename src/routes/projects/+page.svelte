@@ -522,7 +522,6 @@
 
       @media (min-width: 768px) {
         opacity: 0;
-        transition: 0.25s ease-in-out;
       }
     }
 
