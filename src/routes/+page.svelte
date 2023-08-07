@@ -48,9 +48,23 @@
   <UILayer>
     <div class="ui-main">
       <div class="greeting">
-        <h1><span>Hi, I'm</span>Jake Lundberg<span>.</span></h1>
-        <p class="subheader header-font">I build stuff for the web.</p>
-        <p class="intro-text">I'm a software engineer with an uncommon passion for what I do. There are few things that bring me as much joy as digging into complex problems to find elegant solutions, or brainstorming with smart people to find the idea that will make someone's life better.</p>
+        <div class="greeting-content">
+          <h1><span>Hi, I'm</span>Jake Lundberg<span>.</span></h1>
+          <p class="subheader header-font">I build stuff for the web.</p>
+          <p class="intro-text">I'm a software engineer with an uncommon passion for what I do. There are few things that bring me as much joy as digging into complex problems to find elegant solutions, or brainstorming with smart people to find the idea that will make someone's life better.</p>
+        </div>
+      </div>
+
+      <div>
+        something else...
+      </div>
+
+      <div>
+        something else...
+      </div>
+
+      <div>
+        something else...
       </div>
     </div>
   </UILayer>
@@ -60,27 +74,35 @@
 
 <style lang="scss">
   .ui-main {
+    width: 100%;
+    height: 100%;
+  }
+
+  .greeting {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     width: 100%;
     height: 100%;
-    align-items: center;
-  }
 
-  .greeting {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    width: 90vw;
-    max-width: 45rem;
-    padding: 3rem 2rem 2rem;
-    border: 1px solid var(--dark-500);
-    border-radius: 0.75rem;
-    background-color: oklch(0% 0 0 / 0.75);
+    .greeting-content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 40rem;
+      padding: 2.5rem 2rem 2rem;
+      background: oklch(0% 0 0 / 0.5);
+      border: 3px solid var(--dark-500);
+      border-top-left-radius: 255px 15px;
+      border-top-right-radius: 18px 230px;
+      border-bottom-right-radius: 230px 14px;
+      border-bottom-left-radius:18px 255px;
+    }
 
     h1 {
       position: relative;
@@ -95,22 +117,16 @@
         &:first-child {
           position: absolute;
           bottom: 100%;
-          left: 0;
+          left: 1.5rem;
           font-size: 1.2rem;
         }
       }
     }
 
     .subheader {
-      margin: 1rem 0 1.5rem;
+      margin: 0.75rem 0 1.25rem;
       font-size: 1.3rem;
       text-indent: 0;
-    }
-
-    @media (min-width: 768px) {
-      align-items: center;
-      width: 50vw;
-      background-color: oklch(0% 0 0 / 0.65);
     }
   }
 </style>
