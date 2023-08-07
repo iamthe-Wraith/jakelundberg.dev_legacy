@@ -102,4 +102,36 @@ test.describe('homepage', () => {
     await expect(introText).toBeVisible();
     await expect(introText).not.toBeEmpty();
   });
+
+  test('has blog posts', async ({ page }) => {
+    const container = page.locator('.blog-posts-section');
+    await expect(container).toBeVisible();
+
+    const header = container.locator('h2');
+    await expect(header).toBeVisible();
+
+    const blogPosts = await container.locator('.blog-post').all();
+    await expect(blogPosts).toHaveLength(3);
+
+    for (let i = 0; i < blogPosts.length; i++) {
+      const blogPost = blogPosts[i];
+
+      await expect(blogPost).toBeVisible();
+
+      const blogPostLink = blogPost.getByRole('link');
+      await expect(blogPostLink).toBeVisible();
+
+      const blogPostTitle = blogPostLink.getByRole('heading');
+      await expect(blogPostTitle).toBeVisible();
+      await expect(blogPostTitle).not.toBeEmpty();
+
+      const blogPostTags = blogPostLink.locator('.blog-post-tags');
+      await expect(blogPostTags).toBeVisible();
+      await expect(blogPostTags).not.toBeEmpty();
+
+      const blogPostDescription = blogPostLink.locator('.blog-post-desc');
+      await expect(blogPostDescription).toBeVisible();
+      await expect(blogPostDescription).not.toBeEmpty();
+    }
+  });
 });

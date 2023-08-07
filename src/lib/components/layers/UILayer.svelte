@@ -1,4 +1,4 @@
-<div class="layer ui-layer">
+<div class="layer ui-layer no-scrollbar">
   <slot />
 </div>
 
