@@ -148,8 +148,8 @@ h2 * {
   line-height: 2.4rem;
 
   @media (min-width: 768px) {
-    font-size: 2.6rem;
-    line-height: 3.2rem;
+    font-size: 2.4rem;
+    line-height: 3rem;
   }
 }
 
@@ -160,8 +160,8 @@ h3 * {
   line-height: 2.2rem;
 
   @media (min-width: 768px) {
-    font-size: 2.4rem;
-    line-height: 3rem;
+    font-size: 2rem;
+    line-height: 2.6rem;
   }
 }
 
@@ -172,33 +172,23 @@ h4 * {
   line-height: 2rem;
 
   @media (min-width: 768px) {
-    font-size: 2.2rem;
-    line-height: 2.8rem;
+    font-size: 1.6rem;
+    line-height: 2.2rem;
   }
 }
 
 h5,
 h5 * {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-align: center;
   line-height: 1.8rem;
-
-  @media (min-width: 768px) {
-    font-size: 2rem;
-    line-height: 2.6rem;
-  }
 }
 
 h6,
 h6 * {
-  font-size: 1rem;
+  font-size: 0.9rem;
   text-align: center;
-  line-height: 1.6rem;
-
-  @media (min-width: 768px) {
-    font-size: 1.8rem;
-    line-height: 2.4rem;
-  }
+  line-height: 1.4rem;
 }
 
 ol,
