@@ -134,4 +134,40 @@ test.describe('homepage', () => {
       await expect(blogPostDescription).not.toBeEmpty();
     }
   });
+
+  test('has recommendations', async ({ page }) => {
+    const container = page.locator('.recommendations-section');
+    await expect(container).toBeVisible();
+
+    const header = container.locator('h2');
+    await expect(header).toBeVisible();
+
+    const recommendations = await container.locator('.recommendation').all();
+    await expect(recommendations).toHaveLength(3);
+
+    for (let i = 0; i < recommendations.length; i++) {
+      const recommendation = recommendations[i];
+
+      await expect(recommendation).toBeVisible();
+
+      const header = recommendation.locator('header');
+      await expect(header).toBeVisible();
+
+      const image = header.locator('img');
+      await expect(image).toBeVisible();
+      await expect(image.getAttribute('src')).toBeDefined();
+      await expect(image.getAttribute('alt')).toBeDefined();
+
+      const author = header.locator('p');
+      await expect(author).toBeVisible();
+      await expect(author).not.toBeEmpty();
+
+      const quote = recommendation.locator('blockquote');
+      await expect(quote).toBeVisible();
+      await expect(quote).not.toBeEmpty();
+    }
+
+    const readMore = container.getByText('Read More');
+    await expect(readMore).toBeVisible();
+  });
 });
