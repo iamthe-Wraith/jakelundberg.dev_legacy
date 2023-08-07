@@ -206,7 +206,7 @@
 
     .scroll-indicator-container {
       position: absolute;
-      bottom: 4rem;
+      bottom: 1rem;
       left: 50%;
       transform: translateX(-50%);
     }
