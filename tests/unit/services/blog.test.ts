@@ -5,10 +5,6 @@ import { getBlogPosts, getRecentBlogPosts } from '$lib/services/blog';
 
 global.fetch = vi.fn();
 
-function createFetchResponse<T = any>(data: T): { json: () => Promise<T> } {
-  return { json: (): Promise<T> => new Promise((resolve) => resolve(data)) };
-}
-
 const mockBlogPosts = [
   {
     type_of: 'article',
