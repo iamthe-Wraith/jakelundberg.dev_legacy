@@ -112,7 +112,7 @@
             </HandDrawnContainer>
           </div>
           
-          <a class="read-more" href="/recommendations">Read More</a>
+          <!-- <a class="read-more" href="/recommendations">Read More</a> -->
         </section>
       {/if}
     </div>

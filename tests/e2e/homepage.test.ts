@@ -168,6 +168,7 @@ test.describe('homepage', () => {
     }
 
     const readMore = container.getByText('Read More');
-    await expect(readMore).toBeVisible();
+    // should not be visible until new recommendations page is added.
+    await expect(readMore).not.toBeVisible();
   });
 });
