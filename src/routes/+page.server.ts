@@ -3,6 +3,7 @@ import { wrapServerLoadWithSentry } from '@sentry/sveltekit';
 import { DEV_TO_API_KEY } from '$env/static/private';
 
 interface IBlogPost {
+  id: string;
   title: string;
   description: string;
   url: string;
@@ -30,6 +31,7 @@ export const load = wrapServerLoadWithSentry(async () => {
     const [first, second, third] = posts
       .filter((post: any) => post.type_of === 'article')
       .map((post: any) => ({
+        id: `blog-post-${post.id}`,
         title: post.title,
         description: post.description,
         url: post.url,

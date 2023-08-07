@@ -8,6 +8,7 @@
   import type { IQuote } from '$lib/types/quotes';
 	import { processError } from '$lib/utils/errors';
 	import Tag from '$components/Tag.svelte';
+	import HandDrawnContainer from '$components/HandDrawnContainer.svelte';
   
   export let data: PageData;
 
@@ -15,6 +16,8 @@
   let totalToLoad = 0;
   let displayUI = false;
   let displayScene = true;
+
+  let engagedBlogPost = '';
 
   const quotes = getContext<IQuote[]>('quotes');
 
@@ -60,21 +63,32 @@
       </section>
 
       {#if data.blog_posts?.length}
-        <section>
+        <section class="blog-posts-section">
           <h2>Recent Blog Posts</h2>
           <div class="blog-posts">
             {#each (data.blog_posts || []) as post}
-              <article class="blog-post">
-                <a href={post.url}>
-                  <h3>{post.title}</h3>
-                </a>
-                <div class="tags">
-                  {#each post.tags as tag}
-                    <Tag>{tag}</Tag>
-                  {/each}
-                </div>
-                <p>{post.description}</p>
-              </article>
+              <HandDrawnContainer
+                hoverable={true}
+                hovered={engagedBlogPost === post.id}
+              >
+                <article class="blog-post">
+                  <a
+                    href={post.url}
+                    target="_blank"
+                    on:focus={() => engagedBlogPost = post.id}
+                    on:blur={() => engagedBlogPost = ''}
+                  >
+                    <h3>{post.title}</h3>
+                  
+                    <div class="blog-post-tags">
+                      {#each post.tags as tag}
+                        <Tag>{tag}</Tag>
+                      {/each}
+                    </div>
+                    <p class="blog-post-desc">{post.description}</p>
+                  </a>
+                </article>
+              </HandDrawnContainer>
             {/each}
           </div>
         </section>
@@ -92,6 +106,10 @@
   }
 
   section {
+    &:last-child {
+      padding-bottom: 3rem;
+    }
+
     h2 {
       margin: 0 0 1.5rem;
     }
@@ -149,11 +167,19 @@
     }
   }
 
+  .blog-posts-section {
+    h2 {
+      flex: 1;
+      margin-bottom: 1rem;
+    }
+  }
+
   .blog-posts {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
+    gap: 1rem;
     max-width: 100rem;
     margin: 0 auto;
 
@@ -162,13 +188,6 @@
       flex-direction: column;
       justify-content: center;
       align-items: stretch;
-      padding: 1rem 1.5rem;
-      background: oklch(0% 0 0 / 0.5);
-      border: 3px solid var(--dark-500);
-      border-top-left-radius: 255px 15px;
-      border-top-right-radius: 18px 230px;
-      border-bottom-right-radius: 230px 14px;
-      border-bottom-left-radius:18px 255px;
 
       &:not(:last-child) {
         margin-bottom: 1rem;
@@ -178,6 +197,8 @@
         color: var(--primary-500);
         text-decoration: none;
         transition: color 0.2s ease-in-out;
+        border: none;
+        outline: none;
 
         &:hover {
           color: var(--light-500);
@@ -190,7 +211,7 @@
         text-align: center;
       }
 
-      .tags {
+      .blog-post-tags {
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -205,7 +226,7 @@
         text-align: left;
       }
 
-      @media (min-width: 768px) {
+      @media (min-width: 970px) {
         justify-content: flex-start;
 
         &:not(:last-child) {
@@ -214,19 +235,12 @@
       }
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 970px) {
       flex-direction: row;
       justify-content: space-between;
       align-items: stretch;
       flex-wrap: nowrap;
       gap: 1rem;
-
-      h2 {
-        flex: 1;
-        margin: 0 1rem 0 0;
-        font-size: 1.5rem;
-        text-align: left;
-      }
     }
   }
 </style>
