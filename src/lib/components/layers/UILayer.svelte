@@ -1,4 +1,7 @@
-<div class="layer ui-layer no-scrollbar">
+<div
+  class="layer ui-layer no-scrollbar"
+  on:scroll
+>
   <slot />
 </div>
 
