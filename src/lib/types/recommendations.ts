@@ -1,6 +1,6 @@
 export interface IRecommendation {
   id: number;
   author: string;
-  image_path: string;
-  html: string;
+  image: string;
+  quote: string;
 }

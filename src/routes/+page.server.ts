@@ -11,8 +11,6 @@ interface IHomepageData {
   recommendations?: IRecommendation[];
 }
 
-type HomepageDataKeys = keyof IHomepageData;
-
 export const load = wrapServerLoadWithSentry(async () => {
   const data: IHomepageData = {};
 

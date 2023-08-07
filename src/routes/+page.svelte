@@ -9,6 +9,7 @@
 	import { processError } from '$lib/utils/errors';
 	import Tag from '$components/Tag.svelte';
 	import HandDrawnContainer from '$components/HandDrawnContainer.svelte';
+  import { assets } from '$app/paths';
   
   export let data: PageData;
 
@@ -20,8 +21,6 @@
   let engagedBlogPost = '';
 
   const quotes = getContext<IQuote[]>('quotes');
-
-  $: console.log('data', data);
 
   function onSceneError(error: Error) {
     processError(error, () => {
@@ -95,6 +94,27 @@
           </div>
         </section>
       {/if}
+
+      {#if data.recommendations?.length}
+        <section class="recommendations-section">
+          <h2>Recommendations</h2>
+          <div class="recommendations">
+            <HandDrawnContainer>
+              {#each (data.recommendations || []) as recommendation}
+                <div class="recommendation">
+                  <header>
+                    <img src={`${assets}/${recommendation.image}`} alt="image of {recommendation.author}" />
+                    <p>{recommendation.author}</p>
+                  </header>
+                  <blockquote>{@html recommendation.quote}</blockquote>
+                </div>
+              {/each}
+            </HandDrawnContainer>
+          </div>
+          
+          <a class="read-more" href="/recommendations">Read More</a>
+        </section>
+      {/if}
     </div>
   </UILayer>
 {:else}
@@ -108,9 +128,7 @@
   }
 
   section {
-    &:last-child {
-      padding-bottom: 3rem;
-    }
+    padding-bottom: 8rem;
 
     h2 {
       margin: 0 0 1.5rem;
@@ -166,13 +184,6 @@
       margin: 0.75rem 0 1.25rem;
       font-size: 1.3rem;
       text-indent: 0;
-    }
-  }
-
-  .blog-posts-section {
-    h2 {
-      flex: 1;
-      margin-bottom: 1rem;
     }
   }
 
@@ -243,6 +254,49 @@
       align-items: stretch;
       flex-wrap: nowrap;
       gap: 1rem;
+    }
+  }
+
+  .recommendations {
+    max-width: 70rem;
+    margin: 0 auto;
+
+    .recommendation {
+      margin: 2rem 0;
+    }
+
+    header {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      img {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .read-more {
+    display: block;
+    max-width: 20rem;
+    margin: 2rem auto 0;
+    padding: 0.5rem 1rem;
+    background-color: var(--light-500);
+    border-radius: 0.5rem;
+    color: var(--dark-500);
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out;
+
+    &:hover,
+    &:focus {
+      background-color: var(--dark-300);
+      color: var(--light-500);
     }
   }
 </style>
