@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { PageData } from './$types';
   import Forest from '$components/scenes/Forest.svelte';
   import type { ILoad } from '$components/scenes/types';
   import UILayer from '$components/layers/UILayer.svelte';
@@ -6,7 +7,10 @@
   import { getContext } from 'svelte';
   import type { IQuote } from '$lib/types/quotes';
 	import { processError } from '$lib/utils/errors';
+	import Tag from '$components/Tag.svelte';
   
+  export let data: PageData;
+
   let amountLoaded = 0;
   let totalToLoad = 0;
   let displayUI = false;
@@ -47,25 +51,34 @@
 {#if displayUI}
   <UILayer>
     <div class="ui-main">
-      <div class="greeting">
+      <section class="greeting">
         <div class="greeting-content">
           <h1><span>Hi, I'm</span>Jake Lundberg<span>.</span></h1>
           <p class="subheader header-font">I build stuff for the web.</p>
           <p class="intro-text">I'm a software engineer with an uncommon passion for what I do. There are few things that bring me as much joy as digging into complex problems to find elegant solutions, or brainstorming with smart people to find the idea that will make someone's life better.</p>
         </div>
-      </div>
+      </section>
 
-      <div>
-        something else...
-      </div>
-
-      <div>
-        something else...
-      </div>
-
-      <div>
-        something else...
-      </div>
+      {#if data.blog_posts?.length}
+        <section>
+          <h2>Recent Blog Posts</h2>
+          <div class="blog-posts">
+            {#each (data.blog_posts || []) as post}
+              <article class="blog-post">
+                <a href={post.url}>
+                  <h3>{post.title}</h3>
+                </a>
+                <div class="tags">
+                  {#each post.tags as tag}
+                    <Tag>{tag}</Tag>
+                  {/each}
+                </div>
+                <p>{post.description}</p>
+              </article>
+            {/each}
+          </div>
+        </section>
+      {/if}
     </div>
   </UILayer>
 {:else}
@@ -76,6 +89,12 @@
   .ui-main {
     width: 100%;
     height: 100%;
+  }
+
+  section {
+    h2 {
+      margin: 0 0 1.5rem;
+    }
   }
 
   .greeting {
@@ -127,6 +146,87 @@
       margin: 0.75rem 0 1.25rem;
       font-size: 1.3rem;
       text-indent: 0;
+    }
+  }
+
+  .blog-posts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    max-width: 100rem;
+    margin: 0 auto;
+
+    .blog-post {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+      padding: 1rem 1.5rem;
+      background: oklch(0% 0 0 / 0.5);
+      border: 3px solid var(--dark-500);
+      border-top-left-radius: 255px 15px;
+      border-top-right-radius: 18px 230px;
+      border-bottom-right-radius: 230px 14px;
+      border-bottom-left-radius:18px 255px;
+
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+
+      a {
+        color: var(--primary-500);
+        text-decoration: none;
+        transition: color 0.2s ease-in-out;
+
+        &:hover {
+          color: var(--light-500);
+        }
+      }
+
+      h3 {
+        margin: 0 0 0.5rem;
+        /* font-size: 1.2rem; */
+        text-align: center;
+      }
+
+      .tags {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        margin: 0;
+        text-align: left;
+      }
+
+      @media (min-width: 768px) {
+        justify-content: flex-start;
+
+        &:not(:last-child) {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: stretch;
+      flex-wrap: nowrap;
+      gap: 1rem;
+
+      h2 {
+        flex: 1;
+        margin: 0 1rem 0 0;
+        font-size: 1.5rem;
+        text-align: left;
+      }
     }
   }
 </style>
