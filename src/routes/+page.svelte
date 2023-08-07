@@ -10,6 +10,8 @@
 	import Tag from '$components/Tag.svelte';
 	import HandDrawnContainer from '$components/HandDrawnContainer.svelte';
   import { assets } from '$app/paths';
+	import ScrollDown from '$components/ScrollDown.svelte';
+	import { fade } from 'svelte/transition';
   
   export let data: PageData;
 
@@ -17,6 +19,7 @@
   let totalToLoad = 0;
   let displayUI = false;
   let displayScene = true;
+  let displayScrollDownIndicator = true;
 
   let engagedBlogPost = '';
 
@@ -43,6 +46,11 @@
     totalToLoad = l.total;
     displayUI = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
   }
+
+  function onScroll(event: Event) {
+    const e = event.target as HTMLElement;
+    displayScrollDownIndicator = e.scrollTop < 100;
+  }
 </script>
 
 {#if displayScene}
@@ -53,7 +61,7 @@
 {/if}
 
 {#if displayUI}
-  <UILayer>
+  <UILayer on:scroll={onScroll}>
     <div class="ui-main">
       <section class="greeting">
         <div class="greeting-content">
@@ -61,6 +69,15 @@
           <p class="subheader header-font">I build stuff for the web.</p>
           <p class="intro-text">I'm a software engineer with an uncommon passion for what I do. There are few things that bring me as much joy as digging into complex problems to find elegant solutions, or brainstorming with smart people to find the idea that will make someone's life better.</p>
         </div>
+
+        {#if displayScrollDownIndicator}
+          <div
+            class="scroll-indicator-container"
+            transition:fade
+          >
+            <ScrollDown />
+          </div>
+        {/if}
       </section>
 
       {#if data.blog_posts?.length}
@@ -136,6 +153,7 @@
   }
 
   .greeting {
+    position: relative;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -184,6 +202,13 @@
       margin: 0.75rem 0 1.25rem;
       font-size: 1.3rem;
       text-indent: 0;
+    }
+
+    .scroll-indicator-container {
+      position: absolute;
+      bottom: 4rem;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 
