@@ -21,6 +21,8 @@
 
   const quotes = getContext<IQuote[]>('quotes');
 
+  $: console.log('data', data);
+
   function onSceneError(error: Error) {
     processError(error, () => {
       displayScene = false;
