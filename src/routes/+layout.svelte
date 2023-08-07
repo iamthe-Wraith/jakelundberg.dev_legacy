@@ -18,8 +18,8 @@
         default-src 'self' 'unsafe-inline';
         style-src 'self' 'unsafe-inline';
         font-src 'self'; 
-        connect-src http://jakelundberg.dev ws://jakelundberg.dev https://api.unisvg.com/ https://api.iconify.design/ *.sentry.io blob:; 
-        img-src http://jakelundberg.dev https://res.cloudinary.com/dxpwpno1e/image/ blob:; 
+        connect-src https://jakelundberg.dev ws://jakelundberg.dev https://api.unisvg.com/ https://api.iconify.design/ *.sentry.io blob:; 
+        img-src https://jakelundberg.dev https://res.cloudinary.com/dxpwpno1e/image/ blob:; 
         child-src blob:; 
         worker-src blob:;"
     >
