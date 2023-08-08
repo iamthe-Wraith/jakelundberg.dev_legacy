@@ -70,7 +70,7 @@
     box-sizing: border-box;
     z-index: 100;
 
-    @media (min-width: 769px) {
+    @media (min-width: 768px) {
       padding: 0.5rem 2rem;
     }
   }
