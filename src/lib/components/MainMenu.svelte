@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
   import HandDrawnContainer from "./HandDrawnContainer.svelte";
+	import { mainMenu } from "$lib/stores/main-menu";
 
   let isVisible = false;
 
@@ -12,6 +13,12 @@
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
         isVisible = !isVisible;
+
+        if (isVisible) {
+          mainMenu.open();
+        } else {
+          mainMenu.close();
+        }
       }
     }
 
@@ -21,7 +28,7 @@
   });
 </script>
 
-{#if isVisible}
+{#if $mainMenu.isOpen}
   <div
     class="main-menu-overlay" 
     transition:fade={{ duration: animationDuration }}
