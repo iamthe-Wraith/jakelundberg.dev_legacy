@@ -4,6 +4,7 @@
   import Nav from '$components/Nav/Nav.svelte';
   import type { LayoutData } from './$types';
   import { setContext } from 'svelte';
+	import MainMenu from '$components/MainMenu.svelte';
 
   export let data: LayoutData;
 
@@ -52,6 +53,8 @@
 <footer>
   <!-- place footer stuff here -->
 </footer>
+
+<MainMenu />
 
 <style lang="scss">
   header,
