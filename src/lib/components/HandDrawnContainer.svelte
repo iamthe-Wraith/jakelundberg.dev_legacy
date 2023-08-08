@@ -27,6 +27,8 @@
 
 <style lang="scss">
   .hand-drawn-container {
+    width: var(--hand-drawn-container-width);
+    height: var(--hand-drawn-container-height);
     padding: 1rem 1.5rem;
     background: oklch(0% 0 0 / 0.5);
     border-style: solid;

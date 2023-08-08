@@ -1,12 +1,26 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
+  import {
+    Dialog,
+    DialogOverlay,
+    DialogTitle,
+    DialogDescription,
+  } from "@rgossiaux/svelte-headlessui";
   import HandDrawnContainer from "./HandDrawnContainer.svelte";
 	import { mainMenu } from "$lib/stores/main-menu";
 
   let isVisible = false;
 
   const animationDuration = 200;
+
+  const overlayStyles = `
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+  `;
 
   onMount(() => {
     window.addEventListener("keydown", onKeyDown);
@@ -29,21 +43,35 @@
 </script>
 
 {#if $mainMenu.isOpen}
-  <div
-    class="main-menu-overlay" 
-    transition:fade={{ duration: animationDuration }}
-  />
+  <Dialog
+    open={$mainMenu.isOpen} 
 
-  <div
-    class="main-menu-container"
-    transition:fly={{ y: -50, duration: animationDuration }}
+    class="dialog"
+    static
   >
-    <HandDrawnContainer>
-      <div class="main-menu">
-        main menu goes here...
-      </div>
-    </HandDrawnContainer>
-  </div>
+    <div
+      class="main-menu-overlay" 
+      transition:fade={{ duration: animationDuration }}
+    >
+      <DialogOverlay
+        style={overlayStyles}
+      />
+    </div>
+
+    <div
+      class="main-menu-container"
+      transition:fly={{ y: -50, duration: animationDuration }}
+    >
+      <HandDrawnContainer>
+        <div class="main-menu">
+          <DialogTitle>Main Menu</DialogTitle>
+          <DialogDescription>
+            <p>Press ESC key or Clost button to close.</p>
+          </DialogDescription>
+        </div>
+      </HandDrawnContainer>
+    </div>
+  </Dialog>
 {/if}
 
 <style lang="scss">
@@ -59,17 +87,28 @@
   }
 
   .main-menu-container {
+    --hand-drawn-container-width: 100%;
+    --hand-drawn-container-height: 100%;
+
     position: fixed;
     top: 50%;
     left: 50%;
+    width: 96vw;
+    height: 98vh;
     z-index: 1001;
     transform: translate(-50%, -50%);
+
+    @media (min-width: 769px) {
+      max-width: 40rem;
+      max-height: 20rem;
+    }
   }
 
   .main-menu {
-    width: 96vw;
-    max-width: 40rem;
-    height: 100vh;
-    max-height: 20rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
   }
 </style>
