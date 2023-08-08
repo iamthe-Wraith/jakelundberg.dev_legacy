@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { fade, fly } from 'svelte/transition';
+  import { onMount } from 'svelte';
+  import { fade, fly } from 'svelte/transition';
   import {
     Dialog,
     DialogOverlay,
@@ -13,12 +13,12 @@
     TabPanels,
   } from '@rgossiaux/svelte-headlessui';
   import rough from 'roughjs';
-  import HandDrawnContainer from './HandDrawnContainer.svelte';
-	import { mainMenu } from '$lib/stores/main-menu';
-	import Close from './buttons/Close.svelte';
-	import Icon from '@iconify/svelte';
-	import { removeChildren } from '$lib/utils/dom';
-	import { secondaryColor } from '$lib/constants/colors';
+  import HandDrawnContainer from '../HandDrawnContainer.svelte';
+  import { mainMenu } from '$lib/stores/main-menu';
+  import Close from '../buttons/Close.svelte';
+  import Icon from '@iconify/svelte';
+  import { removeChildren } from '$lib/utils/dom';
+  import { secondaryColor } from '$lib/constants/colors';
 
   const animationDuration = 200;
 
