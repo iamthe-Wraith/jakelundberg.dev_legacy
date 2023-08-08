@@ -6,7 +6,7 @@
 
   let isVisible = false;
 
-  const animationDuration = 300;
+  const animationDuration = 200;
 
   onMount(() => {
     window.addEventListener("keydown", onKeyDown);
