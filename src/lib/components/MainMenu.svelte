@@ -137,7 +137,7 @@
           <header>
             <DialogTitle class="main-menu-title">Main Menu</DialogTitle>
             <DialogDescription class="main-menu-description">
-              Press ESC key or Close button to close.
+              Press ESC key to close.
             </DialogDescription>
           </header>
           
@@ -170,10 +170,18 @@
                 </Tab>
               </TabList>
               <TabPanels class="main-menu-selected-option-details">
-                <TabPanel>Skills</TabPanel>
-                <TabPanel>Secrets Found</TabPanel>
-                <TabPanel>Get in Touch</TabPanel>
-                <TabPanel>Social</TabPanel>
+                <TabPanel>
+                  <h2>Skills</h2>
+                </TabPanel>
+                <TabPanel>
+                  <h2>Secrets Found</h2>
+                </TabPanel>
+                <TabPanel>
+                  <h2>Get in Touch</h2>
+                </TabPanel>
+                <TabPanel>
+                  <h2>Social</h2>
+                </TabPanel>
               </TabPanels>
             </TabGroup>
           </main>
@@ -221,7 +229,7 @@
   }
 
   .main-menu {
-    --header-height: 4.5rem;
+    --header-height: 3.5rem;
 
     position: relative;
     display: flex;
@@ -245,6 +253,10 @@
     main {
       width: 100%;
       height: calc(100% - var(--header-height));
+    }
+
+    @media (min-width: 768px) {
+      --header-height: 4.5rem;
     }
   }
 
@@ -277,15 +289,27 @@
     }
   }
 
+  /*
+    must use * :global(...) to style components
+    imported from @rgossiaux/svelte-headlessui
+
+    using the * ensures these :global styles are
+    still scoped to this component.
+   */
   * :global(.main-menu-title) {
     color: var(--primary-500);
   }
 
   * :global(.main-menu-description) {
+    display: none;
     color: var(--light-100);
     font-size: 0.9rem;
     font-style: italic;
     text-align: center;
+
+    @media (min-width: 768px) {
+      display: block;
+    }
   }
 
   * :global(.main-menu-tab-group) {
@@ -379,5 +403,10 @@
     @media (min-width: 768px) {
       padding: 0 0 0 1rem;
     }
+  }
+
+  * :global(.main-menu-selected-option-details h2) {
+    font-size: 1.75rem;
+    line-height: 1.75rem;
   }
 </style>
