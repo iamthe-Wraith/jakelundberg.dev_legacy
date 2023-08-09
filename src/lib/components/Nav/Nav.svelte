@@ -236,7 +236,7 @@
   .nav-toggle {
     position: relative;
     font-size: 2rem;
-    color: white;
+    color: var(--light-500);
     line-height: 0;
     z-index: 1001;
 
@@ -312,7 +312,7 @@
   .nav-item-label-link,
   .other-nav-item {
     position: relative;
-    color: white;
+    color: var(--light-500);
     margin-right: 0.5rem;
     padding: 0 0.5rem;
     font-family: var(--font-primary);
@@ -403,7 +403,7 @@
 
     span {
       font-size: 2rem;
-      color: white;
+      color: var(--light-500);
       transition: 0.25s ease-in-out;
       line-height: 0;
     }
