@@ -8,6 +8,7 @@
   import { navItems as ni, type INavItem } from './nav-config';
 	import { secondaryColor } from '$lib/constants/colors';
 	import { removeChildren } from '$lib/utils/dom';
+  import { mainMenu } from '$lib/stores/main-menu';
 
   let navItems = [...ni];
   let mounted = false;
@@ -104,6 +105,16 @@
     checkbox.checked = false;
   }
 
+  function onMainMenuClick() {
+    checkbox.checked = false;
+
+    if ($mainMenu.isOpen) {
+      mainMenu.close();
+    } else {
+      mainMenu.open();
+    }
+  }
+
   function onToggleChange(e: Event) {
     const target = e.target as HTMLInputElement;
 
@@ -143,7 +154,7 @@
 </label>
 
 <div class="nav-overlay">
-  <nav class="primary-nav">  
+  <nav class="primary-nav">
     {#each navItems as navItem}
       <div class="nav-item-container">
         <a
@@ -182,6 +193,19 @@
       style="opacity: {$engagedItemTitleVisibility}; transform: translate3d({$engagedItemTitleVisibility * -20}px, 0, 0); transform-style: preserve-3d;"
     >
       {engagedItemTitle}
+    </div>
+
+    <div class="other-nav">
+      <button
+        class="other-nav-item main-menu-nav-item"
+        aria-label="Main Menu"
+        on:click={onMainMenuClick}
+      >
+        Main Menu
+        <span>
+          <Icon icon="ion:ellipsis-horizontal-circle-outline" />
+        </span>
+      </button>
     </div>
   </nav>
 </div>
@@ -285,7 +309,8 @@
     justify-content: flex-end;
   }
 
-  .nav-item-label-link {
+  .nav-item-label-link,
+  .other-nav-item {
     position: relative;
     color: white;
     margin-right: 0.5rem;
@@ -322,7 +347,8 @@
     }
   }
 
-  .nav-item-icon-link {
+  .nav-item-icon-link,
+  .other-nav-item {
     position: relative;
     display: flex;
     align-items: center;
@@ -396,6 +422,42 @@
 
     @media (min-width: 768px) {
       display: block;
+    }
+  }
+
+  .other-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 70%;
+    margin: 1rem 0;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--dark-500);
+  }
+
+  .other-nav-item {
+    display: flex;
+    align-items: center;
+    width: unset;
+    margin: 0;
+    padding: 0.5rem 0;
+    background: none;
+    border: none;
+    outline: none;
+
+    span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      margin-left: 1rem;
+    }
+  }
+
+  .main-menu-nav-item {
+    @media (hover: hover), (-moz-touch-enabled: 0), (pointer:fine) {
+      display: none;
     }
   }
 </style>
