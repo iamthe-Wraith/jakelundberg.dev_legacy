@@ -9,7 +9,10 @@
 
   export let data: LayoutData;
 
+  console.log({ data });
+
   $: if (data?.quotes) setContext('quotes', data.quotes);
+  $: if (data?.skills) setContext('skills', data.skills);
 </script>
 
 <svelte:head>

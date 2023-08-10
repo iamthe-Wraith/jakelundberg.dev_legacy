@@ -1,6 +1,6 @@
 import type { ISkill } from '$lib/types/skills';
 
-export const codingSkills: ISkill[] = [
+export const skills: ISkill[] = [
   {
     name: 'Blender',
   },
