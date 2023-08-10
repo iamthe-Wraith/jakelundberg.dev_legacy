@@ -21,7 +21,7 @@
   import { secondaryColor } from '$lib/constants/colors';
   import Details from './Details.svelte';
   import Skills from './Skills.svelte';
-	import OnTheWeb from './OnTheWeb.svelte';
+  import OnTheWeb from './OnTheWeb.svelte';
 
   const animationDuration = 200;
 

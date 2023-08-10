@@ -1,9 +1,9 @@
 <script lang="ts">
   import rough from 'roughjs';
   import { assets } from '$app/paths';
-	import { removeChildren } from '$lib/utils/dom';
-	import { secondaryColor } from '$lib/constants/colors';
-	import { onMount } from 'svelte';
+  import { removeChildren } from '$lib/utils/dom';
+  import { secondaryColor } from '$lib/constants/colors';
+  import { onMount } from 'svelte';
 
   interface IOnTheWebLink {
     name: string;
