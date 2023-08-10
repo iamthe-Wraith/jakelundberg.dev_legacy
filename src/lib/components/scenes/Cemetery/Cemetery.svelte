@@ -7,6 +7,7 @@
   import { PUBLIC_APP_ENV } from '$env/static/public';
   import { assets } from '$app/paths';
   import type { ILoad } from '../types';
+	import { mainMenu } from '$lib/stores/main-menu';
 
   interface IWisp {
     mesh: THREE.Mesh;
@@ -137,8 +138,10 @@
 
     if (isDevelopment) controls.update();
 
-    animateWisps();
-    look();
+    if (!$mainMenu.isOpen) {
+      animateWisps();
+      look();
+    }
 
     render();
   }

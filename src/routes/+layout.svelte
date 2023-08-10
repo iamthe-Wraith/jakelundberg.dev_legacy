@@ -4,6 +4,8 @@
   import Nav from '$components/Nav/Nav.svelte';
   import type { LayoutData } from './$types';
   import { setContext } from 'svelte';
+  import MainMenu from '$components/MainMenu/MainMenu.svelte';
+  import PressEscape from '$components/MainMenu/PressEscape.svelte';
 
   export let data: LayoutData;
 
@@ -40,6 +42,13 @@
   {/if}
 </svelte:head>
 
+<MainMenu />
+
+<div class="press-escape-container">
+  <PressEscape />
+</div>
+
+
 <header>
   <div />
   <Nav />
@@ -67,7 +76,7 @@
     box-sizing: border-box;
     z-index: 100;
 
-    @media (min-width: 769px) {
+    @media (min-width: 768px) {
       padding: 0.5rem 2rem;
     }
   }
@@ -85,5 +94,12 @@
     height: 100vh;
     padding: 3rem 1rem;
     overflow: hidden;
+  }
+
+  .press-escape-container {
+    position: fixed;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    z-index: 110;
   }
 </style>
