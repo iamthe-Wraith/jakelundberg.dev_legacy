@@ -44,7 +44,7 @@
 
 <MainMenu />
 
-<div class="press-escape">
+<div class="press-escape-container">
   <PressEscape />
 </div>
 
@@ -96,7 +96,7 @@
     overflow: hidden;
   }
 
-  .press-escape {
+  .press-escape-container {
     position: fixed;
     bottom: 0.5rem;
     right: 0.5rem;

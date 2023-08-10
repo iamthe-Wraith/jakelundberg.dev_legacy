@@ -171,16 +171,16 @@
               </TabList>
               <TabPanels class="main-menu-selected-option-details">
                 <TabPanel>
-                  <h2>Skills</h2>
+                  <h3>Skills</h3>
                 </TabPanel>
                 <TabPanel>
-                  <h2>Secrets Found</h2>
+                  <h3>Secrets Found</h3>
                 </TabPanel>
                 <TabPanel>
-                  <h2>Get in Touch</h2>
+                  <h3>Get in Touch</h3>
                 </TabPanel>
                 <TabPanel>
-                  <h2>Social</h2>
+                  <h3>Social</h3>
                 </TabPanel>
               </TabPanels>
             </TabGroup>
@@ -307,7 +307,7 @@
     font-style: italic;
     text-align: center;
 
-    @media (min-width: 768px) {
+    @media (min-width: 768px), (hover: hover), (-moz-touch-enabled: 0), (pointer:fine) {
       display: block;
     }
   }

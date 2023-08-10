@@ -92,7 +92,7 @@
     border: none;
     outline: none;
 
-    @media (hover: hover), (-moz-touch-enabled: 0), (pointer:fine) {
+    @media (min-width: 768px), (hover: hover), (-moz-touch-enabled: 0), (pointer:fine) {
       display: flex;
     }
   }
@@ -108,7 +108,6 @@
     height: 2rem;
     font-size: 1.5rem;
     transform: translateX(-50%);
-
     animation: fadeInOut 7s infinite;
   }
 
@@ -124,7 +123,6 @@
     border-radius: 0.5rem;
     border-bottom-right-radius: 10px 15px;
     border-bottom-left-radius: 10px 15px;
-
     animation: press 7s infinite;
   }
 </style>
