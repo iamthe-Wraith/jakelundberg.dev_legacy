@@ -190,6 +190,8 @@ async function mainMenuGetInTouchExists(page: Page) {
 }
 
 async function mainMenuOnTheWebExists(page: Page) {
+  const onTheWebOptions = ['GitHub', 'LinkedIn', 'Mastodon', 'Bluesky'];
+
   const mainMenu = page.locator('.main-menu');
   const main = mainMenu.locator('main');
   await expect(main).toBeVisible();
@@ -207,13 +209,24 @@ async function mainMenuOnTheWebExists(page: Page) {
   await expect(skillsHeader).toHaveText(mainMenuOptions[3]);
 
   const links = await details.locator('a').all();
-  await expect(links.length).toEqual(4);
+  await expect(links.length).toEqual(onTheWebOptions.length);
 
-  expect(links[0]).toHaveText('GitHub');
+  for (let i = 0; i < links.length; i++) {
+    const link = links[i];
+    await expect(link).toBeVisible();
+    await expect(link.getAttribute('href')).toBeDefined();
 
-  expect(links[1]).toHaveText('LinkedIn');
+    const img = link.locator('img');
+    await expect(img).toBeVisible();
+    await expect(img.getAttribute('alt')).toBeDefined();
+    await expect(img.getAttribute('src')).toBeDefined();
 
-  expect(links[2]).toHaveText('Mastodon');
+    const text = link.locator('span');
+    await expect(text).toBeVisible();
+    await expect(text).toHaveText(onTheWebOptions[i]);
 
-  expect(links[3]).toHaveText('Bluesky');
+    const svg = link.locator('svg');
+    await expect(svg).toHaveCSS('opacity', '0');
+    await expect(svg).toHaveCSS('position', 'absolute');
+  }
 }

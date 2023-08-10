@@ -70,7 +70,7 @@
     {#each links as link}
       <a href={link.url} target="_blank" rel="noopener noreferrer">
         <img src={link.logo} alt={`${link.name} logo`} />
-        <p>{link.name}</p>
+        <span>{link.name}</span>
         <svg class="on-the-web-rough-engageable" />
       </a>
     {/each}
@@ -125,7 +125,7 @@
       overflow: hidden;
     }
 
-    p {
+    span {
       margin: 0;
       font-size: 0.8rem;
       text-align: center;
