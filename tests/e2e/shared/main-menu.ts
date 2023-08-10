@@ -148,6 +148,9 @@ async function mainMenuSkillsExists(page: Page) {
   const skillsHeader = details.getByRole('heading', { name: 'Skills' });
   await expect(skillsHeader).toBeVisible();
   await expect(skillsHeader).toHaveText('Skills');
+
+  const skills = await details.locator('.skill').all();
+  await expect(skills.length).toBeGreaterThan(0);
 }
 
 async function mainMenuSecretsFoundExists(page: Page) {

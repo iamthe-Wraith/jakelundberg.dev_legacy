@@ -19,6 +19,8 @@
   import Icon from '@iconify/svelte';
   import { removeChildren } from '$lib/utils/dom';
   import { secondaryColor } from '$lib/constants/colors';
+  import Details from './Details.svelte';
+  import Skills from './Skills.svelte';
 
   const animationDuration = 200;
 
@@ -171,16 +173,24 @@
               </TabList>
               <TabPanels class="main-menu-selected-option-details">
                 <TabPanel>
-                  <h3>Skills</h3>
+                  <Details title="Skills">
+                    <Skills />
+                  </Details>
                 </TabPanel>
                 <TabPanel>
-                  <h3>Secrets Found</h3>
+                  <Details title="Secrets Found">
+                    some secrets...
+                  </Details>
                 </TabPanel>
                 <TabPanel>
-                  <h3>Get in Touch</h3>
+                  <Details title="Get in Touch">
+                    get in touch...
+                  </Details>
                 </TabPanel>
                 <TabPanel>
-                  <h3>Social</h3>
+                  <Details title="Social">
+                    social stuff...
+                  </Details>
                 </TabPanel>
               </TabPanels>
             </TabGroup>
@@ -397,16 +407,26 @@
   }
 
   * :global(.main-menu-selected-option-details) {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     padding: 1rem 0 0;
+    overflow: hidden;
 
     @media (min-width: 768px) {
       padding: 0 0 0 1rem;
     }
   }
 
-  * :global(.main-menu-selected-option-details h2) {
+  * :global(.main-menu-selected-option-details h3) {
     font-size: 1.75rem;
     line-height: 1.75rem;
+  }
+
+  * :global(.main-menu-selected-option-details > div) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    max-height: 100%;
   }
 </style>
