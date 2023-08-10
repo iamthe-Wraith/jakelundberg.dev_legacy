@@ -19,8 +19,8 @@
   import Icon from '@iconify/svelte';
   import { removeChildren } from '$lib/utils/dom';
   import { secondaryColor } from '$lib/constants/colors';
-	import Details from './Details.svelte';
-	import Skills from './Skills.svelte';
+  import Details from './Details.svelte';
+  import Skills from './Skills.svelte';
 
   const animationDuration = 200;
 
