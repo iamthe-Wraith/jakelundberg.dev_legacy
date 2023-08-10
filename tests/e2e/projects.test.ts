@@ -147,6 +147,9 @@ test.describe('projects', () => {
 
         await header.click();
 
+        // wait for animation to complete so do not get elements from previous project
+        await page.waitForTimeout(300);
+
         const desktopProject = page.locator('.details .project');
         await expect(desktopProject).toBeVisible();
 

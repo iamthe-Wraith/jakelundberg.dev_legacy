@@ -7,6 +7,8 @@
 
 <div class="skills">
   {#each (skills || []) as skill}
-    <p>{skill.name}</p>
+    <div class="skill">
+      <p class="skill-name">{skill.name}</p>
+    </div>
   {/each}
 </div>
