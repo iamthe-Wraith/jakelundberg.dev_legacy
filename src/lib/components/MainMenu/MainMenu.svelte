@@ -21,6 +21,7 @@
   import { secondaryColor } from '$lib/constants/colors';
   import Details from './Details.svelte';
   import Skills from './Skills.svelte';
+  import OnTheWeb from './OnTheWeb.svelte';
 
   const animationDuration = 200;
 
@@ -165,8 +166,8 @@
                   <svg class="main-menu-rough-engageable-option-dt" />
                 </Tab>
                 <Tab class={({selected}) => selected ? "main-menu-option-selected" : ""}>
-                  <Icon icon="ion:people-outline" />
-                  <span>Social</span>
+                  <Icon icon="ion:earth-outline" />
+                  <span>On the Web</span>
                   <svg class="main-menu-rough-engageable-option" />
                   <svg class="main-menu-rough-engageable-option-dt" />
                 </Tab>
@@ -188,8 +189,8 @@
                   </Details>
                 </TabPanel>
                 <TabPanel>
-                  <Details title="Social">
-                    social stuff...
+                  <Details title="On the Web">
+                    <OnTheWeb />
                   </Details>
                 </TabPanel>
               </TabPanels>
@@ -233,7 +234,7 @@
     transform: translate(-50%, -50%);
 
     @media (min-width: 768px) {
-      max-width: 40rem;
+      max-width: 50rem;
       max-height: 30rem;
     }
   }

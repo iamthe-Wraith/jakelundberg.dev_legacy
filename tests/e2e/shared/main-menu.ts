@@ -1,7 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 import { openMobileNav } from './nav';
 
-const mainMenuOptions = ['Skills', 'Secrets Found', 'Get in Touch', 'Social'];
+const mainMenuOptions = ['Skills', 'Secrets Found', 'Get in Touch', 'On the Web'];
 
 export async function openMobileMainMenu(page: Page) {
   await openMobileNav(page);
@@ -75,7 +75,7 @@ export async function mobileMainMenuExists(page: Page) {
   await mainMenuSkillsExists(page);
   await mainMenuSecretsFoundExists(page);
   await mainMenuGetInTouchExists(page);
-  await mainMenuSocialExists(page);
+  await mainMenuOnTheWebExists(page);
 }
 
 export async function desktopMainMenuExists(page: Page) {
@@ -129,7 +129,7 @@ export async function desktopMainMenuExists(page: Page) {
   await mainMenuSkillsExists(page);
   await mainMenuSecretsFoundExists(page);
   await mainMenuGetInTouchExists(page);
-  await mainMenuSocialExists(page);
+  await mainMenuOnTheWebExists(page);
 }
 
 async function mainMenuSkillsExists(page: Page) {
@@ -145,9 +145,9 @@ async function mainMenuSkillsExists(page: Page) {
   const details = main.locator('.main-menu-selected-option-details');
   await expect(details).toBeVisible();
 
-  const skillsHeader = details.getByRole('heading', { name: 'Skills' });
+  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[0] });
   await expect(skillsHeader).toBeVisible();
-  await expect(skillsHeader).toHaveText('Skills');
+  await expect(skillsHeader).toHaveText(mainMenuOptions[0]);
 
   const skills = await details.locator('.skill').all();
   await expect(skills.length).toBeGreaterThan(0);
@@ -166,8 +166,9 @@ async function mainMenuSecretsFoundExists(page: Page) {
   const details = main.locator('.main-menu-selected-option-details');
   await expect(details).toBeVisible();
 
-  const skillsHeader = details.getByRole('heading', { name: 'Secrets Found' });
+  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[1] });
   await expect(skillsHeader).toBeVisible();
+  await expect(skillsHeader).toHaveText(mainMenuOptions[1]);
 }
 
 async function mainMenuGetInTouchExists(page: Page) {
@@ -183,11 +184,14 @@ async function mainMenuGetInTouchExists(page: Page) {
   const details = main.locator('.main-menu-selected-option-details');
   await expect(details).toBeVisible();
 
-  const skillsHeader = details.getByRole('heading', { name: 'Get in Touch' });
+  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[2] });
   await expect(skillsHeader).toBeVisible();
+  await expect(skillsHeader).toHaveText(mainMenuOptions[2]);
 }
 
-async function mainMenuSocialExists(page: Page) {
+async function mainMenuOnTheWebExists(page: Page) {
+  const onTheWebOptions = ['GitHub', 'LinkedIn', 'Mastodon', 'Bluesky'];
+
   const mainMenu = page.locator('.main-menu');
   const main = mainMenu.locator('main');
   await expect(main).toBeVisible();
@@ -200,6 +204,29 @@ async function mainMenuSocialExists(page: Page) {
   const details = main.locator('.main-menu-selected-option-details');
   await expect(details).toBeVisible();
 
-  const skillsHeader = details.getByRole('heading', { name: 'Social' });
+  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[3] });
   await expect(skillsHeader).toBeVisible();
+  await expect(skillsHeader).toHaveText(mainMenuOptions[3]);
+
+  const links = await details.locator('a').all();
+  await expect(links.length).toEqual(onTheWebOptions.length);
+
+  for (let i = 0; i < links.length; i++) {
+    const link = links[i];
+    await expect(link).toBeVisible();
+    await expect(link.getAttribute('href')).toBeDefined();
+
+    const img = link.locator('img');
+    await expect(img).toBeVisible();
+    await expect(img.getAttribute('alt')).toBeDefined();
+    await expect(img.getAttribute('src')).toBeDefined();
+
+    const text = link.locator('span');
+    await expect(text).toBeVisible();
+    await expect(text).toHaveText(onTheWebOptions[i]);
+
+    const svg = link.locator('svg');
+    await expect(svg).toHaveCSS('opacity', '0');
+    await expect(svg).toHaveCSS('position', 'absolute');
+  }
 }
