@@ -60,10 +60,12 @@
 }
 
 body {
+  /* when these change, be sure to update /lib/constants/colors as well */
   --dark-100: #000000;
   --dark-300: #0A0A0A;
   --dark-500: #303030;
 
+  /* when these change, be sure to update /lib/constants/colors as well */
   --light-100: #d1d1d1;
   --light-500: #eaeaea;
   --light-900: #FFFFFF;
@@ -216,6 +218,13 @@ li:not(:last-child) {
 }
 
 /* helper classes */
+
+.error {
+  color: red;
+  font-size: 0.7rem;
+  line-height: 0.7rem;
+  text-indent: 0;
+}
 
 .no-scrollbar {
   -ms-overflow-style: none;
