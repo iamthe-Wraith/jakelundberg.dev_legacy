@@ -4,6 +4,7 @@
   import Button from "./Button.svelte";
   import Input from "./Input.svelte";
   import TextArea from "./TextArea.svelte";
+	import { Toast } from '$lib/stores/toast';
 
   interface IField {
     value: string;
@@ -40,7 +41,11 @@
   function onEnhancedSubmitResponse(result: ActionResult<Record<string, unknown> | undefined, Record<string, unknown> | undefined>) {
     if (result.type === 'success') {
       resetFormData();
-      console.log('message sent successfully');
+
+      Toast.add({
+        message: 'Message sent successfully!',
+        type: 'success',
+      });
     }
     
     if (result.type ==='failure') {

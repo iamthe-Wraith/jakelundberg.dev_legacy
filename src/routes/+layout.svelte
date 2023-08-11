@@ -6,6 +6,7 @@
   import { setContext } from 'svelte';
   import MainMenu from '$components/MainMenu/MainMenu.svelte';
   import PressEscape from '$components/MainMenu/PressEscape.svelte';
+	import Toast from '$components/modals/Toast.svelte';
 
   export let data: LayoutData;
 
@@ -43,6 +44,7 @@
   {/if}
 </svelte:head>
 
+<Toast />
 <MainMenu />
 
 <div class="press-escape-container">
