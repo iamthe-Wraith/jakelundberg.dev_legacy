@@ -3,6 +3,7 @@
   import rough from 'roughjs';
 	import { removeChildren } from "$lib/utils/dom";
 	import { dark500, secondaryColor } from "$lib/constants/colors";
+	import { getRandom } from "$lib/utils/number";
 
   export let id = `button-${crypto.randomUUID()}`;
   export let type: 'button' | 'submit' | 'reset' = 'button';
@@ -11,6 +12,8 @@
   export let className: string = '';
   export let disabled = false;
 
+  const minorRadius = getRandom(13, 19);
+  const majorRadius = getRandom(230, 260);
   const outlineStroke = kind === 'primary' || kind === 'neutral' ? secondaryColor : dark500; 
 
   onMount(() => {
@@ -28,7 +31,7 @@
     removeChildren(svg);
     const rect = svg.getBoundingClientRect();
     const roughSvg = rough.svg(svg);
-    const offset = 5;
+    const offset = 8;
     const rectangle = roughSvg.rectangle(offset, offset, rect.width - (offset * 2), rect.height - (offset * 2), {
       stroke: outlineStroke,
       strokeWidth: 2,
@@ -43,6 +46,12 @@
   {type}
   {disabled}
   class={`${kind} ${size} ${className}`}
+  style="
+    border-top-left-radius: {majorRadius}px {minorRadius}px;
+    border-top-right-radius: {minorRadius}px {majorRadius}px;
+    border-bottom-right-radius: {majorRadius}px {minorRadius}px;
+    border-bottom-left-radius: {minorRadius}px {majorRadius}px;
+  "
   on:click
 >
   <slot />
@@ -53,7 +62,7 @@
   button {
     position: relative;
     background: none;
-    border: none;
+    border-style: solid;
     border-radius: 0.25rem;
     outline: none;
   
@@ -73,30 +82,35 @@
     &.small {
       padding: 0.25rem 0.5rem;
       font-size: 0.75rem;
+      border-width: 2px;
     }
 
     &.large {
       padding: 0.5rem 1rem;
       font-size: 1rem;
+      border-width: 3px;
     }
 
     &.primary {
+      border-color: var(--primary-500);
       background: var(--primary-500);
       color: var(--light-500);
     }
 
     &.secondary {
+      border-color: var(--secondary-500);
       background: var(--secondary-500);
       color: var(--dark-500);
     }
 
     &.neutral {
+      border-color: var(--light-500);
       background: var(--light-500);
       color: var(--dark-500);
     }
 
     svg {
-      --button-svg-offset: 10px;
+      --button-svg-offset: 24px;
 
       position: absolute;
       top: calc(var(--button-svg-offset) / 2 * -1);
