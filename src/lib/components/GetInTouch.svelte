@@ -169,7 +169,7 @@
       align-items: stretch;
       justify-content: flex-start;
       gap: 1rem;
-      padding: 1rem;
+      padding: 1rem 0;
       border: none;
       outline: none;
 
