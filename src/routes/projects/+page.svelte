@@ -437,6 +437,7 @@
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
+      gap: 0.5rem;
       max-width: 90%;
       margin: 0.5rem auto;
 
