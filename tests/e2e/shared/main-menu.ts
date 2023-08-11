@@ -65,7 +65,7 @@ export async function mobileMainMenuExists(page: Page) {
   await expect(main).toBeVisible();
 
   const options = await main.locator('.main-menu-options button').all();
-  await expect(options).toHaveLength(4);
+  await expect(options).toHaveLength(mainMenuOptions.length);
 
   for (let i = 0; i < options.length; i++) {
     const mainMenuOption = mainMenuOptions[i];
@@ -119,7 +119,7 @@ export async function desktopMainMenuExists(page: Page) {
   await expect(main).toBeVisible();
 
   const options = await main.locator('.main-menu-options button').all();
-  await expect(options).toHaveLength(4);
+  await expect(options).toHaveLength(mainMenuOptions.length);
 
   for (let i = 0; i < options.length; i++) {
     const mainMenuOption = mainMenuOptions[i];
@@ -138,60 +138,69 @@ export async function desktopMainMenuExists(page: Page) {
 }
 
 async function mainMenuSkillsExists(page: Page) {
+  const optionName = 'Skills';
   const mainMenu = page.locator('.main-menu');
   const main = mainMenu.locator('main');
   await expect(main).toBeVisible();
 
   const options = await main.locator('.main-menu-options button').all();
-  await expect(options).toHaveLength(4);
+  await expect(options).toHaveLength(mainMenuOptions.length);
 
-  options[0].click();
+  options[mainMenuOptions.indexOf(optionName)].click();
 
   const details = main.locator('.main-menu-selected-option-details');
   await expect(details).toBeVisible();
 
-  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[0] });
+  const index = mainMenuOptions.indexOf(optionName);
+
+  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[index] });
   await expect(skillsHeader).toBeVisible();
-  await expect(skillsHeader).toHaveText(mainMenuOptions[0]);
+  await expect(skillsHeader).toHaveText(mainMenuOptions[index]);
 
   const skills = await details.locator('.skill').all();
   await expect(skills.length).toBeGreaterThan(0);
 }
 
 // async function mainMenuSecretsFoundExists(page: Page) {
+//   const optionName = 'Secrets Found';
 //   const mainMenu = page.locator('.main-menu');
 //   const main = mainMenu.locator('main');
 //   await expect(main).toBeVisible();
 
 //   const options = await main.locator('.main-menu-options button').all();
-//   await expect(options).toHaveLength(4);
+//   await expect(options).toHaveLength(mainMenuOptions.length);
 
-//   options[1].click();
+//   options[mainMenuOptions.indexOf(optionName)].click();
 
 //   const details = main.locator('.main-menu-selected-option-details');
 //   await expect(details).toBeVisible();
 
-//   const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[1] });
+// const index = mainMenuOptions.indexOf(optionName);
+
+//   const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[index] });
 //   await expect(skillsHeader).toBeVisible();
-//   await expect(skillsHeader).toHaveText(mainMenuOptions[1]);
+//   await expect(skillsHeader).toHaveText(mainMenuOptions[index]);
 // }
 
 async function mainMenuGetInTouchExists(page: Page) {
+  const optionName = 'Get in Touch';
   const mainMenu = page.locator('.main-menu');
   const main = mainMenu.locator('main');
   await expect(main).toBeVisible();
 
   const options = await main.locator('.main-menu-options button').all();
-  await expect(options).toHaveLength(4);
+  await expect(options).toHaveLength(mainMenuOptions.length);
 
-  options[2].click();
+  options[mainMenuOptions.indexOf(optionName)].click();
 
   const details = main.locator('.main-menu-selected-option-details');
   await expect(details).toBeVisible();
 
-  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[2] });
+  const index = mainMenuOptions.indexOf(optionName);
+
+  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[index] });
   await expect(skillsHeader).toBeVisible();
-  await expect(skillsHeader).toHaveText(mainMenuOptions[2]);
+  await expect(skillsHeader).toHaveText(mainMenuOptions[index]);
 
   const container = details.locator('.get-in-touch');
   await expect(container).toBeVisible();
@@ -296,6 +305,7 @@ async function mainMenuGetInTouchExists(page: Page) {
 }
 
 async function mainMenuOnTheWebExists(page: Page) {
+  const optionName = 'On the Web';
   const onTheWebOptions = ['GitHub', 'LinkedIn', 'Mastodon', 'Bluesky'];
 
   const mainMenu = page.locator('.main-menu');
@@ -303,16 +313,18 @@ async function mainMenuOnTheWebExists(page: Page) {
   await expect(main).toBeVisible();
 
   const options = await main.locator('.main-menu-options button').all();
-  await expect(options).toHaveLength(4);
+  await expect(options).toHaveLength(mainMenuOptions.length);
 
-  options[3].click();
+  options[mainMenuOptions.indexOf(optionName)].click();
 
   const details = main.locator('.main-menu-selected-option-details');
   await expect(details).toBeVisible();
 
-  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[3] });
+  const index = mainMenuOptions.indexOf(optionName);
+
+  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[index] });
   await expect(skillsHeader).toBeVisible();
-  await expect(skillsHeader).toHaveText(mainMenuOptions[3]);
+  await expect(skillsHeader).toHaveText(mainMenuOptions[index]);
 
   const links = await details.locator('a').all();
   await expect(links.length).toEqual(onTheWebOptions.length);
