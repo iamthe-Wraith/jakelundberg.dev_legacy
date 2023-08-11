@@ -22,6 +22,7 @@
   import Details from './Details.svelte';
   import Skills from './Skills.svelte';
   import OnTheWeb from './OnTheWeb.svelte';
+	import GetInTouch from '$components/GetInTouch.svelte';
 
   const animationDuration = 200;
 
@@ -185,7 +186,7 @@
                 </TabPanel>
                 <TabPanel>
                   <Details title="Get in Touch">
-                    get in touch...
+                    <GetInTouch />
                   </Details>
                 </TabPanel>
                 <TabPanel>
