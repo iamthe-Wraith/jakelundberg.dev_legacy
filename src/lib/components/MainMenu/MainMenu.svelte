@@ -22,6 +22,7 @@
   import Details from './Details.svelte';
   import Skills from './Skills.svelte';
   import OnTheWeb from './OnTheWeb.svelte';
+	import GetInTouch from '$components/GetInTouch.svelte';
 
   const animationDuration = 200;
 
@@ -135,7 +136,7 @@
       class="main-menu-container"
       transition:fly={{ y: -50, duration: animationDuration }}
     >
-      <HandDrawnContainer>
+      <HandDrawnContainer background="opaque">
         <div class="main-menu">
           <header>
             <DialogTitle class="main-menu-title">Main Menu</DialogTitle>
@@ -185,7 +186,7 @@
                 </TabPanel>
                 <TabPanel>
                   <Details title="Get in Touch">
-                    get in touch...
+                    <GetInTouch />
                   </Details>
                 </TabPanel>
                 <TabPanel>
@@ -234,8 +235,8 @@
     transform: translate(-50%, -50%);
 
     @media (min-width: 768px) {
-      max-width: 50rem;
-      max-height: 30rem;
+      max-width: 60rem;
+      max-height: 40rem;
     }
   }
 

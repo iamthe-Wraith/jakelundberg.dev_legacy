@@ -60,19 +60,16 @@
 }
 
 body {
+  /* when any colors change, be sure to update /lib/constants/colors as well */
   --dark-100: #000000;
   --dark-300: #0A0A0A;
   --dark-500: #303030;
-
   --light-100: #d1d1d1;
   --light-500: #eaeaea;
   --light-900: #FFFFFF;
-  
-  /* when this changes, be sure to update /lib/constants/colors as well */
   --primary-500: oklch(55.29% 0.215 145.06);
-
-  /* when this changes, be sure to update /lib/constants/colors as well */
   --secondary-500: oklch(80% 0.18 80.47);
+  --danger-500: oklch(54.26% 0.239 29.12);
 
   --font-primary: Lato, sans-serif;
   --font-secondary: Merriweather, sans-serif;
@@ -216,6 +213,13 @@ li:not(:last-child) {
 }
 
 /* helper classes */
+
+.error {
+  color: var(--danger-500);
+  font-size: 0.7rem;
+  line-height: 0.7rem;
+  text-indent: 0;
+}
 
 .no-scrollbar {
   -ms-overflow-style: none;

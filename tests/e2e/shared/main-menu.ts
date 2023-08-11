@@ -187,6 +187,107 @@ async function mainMenuGetInTouchExists(page: Page) {
   const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[2] });
   await expect(skillsHeader).toBeVisible();
   await expect(skillsHeader).toHaveText(mainMenuOptions[2]);
+
+  const container = details.locator('.get-in-touch');
+  await expect(container).toBeVisible();
+
+  const form = container.locator('form');
+  await expect(form).toBeVisible();
+
+  let submit = form.locator('button[type="submit"]');
+  await expect(submit).toBeVisible();
+  await expect(submit).toHaveText('Send');
+  await expect(submit).toBeDisabled();
+
+  // #region email
+  const emailContainer = form.locator('#email-container');
+  await expect(emailContainer).toBeVisible();
+
+  const emailLabel = emailContainer.locator('label');
+  await expect(emailLabel).toBeVisible();
+  await expect(emailLabel).toHaveText('Email');
+
+  const email = emailContainer.locator('input[name="email"]');
+  await expect(email).toBeVisible();
+
+  let emailError = emailContainer.locator('#email-container .error');
+  await expect(emailError).not.toBeVisible();
+
+  await email.focus();
+  await email.press('Tab');
+  
+  emailError = emailContainer.locator('#email-container .error');
+  await expect(emailError).not.toBeVisible();
+
+  await email.focus();
+  await email.type('test');
+  await email.press('Tab');
+
+  emailError = emailContainer.locator('#email-container .error');
+  await expect(emailError).not.toBeVisible();
+  // #endregion
+
+  // #region subject
+  const subjectContainer = form.locator('#subject-container');
+  await expect(subjectContainer).toBeVisible();
+
+  const subjectLabel = subjectContainer.locator('label');
+  await expect(subjectLabel).toBeVisible();
+  await expect(subjectLabel).toHaveText('Subject');
+
+  const subject = subjectContainer.locator('input[name="subject"]');
+  await expect(subject).toBeVisible();
+
+  let subjectError = subjectContainer.locator('#subject-container .error');
+  await expect(subjectError).not.toBeVisible();
+
+  await subject.focus();
+  await subject.press('Tab');
+
+  subjectError = subjectContainer.locator('#subject-container .error');
+  await expect(subjectError).not.toBeVisible();
+
+  await subject.focus();
+  await subject.type('test');
+  await subject.press('Tab');
+
+  subjectError = subjectContainer.locator('#subject-container .error');
+  await expect(subjectError).not.toBeVisible();
+  // #endregion
+
+  // #region message
+  const messageContainer = form.locator('#message-container');
+  await expect(messageContainer).toBeVisible();
+
+  const messageLabel = messageContainer.locator('label');
+  await expect(messageLabel).toBeVisible();
+  await expect(messageLabel).toHaveText('Message');
+
+  const message = messageContainer.locator('textarea[name="message"]');
+  await expect(message).toBeVisible();
+
+  let messageError = messageContainer.locator('#message-container .error');
+  await expect(messageError).not.toBeVisible();
+
+  await message.focus();
+  await message.press('Tab');
+
+  messageError = messageContainer.locator('#message-container .error');
+  await expect(messageError).not.toBeVisible();
+
+  await message.focus();
+  await message.type('test');
+  await message.press('Tab');
+
+  messageError = messageContainer.locator('#message-container .error');
+  await expect(messageError).not.toBeVisible();
+  // #endregion
+
+  const formError = form.locator('.form-error-container');
+  await expect(formError).not.toBeVisible();
+
+  submit = form.locator('button[type="submit"]');
+  await expect(submit).toBeEnabled();
 }
 
 async function mainMenuOnTheWebExists(page: Page) {

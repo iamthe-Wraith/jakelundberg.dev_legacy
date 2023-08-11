@@ -5,13 +5,14 @@
   export let hovered = false;
   export let thickness = 3;
   export let type: 'primary' | 'secondary' | 'neutral' = 'neutral';
+  export let background: 'transparent' | 'semi-transparent' | 'opaque' = 'semi-transparent';
 
   const minorRadius = getRandom(13, 19);
   const majorRadius = getRandom(230, 260);
 </script>
 
 <div
-  class="hand-drawn-container {hovered ? 'hovered' : ''} {hoverable ? 'hoverable' : ''} {type}"
+  class="hand-drawn-container {hovered ? 'hovered' : ''} {hoverable ? 'hoverable' : ''} {type} {background}"
   on:mouseenter
   on:mouseleave
   style="
@@ -30,7 +31,6 @@
     width: var(--hand-drawn-container-width);
     height: var(--hand-drawn-container-height);
     padding: 1rem 1.5rem;
-    background: oklch(0% 0 0 / 0.5);
     border-style: solid;
     transition: border-color 0.25s ease-in-out;
 
@@ -74,6 +74,18 @@
 
     &.neutral {
       border-color: var(--dark-500);
+    }
+
+    &.transparent {
+      background: none;
+    }
+
+    &.semi-transparent {
+      background: oklch(0% 0 0 / 0.5);
+    }
+
+    &.opaque {
+      background: oklch(0% 0 0 / 1);
     }
   }
 </style>
