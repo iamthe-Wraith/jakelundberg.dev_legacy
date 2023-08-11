@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance, applyAction } from '$app/forms';
+	import type { ActionResult } from '@sveltejs/kit';
   import Button from "./Button.svelte";
   import Input from "./Input.svelte";
   import TextArea from "./TextArea.svelte";
@@ -18,6 +19,7 @@
 
   let isOkayToSend = false;
   let formData: IFormData;
+  let formError = '';
 
   resetFormData();
 
@@ -35,15 +37,40 @@
     }
   }
 
+  function onEnhancedSubmitResponse(result: ActionResult<Record<string, unknown> | undefined, Record<string, unknown> | undefined>) {
+    if (result.type === 'success') {
+      resetFormData();
+      console.log('message sent successfully');
+    }
+    
+    if (result.type ==='failure') {
+      if (result.data?.field) {
+        const { field, message } = result.data;
+        formData[field as keyof IFormData].error = message as string;
+      } else {
+        console.log('failure: ', result);
+        formError = result.data?.message as string;
+      }
+    }
+
+    if (result.type === 'error') {
+      formError = result.error?.message;
+    }
+
+    applyAction(result);
+  }
+
   function onKeypress(field: keyof typeof formData) {
     return function(e: Event) {
       const { value } = e.target as HTMLInputElement;
+      formError = '';
       formData[field].error = '';
       formData[field].value = value;
     }
   }
 
   function resetFormData() {
+    formError = '';
     formData = {
       email: {
         value: '',
@@ -69,22 +96,7 @@
     method="POST"
     action="/get-in-touch"
     use:enhance={() => {
-      console.log('submitting...');
-
-      return ({ result }) => {
-        console.log('submitted!');
-
-        if (result.type === 'success') {
-          resetFormData();
-          console.log('message sent successfully');
-        }
-        
-        if (result.type ==='failure' || result.type === 'error') {
-          console.log('error: ', result);
-        }
-
-        applyAction(result);
-      }
+      return ({ result }) => onEnhancedSubmitResponse(result);
     }}
   >
     <Input
@@ -125,6 +137,12 @@
       on:keypress={onKeypress('message')}
     />
 
+    {#if formError}
+      <div class="form-error-container">
+        <p class="error">{formError}</p>
+      </div>
+    {/if}
+
     <div class="buttons-container">
       <Button
         type="submit"
@@ -161,6 +179,10 @@
       @media (min-width: 768px) {
         --textarea-height: 10rem;
       }
+    }
+
+    .form-error-container {
+      text-align: center;
     }
   }
 </style>
