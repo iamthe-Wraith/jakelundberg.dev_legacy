@@ -12,7 +12,10 @@
     const majorRadius = getRandom(230, 260);  
   </script>
   
-  <div class="textarea-container">
+  <div
+    class="textarea-container"
+    id={`${id}-container`}
+  >
     {#if !!label}
       <label for={id}>
         { label }

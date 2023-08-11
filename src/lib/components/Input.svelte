@@ -13,7 +13,10 @@ import { getRandom } from "$lib/utils/number";
   const majorRadius = getRandom(230, 260);  
 </script>
 
-<div class="input-container">
+<div
+  class="input-container"
+  id={`${id}-container`}
+>
   {#if !!label}
     <label for={id}>
       { label }
