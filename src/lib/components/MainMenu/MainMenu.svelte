@@ -154,12 +154,12 @@
                   <svg class="main-menu-rough-engageable-option" />
                   <svg class="main-menu-rough-engageable-option-dt" />
                 </Tab>
-                <Tab class={({selected}) => selected ? "main-menu-option-selected" : ""}>
+                <!-- <Tab class={({selected}) => selected ? "main-menu-option-selected" : ""}>
                   <Icon icon="ion:help" />
                   <span>Secrets Found</span>
                   <svg class="main-menu-rough-engageable-option" />
                   <svg class="main-menu-rough-engageable-option-dt" />
-                </Tab>
+                </Tab> -->
                 <Tab class={({selected}) => selected ? "main-menu-option-selected" : ""}>
                   <Icon icon="ion:mail-outline" />
                   <span>Get in Touch</span>
@@ -179,11 +179,11 @@
                     <Skills />
                   </Details>
                 </TabPanel>
-                <TabPanel>
+                <!-- <TabPanel>
                   <Details title="Secrets Found">
                     some secrets...
                   </Details>
-                </TabPanel>
+                </TabPanel> -->
                 <TabPanel>
                   <Details title="Get in Touch">
                     <GetInTouch />
