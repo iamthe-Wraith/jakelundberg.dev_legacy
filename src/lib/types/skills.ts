@@ -1,4 +1,5 @@
 export interface ISkill {
   name: string;
-  pending?: boolean;
+  image: string;
+  comfortLevel: number; // a number between 1 and 5
 }

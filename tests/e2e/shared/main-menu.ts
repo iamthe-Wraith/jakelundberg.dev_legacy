@@ -159,6 +159,17 @@ async function mainMenuSkillsExists(page: Page) {
 
   const skills = await details.locator('.skill').all();
   await expect(skills.length).toBeGreaterThan(0);
+
+  for (let i = 0; i < skills.length; i++) {
+    const skill = skills[i];
+    await expect(skill).toBeVisible();
+    
+    const img = skill.locator('img');
+    await expect(img).toBeVisible();
+
+    const name = skill.locator('.skill-name');
+    await expect(name).toBeVisible();
+  }
 }
 
 // async function mainMenuSecretsFoundExists(page: Page) {
