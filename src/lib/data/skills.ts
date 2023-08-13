@@ -78,7 +78,7 @@ export const skills: ISkill[] = [
   },
   {
     name: 'React Native',
-    image: 'react-native.png',
+    image: 'react.png',
     comfortLevel: 2,
   },
   {
