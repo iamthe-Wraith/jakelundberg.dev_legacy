@@ -10,3 +10,5 @@
 export const primaryColor = 'oklch(55.29% 0.215 145.06)';
 
 export const secondaryColor = 'oklch(80% 0.18 80.47)';
+
+export const dark500 = '#303030';

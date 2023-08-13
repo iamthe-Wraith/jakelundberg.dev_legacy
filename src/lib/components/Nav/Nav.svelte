@@ -8,6 +8,7 @@
   import { navItems as ni, type INavItem } from './nav-config';
 	import { secondaryColor } from '$lib/constants/colors';
 	import { removeChildren } from '$lib/utils/dom';
+  import { mainMenu } from '$lib/stores/main-menu';
 
   let navItems = [...ni];
   let mounted = false;
@@ -104,6 +105,16 @@
     checkbox.checked = false;
   }
 
+  function onMainMenuClick() {
+    checkbox.checked = false;
+
+    if ($mainMenu.isOpen) {
+      mainMenu.close();
+    } else {
+      mainMenu.open();
+    }
+  }
+
   function onToggleChange(e: Event) {
     const target = e.target as HTMLInputElement;
 
@@ -143,7 +154,7 @@
 </label>
 
 <div class="nav-overlay">
-  <nav class="primary-nav">  
+  <nav class="primary-nav">
     {#each navItems as navItem}
       <div class="nav-item-container">
         <a
@@ -183,6 +194,19 @@
     >
       {engagedItemTitle}
     </div>
+
+    <div class="other-nav">
+      <button
+        class="other-nav-item main-menu-nav-item"
+        aria-label="Main Menu"
+        on:click={onMainMenuClick}
+      >
+        Main Menu
+        <span>
+          <Icon icon="ion:ellipsis-horizontal-circle-outline" />
+        </span>
+      </button>
+    </div>
   </nav>
 </div>
 
@@ -204,7 +228,7 @@
       }
     }
 
-    @media (min-width: 769px) {
+    @media (min-width: 768px) {
       display: none;
     }
   }
@@ -212,7 +236,7 @@
   .nav-toggle {
     position: relative;
     font-size: 2rem;
-    color: white;
+    color: var(--light-500);
     line-height: 0;
     z-index: 1001;
 
@@ -224,7 +248,7 @@
       display: none;
     }
 
-    @media (min-width: 769px) {
+    @media (min-width: 768px) {
       display: none;
     }
   }
@@ -242,7 +266,7 @@
     visibility: hidden;
     transition: .25s ease-in-out;
 
-    @media (min-width: 769px) {
+    @media (min-width: 768px) {
       position: static;
       display: block;
       flex-grow: 0;
@@ -269,7 +293,7 @@
     /* background: oklch(0% 0 3 / 45%); */
     background-image: linear-gradient(0deg in oklab, oklch(0% 0 3 / 35%) 0%, oklch(0% 0 3 / 95%) 100%);
 
-    @media (min-width: 769px) {
+    @media (min-width: 768px) {
       flex-direction: row;
       align-items: center;
       justify-content: center;
@@ -285,9 +309,10 @@
     justify-content: flex-end;
   }
 
-  .nav-item-label-link {
+  .nav-item-label-link,
+  .other-nav-item {
     position: relative;
-    color: white;
+    color: var(--light-500);
     margin-right: 0.5rem;
     padding: 0 0.5rem;
     font-family: var(--font-primary);
@@ -311,7 +336,7 @@
       pointer-events: none;
     }
 
-    @media (min-width: 769px) {
+    @media (min-width: 768px) {
       position: absolute;
       top: 0;
       left: 0;
@@ -322,7 +347,8 @@
     }
   }
 
-  .nav-item-icon-link {
+  .nav-item-icon-link,
+  .other-nav-item {
     position: relative;
     display: flex;
     align-items: center;
@@ -377,7 +403,7 @@
 
     span {
       font-size: 2rem;
-      color: white;
+      color: var(--light-500);
       transition: 0.25s ease-in-out;
       line-height: 0;
     }
@@ -394,8 +420,44 @@
     text-align: right;
     overflow: hidden;
 
-    @media (min-width: 769px) {
+    @media (min-width: 768px) {
       display: block;
+    }
+  }
+
+  .other-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 70%;
+    margin: 1rem 0;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--dark-500);
+  }
+
+  .other-nav-item {
+    display: flex;
+    align-items: center;
+    width: unset;
+    margin: 0;
+    padding: 0.5rem 0;
+    background: none;
+    border: none;
+    outline: none;
+
+    span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      margin-left: 1rem;
+    }
+  }
+
+  .main-menu-nav-item {
+    @media (hover: hover), (-moz-touch-enabled: 0), (pointer:fine) {
+      display: none;
     }
   }
 </style>

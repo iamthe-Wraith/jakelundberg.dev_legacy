@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { navItems } from '../../src/lib/components/Nav/nav-config';
+import { desktopNavExists, mobileNavExists } from './shared/nav';
+import { desktopMainMenuExists, mobileMainMenuExists } from './shared/main-menu';
 
 const path = '/projects';
 
@@ -9,78 +10,19 @@ test.describe('projects', () => {
   });
 
   test('has mobile navigation', async ({ page, isMobile }) => {
-    const navToggle = page.locator('.nav-toggle');
-    const navOverlay = page.locator('.nav-overlay');
-    const nav = page.locator('nav');
-    const navItemContainers = await nav.locator('.nav-item-container').all();
-
-    if (isMobile) {
-      await expect(navToggle).toBeVisible();
-      await expect(navOverlay).not.toBeVisible();
-      await expect(nav).not.toBeVisible();
-
-      await navToggle.click();
-
-      await expect(navOverlay).toBeVisible();
-      await expect(navOverlay).toHaveCSS('position', 'fixed');
-
-      await expect(nav).toBeVisible();
-
-      for (let i = 0; i < navItemContainers.length; i++) {
-        const navItemContainer = navItemContainers[i];
-        const navItem = navItems[i];
-        await expect(navItemContainer).toBeVisible();
-  
-        const labelLink = navItemContainer.locator('.nav-item-label-link');
-        await expect(labelLink).toBeVisible();
-        await expect(labelLink).toHaveAttribute('href', navItem.href);
-
-        const iconLink = navItemContainer.locator('.nav-item-icon-link');
-        await expect(iconLink).toBeVisible();
-        await expect(iconLink).toHaveAttribute('href', navItem.href);
-
-        if (navItem.href === path) {
-          await expect(labelLink).toHaveClass(/active-label/);
-          await expect(iconLink).toHaveClass(/active/);
-        }
-      }
-    }
+    if (isMobile) await mobileNavExists(page, path);
   });
 
   test('has desktop navigation', async ({ page, isMobile }) => {
-    const navToggle = page.locator('.nav-toggle');
-    const navOverlay = page.locator('.nav-overlay');
-    const nav = page.locator('nav');
-    const navItemContainers = await nav.locator('.nav-item-container').all();
+    if (!isMobile) await desktopNavExists(page, path);
+  });
 
-    if (!isMobile) {
-      await expect(navToggle).not.toBeVisible();
+  test('has a main menu on mobile', async ({ page, isMobile }) => {
+    if (isMobile) await mobileMainMenuExists(page);
+  });
 
-      await expect(navOverlay).toBeVisible();
-      await expect(navOverlay).toHaveCSS('position', 'static');
-
-      await expect(nav).toBeVisible();
-      await expect(nav).toHaveCSS('position', 'relative');
-  
-      for (let i = 0; i < navItemContainers.length; i++) {
-        const navItemContainer = navItemContainers[i];
-        const navItem = navItems[i];
-        await expect(navItemContainer).toBeVisible();
-  
-        const labelLink = navItemContainer.locator('.nav-item-label-link');
-        await expect(labelLink).not.toBeVisible();
-        await expect(labelLink).toHaveAttribute('href', navItem.href);
-
-        const iconLink = navItemContainer.locator('.nav-item-icon-link');
-        await expect(iconLink).toBeVisible();
-        await expect(iconLink).toHaveAttribute('href', navItem.href);
-
-        if (navItem.href === path) {
-          await expect(labelLink).toHaveClass(/active-label/);
-          await expect(iconLink).toHaveClass(/active/);
-        }
-      }
-    }
+  test('has a main menu on desktop', async ({ page, isMobile }) => {
+    if (!isMobile) await desktopMainMenuExists(page);
   });
 
   test('displays intro header and text on mobile', async ({ page, isMobile }) => {
@@ -204,6 +146,9 @@ test.describe('projects', () => {
         await expect(header).toBeVisible();
 
         await header.click();
+
+        // wait for animation to complete so do not get elements from previous project
+        await page.waitForTimeout(300);
 
         const desktopProject = page.locator('.details .project');
         await expect(desktopProject).toBeVisible();

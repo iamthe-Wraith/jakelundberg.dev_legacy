@@ -6,6 +6,7 @@
   import { PUBLIC_APP_ENV } from '$env/static/public';
   import { assets } from '$app/paths';
 	import type { ILoad } from './types';
+	import { mainMenu } from '$lib/stores/main-menu';
 
   interface IFlame {
     mesh: THREE.Mesh;
@@ -122,9 +123,11 @@
 
     stats?.update();
 
-    camera.lookAt(mouse.x * viewabilityThreshold, mouse.y * viewabilityThreshold, 0);
-
-    animateTorch();
+    if (!$mainMenu.isOpen) {
+      camera.lookAt(mouse.x * viewabilityThreshold, mouse.y * viewabilityThreshold, 0);
+  
+      animateTorch();
+    }
 
     render();
   }

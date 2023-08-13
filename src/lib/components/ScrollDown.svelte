@@ -3,6 +3,7 @@
   import rough from 'roughjs';
 	import { secondaryColor } from "$lib/constants/colors";
 	import { removeChildren } from "$lib/utils/dom";
+	import { mainMenu } from "$lib/stores/main-menu";
 
   const maxAttempts = 10;
 
@@ -40,7 +41,7 @@
   }
 </script>
 
-<div class="scroll-down">
+<div class="scroll-down {$mainMenu.isOpen ? '' : 'animated'}">
   <svg id="scroll-arrow" />
 </div>
 
@@ -62,7 +63,10 @@
   .scroll-down {
     width: 4rem;
     height: 2rem;
-    animation: hover-up-and-down 1.5s infinite ease-in-out;
+    
+    &.animated {
+      animation: hover-up-and-down 1s ease-in-out infinite;
+    }
 
     svg {
       width: 100%;
