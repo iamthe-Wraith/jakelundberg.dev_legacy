@@ -139,11 +139,12 @@ export const projects: IProject[] = [
     desc: `
       <p>A CLI tool to automate the process of creating new A/B tests from internal libraries.</p>
     
-      <p>Before Igor, each member of the team was using their own copies of templates and everyone's was different. No one was sharing code and results were quite inconsistent. Igor standardized and automated the entire process. Now, every dev on the team was using the same, most up to date internal code libraries, and the process of creating a new test was as simple as running a single command.</p>
+      <p>Before Igor, each member of the team was using their own copies of templates and everyone's was different. Very few people were sharing code and results were quite inconsistent. Igor standardized and automated the entire process. Suddenly, every dev on the team was using the same, most up to date internal code libraries, and the process of creating a new test was as simple as running a single command.</p>
     
-      <p>With this standardization and automation in place, not only were we able to increase our output significantly, we were also able to begin supporting larger, more complex tests for a larger number of clients because now we could have separate libraries for each client, and Igor would automatically pull in the correct library based on the client's id. No longer did the knowledge of a specific client's codebase life with a single developer. Now anyone could work on any client's codebase without needing significant onboarding.</p>
-    
-      <p>I decided to build the tool in Node because it was a language I was already familiar with, and our team was made up entirely of Javascript developers, so it be a language everyone could contribute to without first needing to learn a new language.</p>`,
+      <p>With this standardization and automation in place, not only were we able to increase our output significantly, we were also able to begin supporting larger, more complex tests for a larger number of clients because now we could have separate libraries for each client, and Igor would automatically pull in the correct library based on the client's id. No longer did the knowledge of a specific client's codebase live with a single developer. Now anyone could work on any client's codebase without needing significant onboarding.</p>
+      
+      <h3>Why Node?</h3>
+      <p>The reason I chose to use Node for this project was because we were a company full of Javascript developers and I knew the best chance of getting others to use and contribute to the project was to be if it was written in a language they were already familiar with.</p>`,
     tags: ['node', 'javascript'],
   }
 ];
