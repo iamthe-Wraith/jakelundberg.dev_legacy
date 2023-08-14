@@ -18,9 +18,10 @@ export const projects: IProject[] = [
   },
   {
     id: 'yumyum-recipes',
-    title: 'Yum Yum Recipes',
+    title: 'YumYum Recipes',
     urls: {
-      github: 'https://github.com/iamthe-Wraith/yumyum-recipes'
+      github: 'https://github.com/iamthe-Wraith/yumyum-recipes',
+      url: 'https://yumyum.jakelundberg.dev',
     },
     desc: `
       <p>A recipe and meal planning app I built to solve a problem for my spouse.</p>
@@ -35,7 +36,17 @@ export const projects: IProject[] = [
         <li>To specify a number of people to feed, and have the ingredients automatically scaled to the correct amount based on the meal's serving size.</li>
       </ol>
     
-      <p>Since this was just a personal project, I took the opportunity to learn a few new technologies. So I chose to use SvelteKit and Postgres. SvelteKit because it was something I had been wanting to learn for a while. And Postgres because I knew of its popularity in the industry, plus I missed relative databases (I'd been working primarily with MongoDB for quite a while) and knew my schema would require relations, so it seemed like an appropriate choice.</p>`,
+      <p>Since this was just a personal project, I took the opportunity to learn a few new technologies. So I chose to use SvelteKit and Postgres. SvelteKit because it was something I had been wanting to learn for a while. And Postgres because I knew of its popularity in the industry, plus I missed relative databases (I'd been working primarily with MongoDB for quite a while) and knew my schema would require relations, so it seemed like an appropriate choice.</p>
+
+      <p>If you would you like to try it out, you can log in with the following credentials:</p>
+      
+      <p style="text-indent: 0; text-align: center">
+        <span style="display: inline-block; width: 5rem; margin-right: 1rem; color: var(--primary-500); text-align: right">Username:</span>
+        <span style="display: inline-block; width: 14rem; text-align: left">demo@jakelundberg.dev</span>
+        <br />
+        <span style="display: inline-block; width: 5rem; margin-right: 1rem; color: var(--primary-500); text-align: right">Password:</span>
+        <span style="display: inline-block; width: 14rem; text-align: left">Demo321!</span>
+      </p>`,
     tags: ['sveltekit', 'typescript', 'postgres', 'prisma'],
   },
   {
