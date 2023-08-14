@@ -278,6 +278,8 @@
                   >
                     {#if key === 'github'}
                       <Icon icon="ion:logo-github" />
+                    {:else if key === 'download'}
+                      <Icon icon="ion:cloud-download-outline" />
                     {:else}
                       <Icon icon="ion:browsers" />
                     {/if}
@@ -554,5 +556,14 @@
     @media (min-width: 768px) {
       display: flex;
     }
+  }
+
+  * :global(h3) {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-500);
+    line-height: 1.4rem;
+    text-align: left;
   }
 </style>
