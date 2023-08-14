@@ -62,6 +62,47 @@ export const projects: IProject[] = [
     tags: ['sveltekit', 'typescript', 'postgres', 'prisma'],
   },
   {
+    id: 'wraithnet',
+    title: 'Wraithnet',
+    urls: {
+      github: 'https://github.com/iamthe-Wraith/wraithnet/tree/main',
+      download: 'https://github.com/iamthe-Wraith/wraithnet/releases',
+    },
+    desc: `
+      <p>This is the client side of the Wraithnet project.</p>
+
+      <p>Wraithnet is something I've been working on for a very long time now, and it continues to evolve and be a work in progress.</p>
+      
+      <p>It all started with an idea that I wanted to have 1 customizable app to handle a variety of tasks instead of needing to have multiple apps to handle them all. Over the years, those tasks have changed, but the Wraithnet idea has never left me.</p>
+      
+      <p>In this iteration of the project, I needed to update the features of the projects, as I no longer needed many of the old ones. I also wanted to update it with modern frontend web development principles, so I decided to rewrite the entire frontend from scratch.</p>
+      
+      <h3>Why Electron?</h3>
+      <p>I had been curious about Electron for a while at this point, and I thought this would be a good opportunity to learn more about it. I knew I wanted to add some features that would require native functionality (like accessing the file system), I also wanted to be able to use the app on multiple platforms, so Electron seemed like a good choice.</p>
+      
+      <h3>Why Typescript?</h3>
+      <p>I've been using Typescript for a while now, and I honestly couldn't tell you the last time I worked on a project without it. I find tremendous value in the type safety and intellisense it provides, especially when working on teams. I've found that it helps me write better code, and to catch errors before they happen.</p>
+      
+      <h3>Why React?</h3>
+      <p>I was already familiar with React, and new that my design was going to require a single page structure, so it was an obvious choice for me on this project.</p>
+      
+      <h3>Why MobX?</h3>
+      <p>Unless there is a strong reason to turn to another tool, MobX is generally my go to state management tool. I really like it's observability and how it encourages a similar structure and breakdown to Object Oriented Programming.</p>
+      
+      <h3>Try the Demo!</h3>
+      <p>If you would you like to try out Wraithnet, you can log in with the following credentials after downloading the app:</p>
+      
+      <p style="text-indent: 0; text-align: center">
+        <span style="display: inline-block; width: 5rem; margin-right: 1rem; color: var(--primary-500); text-align: right">Username:</span>
+        <span style="display: inline-block; width: 14rem; text-align: left">demo</span>
+        <br />
+        <span style="display: inline-block; width: 5rem; margin-right: 1rem; color: var(--primary-500); text-align: right">Password:</span>
+        <span style="display: inline-block; width: 14rem; text-align: left">Demo321!</span>
+      </p>`,
+
+    tags: ['electron', 'typescript', 'react', 'mobx'],
+  },
+  {
     id: 'wraithnet-api',
     title: 'Wraithnet API',
     urls: {

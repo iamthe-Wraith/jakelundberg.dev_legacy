@@ -278,6 +278,8 @@
                   >
                     {#if key === 'github'}
                       <Icon icon="ion:logo-github" />
+                    {:else if key === 'download'}
+                      <Icon icon="ion:cloud-download-outline" />
                     {:else}
                       <Icon icon="ion:browsers" />
                     {/if}
