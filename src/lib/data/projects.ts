@@ -38,7 +38,19 @@ export const projects: IProject[] = [
     
       <p>Since this was just a personal project, I took the opportunity to learn a few new technologies. So I chose to use SvelteKit and Postgres. SvelteKit because it was something I had been wanting to learn for a while. And Postgres because I knew of its popularity in the industry, plus I missed relative databases (I'd been working primarily with MongoDB for quite a while) and knew my schema would require relations, so it seemed like an appropriate choice.</p>
 
-      <p>If you would you like to try it out, you can log in with the following credentials:</p>
+      <h3>Why SvelteKit?</h3>
+      <p>I had been wanting to learn more about Svelte and SvelteKit for a while, and since this was a personal project, originally just to help my spouse and I plan meals, I figured it was a good opportunity to learn something new.</p>
+
+      <p>Throughout this project I fell in love with Svelte and SvelteKit and I'm excited to use it for future projects.</p>
+
+      <h3>Why Typescript</h3>
+      <p>I've been using Typescript for a while now, and I honestly couldn't tell you the last time I worked on a project without it. I find tremendous value in the type safety and intellisense it provides, especially when working on teams. I've found that it helps me write better code, and to catch errors before they happen.</p>
+
+      <h3>Why Postgres and Prisma?</h3>
+      <p>I had been using MongoDB for a long time, and while it's great for many things, I knew I was going to need to do some relational data modeling for this project, so I decided to dive back into the workd of relational databases. I had heard about Postgres for a long time, but never really had a reason to use it, so I took this opportunity to learn more about it. I'm glad I did! I really liked working with Postgres and Prisma. The automatically generated types and queries were a huge time saver, and I found the Prisma documentation to be very helpful.</p>
+
+      <h3>Try the Demo!</h3>
+      <p>If you would you like to try out YumYum, you can log in with the following credentials:</p>
       
       <p style="text-indent: 0; text-align: center">
         <span style="display: inline-block; width: 5rem; margin-right: 1rem; color: var(--primary-500); text-align: right">Username:</span>
