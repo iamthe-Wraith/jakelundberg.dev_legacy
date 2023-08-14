@@ -50,6 +50,22 @@ export const projects: IProject[] = [
     tags: ['sveltekit', 'typescript', 'postgres', 'prisma'],
   },
   {
+    id: 'wraithnet-api',
+    title: 'Wraithnet API',
+    urls: {
+      github: 'https://github.com/iamthe-Wraith/wraithnet-api',
+    },
+    desc: `
+      <p>A RESTful API for the Wraithnet project.</p>
+      
+      <p>Wraithnet is something I have been working on for a very long time now, and it continues to evolve and be a work in progress.</p>
+      
+      <p>It all started with an idea that I wanted to have 1 customizable app to handle a variety of tasks instead of needing to have multiple apps to handle them all. Over the years, those tasks have changed, but the Wraithnet idea has never left me.</p>
+      
+      <p>In this iteration, I set out to implement the backend of the project using Node, Typescript, Express and MongoDB to update it with modern development practices and increase it's efficiency and scalability. This proved very useful as I built a new feature into the app that scaled a bit quicker than I had anticipated.</p>`,
+    tags: ['node, typescript', 'mongodb', 'mongoose', 'express', 'jwt'],
+  },
+  {
     id: 'igor',
     title: 'Igor',
     urls: {
@@ -60,7 +76,7 @@ export const projects: IProject[] = [
     
       <p>Before Igor, each member of the team was using their own copies of templates and everyone's was different. No one was sharing code and results were quite inconsistent. Igor standardized and automated the entire process. Now, every dev on the team was using the same, most up to date internal code libraries, and the process of creating a new test was as simple as running a single command.</p>
     
-      <p>With this standardization and automation in place, non only were we able to increase our output significantly, we were also able to begin supporting larger, more complex tests for a larger number of clients because now we could have separate libraries for each client, and Igor would automatically pull in the correct library based on the client's id. No longer did the knowledge of a specific client's codebase life with a single developer. Now anyone could work on any client's codebase without needing significant onboarding.</p>
+      <p>With this standardization and automation in place, not only were we able to increase our output significantly, we were also able to begin supporting larger, more complex tests for a larger number of clients because now we could have separate libraries for each client, and Igor would automatically pull in the correct library based on the client's id. No longer did the knowledge of a specific client's codebase life with a single developer. Now anyone could work on any client's codebase without needing significant onboarding.</p>
     
       <p>I decided to build the tool in Node because it was a language I was already familiar with, and our team was made up entirely of Javascript developers, so it be a language everyone could contribute to without first needing to learn a new language.</p>`,
     tags: ['node', 'javascript'],
