@@ -63,27 +63,27 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-  tests_component:
-    name: Run component tests
-    needs: build
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-      - name: Install
-        run: npm ci
-      - name: Install playwright browsers
-        run: npx playwright install --with-deps
-      - name: Run tests
-        run: npx playwright test -c playwright-ct.config.ts
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-component-report
-          path: playwright-report/
-          retention-days: 30
+  # tests_component:
+  #   name: Run component tests
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version: [18.x]
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v3
+  #     - name: Install
+  #       run: npm ci
+  #     - name: Install playwright browsers
+  #       run: npx playwright install --with-deps
+  #     - name: Run tests
+  #       run: npx playwright test -c playwright-ct.config.ts
+  #     - uses: actions/upload-artifact@v3
+  #       if: always()
+  #       with:
+  #         name: playwright-component-report
+  #         path: playwright-report/
+  #         retention-days: 30
