@@ -121,6 +121,7 @@
     img {
       width: var(--social-logo-size);
       height: var(--social-logo-size);
+      margin-bottom: 0.5rem;
       border-radius: 0.5rem;
       overflow: hidden;
     }
