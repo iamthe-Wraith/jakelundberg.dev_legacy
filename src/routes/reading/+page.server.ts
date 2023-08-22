@@ -4,5 +4,5 @@ import { articles } from './articles';
 import { books } from './books';
 
 export const load = wrapServerLoadWithSentry(async () => {
-  return { articles, books };
+	return { articles, books };
 }) satisfies PageServerLoad;

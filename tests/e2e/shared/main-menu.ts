@@ -2,174 +2,177 @@ import { expect, type Page } from '@playwright/test';
 import { openMobileNav } from './nav';
 
 const mainMenuOptions = [
-  'Skills', 
-  // 'Secrets Found', 
-  'Get in Touch', 
-  'On the Web'
+	'Skills',
+	// 'Secrets Found',
+	'Get in Touch',
+	'On the Web'
 ];
 
 export async function openMobileMainMenu(page: Page) {
-  await openMobileNav(page);
+	await openMobileNav(page);
 
-  const mainMenuBtn = page.locator('.main-menu-nav-item');
-  await expect(mainMenuBtn).toBeVisible();
-  mainMenuBtn.click();
+	const mainMenuBtn = page.locator('.main-menu-nav-item');
+	await expect(mainMenuBtn).toBeVisible();
+	mainMenuBtn.click();
 }
 
-export async function openDesktopMainMenu(page: Page, method: 'escapeKey' | 'indicator' = 'escapeKey') {
-  if (method === 'escapeKey') {
-    await page.keyboard.press('Escape');
-  }
+export async function openDesktopMainMenu(
+	page: Page,
+	method: 'escapeKey' | 'indicator' = 'escapeKey'
+) {
+	if (method === 'escapeKey') {
+		await page.keyboard.press('Escape');
+	}
 
-  if (method === 'indicator') {
-    const pressEscapeIndicator = page.locator('.press-escape');
-    await expect(pressEscapeIndicator).toBeVisible();
-    await expect(pressEscapeIndicator).toHaveText('ESC');
-    pressEscapeIndicator.click();
-  }
-};
+	if (method === 'indicator') {
+		const pressEscapeIndicator = page.locator('.press-escape');
+		await expect(pressEscapeIndicator).toBeVisible();
+		await expect(pressEscapeIndicator).toHaveText('ESC');
+		pressEscapeIndicator.click();
+	}
+}
 
 export async function mobileMainMenuExists(page: Page) {
-  const dialog = page.locator('.dialog');
-  await expect(dialog).not.toBeVisible();
+	const dialog = page.locator('.dialog');
+	await expect(dialog).not.toBeVisible();
 
-  let overlay = page.locator('.main-menu-overlay');
-  await expect(overlay).not.toBeVisible();
+	let overlay = page.locator('.main-menu-overlay');
+	await expect(overlay).not.toBeVisible();
 
-  let mainMenu = page.locator('.main-menu');
-  await expect(mainMenu).not.toBeVisible();      
+	let mainMenu = page.locator('.main-menu');
+	await expect(mainMenu).not.toBeVisible();
 
-  await openMobileMainMenu(page);
+	await openMobileMainMenu(page);
 
-  overlay = page.locator('.main-menu-overlay');
-  await expect(overlay).not.toBeVisible();
+	overlay = page.locator('.main-menu-overlay');
+	await expect(overlay).not.toBeVisible();
 
-  mainMenu = page.locator('.main-menu');
-  await expect(mainMenu).toBeVisible();
+	mainMenu = page.locator('.main-menu');
+	await expect(mainMenu).toBeVisible();
 
-  const header = mainMenu.locator('header');
-  await expect(header).toBeVisible();
+	const header = mainMenu.locator('header');
+	await expect(header).toBeVisible();
 
-  const pressEscapeIndicator = page.locator('.press-escape');
-  await expect(pressEscapeIndicator).not.toBeVisible();
+	const pressEscapeIndicator = page.locator('.press-escape');
+	await expect(pressEscapeIndicator).not.toBeVisible();
 
-  const title = header.locator('h2');
-  await expect(title).toBeVisible();
-  await expect(title).toHaveText('Main Menu');
+	const title = header.locator('h2');
+	await expect(title).toBeVisible();
+	await expect(title).toHaveText('Main Menu');
 
-  const desc = header.locator('.main-menu-description');
-  await expect(desc).toBeDefined();
-  await expect(desc).not.toBeVisible();
+	const desc = header.locator('.main-menu-description');
+	await expect(desc).toBeDefined();
+	await expect(desc).not.toBeVisible();
 
-  const main = mainMenu.locator('main');
-  await expect(main).toBeVisible();
+	const main = mainMenu.locator('main');
+	await expect(main).toBeVisible();
 
-  const options = await main.locator('.main-menu-options button').all();
-  await expect(options).toHaveLength(mainMenuOptions.length);
+	const options = await main.locator('.main-menu-options button').all();
+	await expect(options).toHaveLength(mainMenuOptions.length);
 
-  for (let i = 0; i < options.length; i++) {
-    const mainMenuOption = mainMenuOptions[i];
-    const option = options[i];
+	for (let i = 0; i < options.length; i++) {
+		const mainMenuOption = mainMenuOptions[i];
+		const option = options[i];
 
-    if (i === 0) await expect(option).toHaveClass(/main-menu-option-selected/);
+		if (i === 0) await expect(option).toHaveClass(/main-menu-option-selected/);
 
-    await expect(option).toBeVisible();
-    await expect(option).toHaveText(mainMenuOption);
-  }
+		await expect(option).toBeVisible();
+		await expect(option).toHaveText(mainMenuOption);
+	}
 
-  await mainMenuSkillsExists(page);
-  // await mainMenuSecretsFoundExists(page);
-  await mainMenuGetInTouchExists(page);
-  await mainMenuOnTheWebExists(page);
+	await mainMenuSkillsExists(page);
+	// await mainMenuSecretsFoundExists(page);
+	await mainMenuGetInTouchExists(page);
+	await mainMenuOnTheWebExists(page);
 }
 
 export async function desktopMainMenuExists(page: Page) {
-  const dialog = page.locator('.dialog');
-  await expect(dialog).not.toBeVisible();
+	const dialog = page.locator('.dialog');
+	await expect(dialog).not.toBeVisible();
 
-  let overlay = page.locator('.main-menu-overlay');
-  await expect(overlay).not.toBeVisible();
+	let overlay = page.locator('.main-menu-overlay');
+	await expect(overlay).not.toBeVisible();
 
-  let mainMenu = page.locator('.main-menu');
-  await expect(mainMenu).not.toBeVisible();   
+	let mainMenu = page.locator('.main-menu');
+	await expect(mainMenu).not.toBeVisible();
 
-  const pressEscapeIndicator = page.locator('.press-escape');
-  await expect(pressEscapeIndicator).toBeVisible();
+	const pressEscapeIndicator = page.locator('.press-escape');
+	await expect(pressEscapeIndicator).toBeVisible();
 
-  await openDesktopMainMenu(page);
+	await openDesktopMainMenu(page);
 
-  overlay = page.locator('.main-menu-overlay');
-  await expect(overlay).toBeVisible();
+	overlay = page.locator('.main-menu-overlay');
+	await expect(overlay).toBeVisible();
 
-  mainMenu = page.locator('.main-menu');
-  await expect(mainMenu).toBeVisible();
+	mainMenu = page.locator('.main-menu');
+	await expect(mainMenu).toBeVisible();
 
-  const header = mainMenu.locator('header');
-  await expect(header).toBeVisible();
+	const header = mainMenu.locator('header');
+	await expect(header).toBeVisible();
 
-  const title = header.locator('h2');
-  await expect(title).toBeVisible();
-  await expect(title).toHaveText('Main Menu');
+	const title = header.locator('h2');
+	await expect(title).toBeVisible();
+	await expect(title).toHaveText('Main Menu');
 
-  const desc = header.locator('.main-menu-description');
-  await expect(desc).toBeDefined();
-  await expect(desc).toBeVisible();
+	const desc = header.locator('.main-menu-description');
+	await expect(desc).toBeDefined();
+	await expect(desc).toBeVisible();
 
-  const main = mainMenu.locator('main');
-  await expect(main).toBeVisible();
+	const main = mainMenu.locator('main');
+	await expect(main).toBeVisible();
 
-  const options = await main.locator('.main-menu-options button').all();
-  await expect(options).toHaveLength(mainMenuOptions.length);
+	const options = await main.locator('.main-menu-options button').all();
+	await expect(options).toHaveLength(mainMenuOptions.length);
 
-  for (let i = 0; i < options.length; i++) {
-    const mainMenuOption = mainMenuOptions[i];
-    const option = options[i];
+	for (let i = 0; i < options.length; i++) {
+		const mainMenuOption = mainMenuOptions[i];
+		const option = options[i];
 
-    if (i === 0) await expect(option).toHaveClass(/main-menu-option-selected/);
+		if (i === 0) await expect(option).toHaveClass(/main-menu-option-selected/);
 
-    await expect(option).toBeVisible();
-    await expect(option).toHaveText(mainMenuOption);
-  }
+		await expect(option).toBeVisible();
+		await expect(option).toHaveText(mainMenuOption);
+	}
 
-  await mainMenuSkillsExists(page);
-  // await mainMenuSecretsFoundExists(page);
-  await mainMenuGetInTouchExists(page);
-  await mainMenuOnTheWebExists(page);
+	await mainMenuSkillsExists(page);
+	// await mainMenuSecretsFoundExists(page);
+	await mainMenuGetInTouchExists(page);
+	await mainMenuOnTheWebExists(page);
 }
 
 async function mainMenuSkillsExists(page: Page) {
-  const optionName = 'Skills';
-  const mainMenu = page.locator('.main-menu');
-  const main = mainMenu.locator('main');
-  await expect(main).toBeVisible();
+	const optionName = 'Skills';
+	const mainMenu = page.locator('.main-menu');
+	const main = mainMenu.locator('main');
+	await expect(main).toBeVisible();
 
-  const options = await main.locator('.main-menu-options button').all();
-  await expect(options).toHaveLength(mainMenuOptions.length);
+	const options = await main.locator('.main-menu-options button').all();
+	await expect(options).toHaveLength(mainMenuOptions.length);
 
-  options[mainMenuOptions.indexOf(optionName)].click();
+	options[mainMenuOptions.indexOf(optionName)].click();
 
-  const details = main.locator('.main-menu-selected-option-details');
-  await expect(details).toBeVisible();
+	const details = main.locator('.main-menu-selected-option-details');
+	await expect(details).toBeVisible();
 
-  const index = mainMenuOptions.indexOf(optionName);
+	const index = mainMenuOptions.indexOf(optionName);
 
-  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[index] });
-  await expect(skillsHeader).toBeVisible();
-  await expect(skillsHeader).toHaveText(mainMenuOptions[index]);
+	const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[index] });
+	await expect(skillsHeader).toBeVisible();
+	await expect(skillsHeader).toHaveText(mainMenuOptions[index]);
 
-  const skills = await details.locator('.skill').all();
-  await expect(skills.length).toBeGreaterThan(0);
+	const skills = await details.locator('.skill').all();
+	await expect(skills.length).toBeGreaterThan(0);
 
-  for (let i = 0; i < skills.length; i++) {
-    const skill = skills[i];
-    await expect(skill).toBeVisible();
-    
-    const img = skill.locator('img');
-    await expect(img).toBeVisible();
+	for (let i = 0; i < skills.length; i++) {
+		const skill = skills[i];
+		await expect(skill).toBeVisible();
 
-    const name = skill.locator('.skill-name');
-    await expect(name).toBeVisible();
-  }
+		const img = skill.locator('img');
+		await expect(img).toBeVisible();
+
+		const name = skill.locator('.skill-name');
+		await expect(name).toBeVisible();
+	}
 }
 
 // async function mainMenuSecretsFoundExists(page: Page) {
@@ -194,168 +197,168 @@ async function mainMenuSkillsExists(page: Page) {
 // }
 
 async function mainMenuGetInTouchExists(page: Page) {
-  const optionName = 'Get in Touch';
-  const mainMenu = page.locator('.main-menu');
-  const main = mainMenu.locator('main');
-  await expect(main).toBeVisible();
+	const optionName = 'Get in Touch';
+	const mainMenu = page.locator('.main-menu');
+	const main = mainMenu.locator('main');
+	await expect(main).toBeVisible();
 
-  const options = await main.locator('.main-menu-options button').all();
-  await expect(options).toHaveLength(mainMenuOptions.length);
+	const options = await main.locator('.main-menu-options button').all();
+	await expect(options).toHaveLength(mainMenuOptions.length);
 
-  options[mainMenuOptions.indexOf(optionName)].click();
+	options[mainMenuOptions.indexOf(optionName)].click();
 
-  const details = main.locator('.main-menu-selected-option-details');
-  await expect(details).toBeVisible();
+	const details = main.locator('.main-menu-selected-option-details');
+	await expect(details).toBeVisible();
 
-  const index = mainMenuOptions.indexOf(optionName);
+	const index = mainMenuOptions.indexOf(optionName);
 
-  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[index] });
-  await expect(skillsHeader).toBeVisible();
-  await expect(skillsHeader).toHaveText(mainMenuOptions[index]);
+	const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[index] });
+	await expect(skillsHeader).toBeVisible();
+	await expect(skillsHeader).toHaveText(mainMenuOptions[index]);
 
-  const container = details.locator('.get-in-touch');
-  await expect(container).toBeVisible();
+	const container = details.locator('.get-in-touch');
+	await expect(container).toBeVisible();
 
-  const form = container.locator('form');
-  await expect(form).toBeVisible();
+	const form = container.locator('form');
+	await expect(form).toBeVisible();
 
-  let submit = form.locator('button[type="submit"]');
-  await expect(submit).toBeVisible();
-  await expect(submit).toHaveText('Send');
-  await expect(submit).toBeDisabled();
+	let submit = form.locator('button[type="submit"]');
+	await expect(submit).toBeVisible();
+	await expect(submit).toHaveText('Send');
+	await expect(submit).toBeDisabled();
 
-  // #region email
-  const emailContainer = form.locator('#email-container');
-  await expect(emailContainer).toBeVisible();
+	// #region email
+	const emailContainer = form.locator('#email-container');
+	await expect(emailContainer).toBeVisible();
 
-  const emailLabel = emailContainer.locator('label');
-  await expect(emailLabel).toBeVisible();
-  await expect(emailLabel).toHaveText('Email');
+	const emailLabel = emailContainer.locator('label');
+	await expect(emailLabel).toBeVisible();
+	await expect(emailLabel).toHaveText('Email');
 
-  const email = emailContainer.locator('input[name="email"]');
-  await expect(email).toBeVisible();
+	const email = emailContainer.locator('input[name="email"]');
+	await expect(email).toBeVisible();
 
-  let emailError = emailContainer.locator('#email-container .error');
-  await expect(emailError).not.toBeVisible();
+	let emailError = emailContainer.locator('#email-container .error');
+	await expect(emailError).not.toBeVisible();
 
-  await email.focus();
-  await email.press('Tab');
-  
-  emailError = emailContainer.locator('#email-container .error');
-  await expect(emailError).not.toBeVisible();
+	await email.focus();
+	await email.press('Tab');
 
-  await email.focus();
-  await email.type('test');
-  await email.press('Tab');
+	emailError = emailContainer.locator('#email-container .error');
+	await expect(emailError).not.toBeVisible();
 
-  emailError = emailContainer.locator('#email-container .error');
-  await expect(emailError).not.toBeVisible();
-  // #endregion
+	await email.focus();
+	await email.type('test');
+	await email.press('Tab');
 
-  // #region subject
-  const subjectContainer = form.locator('#subject-container');
-  await expect(subjectContainer).toBeVisible();
+	emailError = emailContainer.locator('#email-container .error');
+	await expect(emailError).not.toBeVisible();
+	// #endregion
 
-  const subjectLabel = subjectContainer.locator('label');
-  await expect(subjectLabel).toBeVisible();
-  await expect(subjectLabel).toHaveText('Subject');
+	// #region subject
+	const subjectContainer = form.locator('#subject-container');
+	await expect(subjectContainer).toBeVisible();
 
-  const subject = subjectContainer.locator('input[name="subject"]');
-  await expect(subject).toBeVisible();
+	const subjectLabel = subjectContainer.locator('label');
+	await expect(subjectLabel).toBeVisible();
+	await expect(subjectLabel).toHaveText('Subject');
 
-  let subjectError = subjectContainer.locator('#subject-container .error');
-  await expect(subjectError).not.toBeVisible();
+	const subject = subjectContainer.locator('input[name="subject"]');
+	await expect(subject).toBeVisible();
 
-  await subject.focus();
-  await subject.press('Tab');
+	let subjectError = subjectContainer.locator('#subject-container .error');
+	await expect(subjectError).not.toBeVisible();
 
-  subjectError = subjectContainer.locator('#subject-container .error');
-  await expect(subjectError).not.toBeVisible();
+	await subject.focus();
+	await subject.press('Tab');
 
-  await subject.focus();
-  await subject.type('test');
-  await subject.press('Tab');
+	subjectError = subjectContainer.locator('#subject-container .error');
+	await expect(subjectError).not.toBeVisible();
 
-  subjectError = subjectContainer.locator('#subject-container .error');
-  await expect(subjectError).not.toBeVisible();
-  // #endregion
+	await subject.focus();
+	await subject.type('test');
+	await subject.press('Tab');
 
-  // #region message
-  const messageContainer = form.locator('#message-container');
-  await expect(messageContainer).toBeVisible();
+	subjectError = subjectContainer.locator('#subject-container .error');
+	await expect(subjectError).not.toBeVisible();
+	// #endregion
 
-  const messageLabel = messageContainer.locator('label');
-  await expect(messageLabel).toBeVisible();
-  await expect(messageLabel).toHaveText('Message');
+	// #region message
+	const messageContainer = form.locator('#message-container');
+	await expect(messageContainer).toBeVisible();
 
-  const message = messageContainer.locator('textarea[name="message"]');
-  await expect(message).toBeVisible();
+	const messageLabel = messageContainer.locator('label');
+	await expect(messageLabel).toBeVisible();
+	await expect(messageLabel).toHaveText('Message');
 
-  let messageError = messageContainer.locator('#message-container .error');
-  await expect(messageError).not.toBeVisible();
+	const message = messageContainer.locator('textarea[name="message"]');
+	await expect(message).toBeVisible();
 
-  await message.focus();
-  await message.press('Tab');
+	let messageError = messageContainer.locator('#message-container .error');
+	await expect(messageError).not.toBeVisible();
 
-  messageError = messageContainer.locator('#message-container .error');
-  await expect(messageError).not.toBeVisible();
+	await message.focus();
+	await message.press('Tab');
 
-  await message.focus();
-  await message.type('test');
-  await message.press('Tab');
+	messageError = messageContainer.locator('#message-container .error');
+	await expect(messageError).not.toBeVisible();
 
-  messageError = messageContainer.locator('#message-container .error');
-  await expect(messageError).not.toBeVisible();
-  // #endregion
+	await message.focus();
+	await message.type('test');
+	await message.press('Tab');
 
-  const formError = form.locator('.form-error-container');
-  await expect(formError).not.toBeVisible();
+	messageError = messageContainer.locator('#message-container .error');
+	await expect(messageError).not.toBeVisible();
+	// #endregion
 
-  submit = form.locator('button[type="submit"]');
-  await expect(submit).toBeEnabled();
+	const formError = form.locator('.form-error-container');
+	await expect(formError).not.toBeVisible();
+
+	submit = form.locator('button[type="submit"]');
+	await expect(submit).toBeEnabled();
 }
 
 async function mainMenuOnTheWebExists(page: Page) {
-  const optionName = 'On the Web';
-  const onTheWebOptions = ['GitHub', 'LinkedIn', 'Mastodon', 'Bluesky'];
+	const optionName = 'On the Web';
+	const onTheWebOptions = ['GitHub', 'LinkedIn', 'Mastodon', 'Bluesky'];
 
-  const mainMenu = page.locator('.main-menu');
-  const main = mainMenu.locator('main');
-  await expect(main).toBeVisible();
+	const mainMenu = page.locator('.main-menu');
+	const main = mainMenu.locator('main');
+	await expect(main).toBeVisible();
 
-  const options = await main.locator('.main-menu-options button').all();
-  await expect(options).toHaveLength(mainMenuOptions.length);
+	const options = await main.locator('.main-menu-options button').all();
+	await expect(options).toHaveLength(mainMenuOptions.length);
 
-  options[mainMenuOptions.indexOf(optionName)].click();
+	options[mainMenuOptions.indexOf(optionName)].click();
 
-  const details = main.locator('.main-menu-selected-option-details');
-  await expect(details).toBeVisible();
+	const details = main.locator('.main-menu-selected-option-details');
+	await expect(details).toBeVisible();
 
-  const index = mainMenuOptions.indexOf(optionName);
+	const index = mainMenuOptions.indexOf(optionName);
 
-  const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[index] });
-  await expect(skillsHeader).toBeVisible();
-  await expect(skillsHeader).toHaveText(mainMenuOptions[index]);
+	const skillsHeader = details.getByRole('heading', { name: mainMenuOptions[index] });
+	await expect(skillsHeader).toBeVisible();
+	await expect(skillsHeader).toHaveText(mainMenuOptions[index]);
 
-  const links = await details.locator('a').all();
-  await expect(links.length).toEqual(onTheWebOptions.length);
+	const links = await details.locator('a').all();
+	await expect(links.length).toEqual(onTheWebOptions.length);
 
-  for (let i = 0; i < links.length; i++) {
-    const link = links[i];
-    await expect(link).toBeVisible();
-    await expect(link.getAttribute('href')).toBeDefined();
+	for (let i = 0; i < links.length; i++) {
+		const link = links[i];
+		await expect(link).toBeVisible();
+		await expect(link.getAttribute('href')).toBeDefined();
 
-    const img = link.locator('img');
-    await expect(img).toBeVisible();
-    await expect(img.getAttribute('alt')).toBeDefined();
-    await expect(img.getAttribute('src')).toBeDefined();
+		const img = link.locator('img');
+		await expect(img).toBeVisible();
+		await expect(img.getAttribute('alt')).toBeDefined();
+		await expect(img.getAttribute('src')).toBeDefined();
 
-    const text = link.locator('span');
-    await expect(text).toBeVisible();
-    await expect(text).toHaveText(onTheWebOptions[i]);
+		const text = link.locator('span');
+		await expect(text).toBeVisible();
+		await expect(text).toHaveText(onTheWebOptions[i]);
 
-    const svg = link.locator('svg');
-    await expect(svg).toHaveCSS('opacity', '0');
-    await expect(svg).toHaveCSS('position', 'absolute');
-  }
+		const svg = link.locator('svg');
+		await expect(svg).toHaveCSS('opacity', '0');
+		await expect(svg).toHaveCSS('position', 'absolute');
+	}
 }

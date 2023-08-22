@@ -1,7 +1,7 @@
 /**
  * these constants are needed because some js needs them
  * and js can't use the css variables that are used elsewhere.
- * 
+ *
  * !!! IMPORTANT !!!
  * if any of these colors change, make sure to update the colors in the
  * `src/routes/global.css` file as well

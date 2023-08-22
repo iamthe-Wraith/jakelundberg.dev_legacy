@@ -1,116 +1,116 @@
 @font-face {
-  font-family: "Merriweather";
-  src: url('/fonts/MerriweatherSans.ttf') format('truetype');
+	font-family: 'Merriweather';
+	src: url('/fonts/MerriweatherSans.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "Merriweather";
-  src: url('/fonts/MerriweatherSans-Italic.ttf') format('truetype');
-  font-style: italic;
+	font-family: 'Merriweather';
+	src: url('/fonts/MerriweatherSans-Italic.ttf') format('truetype');
+	font-style: italic;
 }
 
 @font-face {
-  font-family: "Lato";
-  src: url('/fonts/Lato-Regular.ttf') format('truetype');
+	font-family: 'Lato';
+	src: url('/fonts/Lato-Regular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "Lato";
-  src: url('/fonts/Lato-Bold.ttf') format('truetype');
-  font-weight: bold;
+	font-family: 'Lato';
+	src: url('/fonts/Lato-Bold.ttf') format('truetype');
+	font-weight: bold;
 }
 
 @font-face {
-  font-family: "Lato";
-  src: url('/fonts/Lato-BoldItalic.ttf') format('truetype');
-  font-weight: bold;
-  font-style: italic;
+	font-family: 'Lato';
+	src: url('/fonts/Lato-BoldItalic.ttf') format('truetype');
+	font-weight: bold;
+	font-style: italic;
 }
 
 @font-face {
-  font-family: "Lato";
-  src: url('/fonts/Lato-Italic.ttf') format('truetype');
-  font-style: italic;
+	font-family: 'Lato';
+	src: url('/fonts/Lato-Italic.ttf') format('truetype');
+	font-style: italic;
 }
 
 @font-face {
-  font-family: "Lato";
-  src: url('/fonts/Lato-Light.ttf') format('truetype');
-  font-weight: 300;
+	font-family: 'Lato';
+	src: url('/fonts/Lato-Light.ttf') format('truetype');
+	font-weight: 300;
 }
 
 @font-face {
-  font-family: "Lato";
-  src: url('/fonts/Lato-LightItalic.ttf') format('truetype');
-  font-weight: 300;
-  font-style: italic;
+	font-family: 'Lato';
+	src: url('/fonts/Lato-LightItalic.ttf') format('truetype');
+	font-weight: 300;
+	font-style: italic;
 }
 
 @font-face {
-  font-family: "Lato";
-  src: url('/fonts/Lato-Thin.ttf') format('truetype');
-  font-weight: 100;
+	font-family: 'Lato';
+	src: url('/fonts/Lato-Thin.ttf') format('truetype');
+	font-weight: 100;
 }
 
 @font-face {
-  font-family: "Lato";
-  src: url('/fonts/Lato-ThinItalic.ttf') format('truetype');
-  font-weight: 100;
-  font-style: italic;
+	font-family: 'Lato';
+	src: url('/fonts/Lato-ThinItalic.ttf') format('truetype');
+	font-weight: 100;
+	font-style: italic;
 }
 
 body {
-  /* when any colors change, be sure to update /lib/constants/colors as well */
-  --dark-100: #000000;
-  --dark-300: #0A0A0A;
-  --dark-500: #303030;
-  --light-100: #d1d1d1;
-  --light-500: #eaeaea;
-  --light-900: #FFFFFF;
-  --primary-500: oklch(55.29% 0.215 145.06);
-  --secondary-100: oklch(40% 0.18 80.47);
-  --secondary-200: oklch(50% 0.18 80.47);
-  --secondary-300: oklch(60% 0.18 80.47);
-  --secondary-400: oklch(70% 0.18 80.47);
-  --secondary-500: oklch(80% 0.18 80.47);
-  --danger-500: oklch(54.26% 0.239 29.12);
+	/* when any colors change, be sure to update /lib/constants/colors as well */
+	--dark-100: #000000;
+	--dark-300: #0a0a0a;
+	--dark-500: #303030;
+	--light-100: #d1d1d1;
+	--light-500: #eaeaea;
+	--light-900: #ffffff;
+	--primary-500: oklch(55.29% 0.215 145.06);
+	--secondary-100: oklch(40% 0.18 80.47);
+	--secondary-200: oklch(50% 0.18 80.47);
+	--secondary-300: oklch(60% 0.18 80.47);
+	--secondary-400: oklch(70% 0.18 80.47);
+	--secondary-500: oklch(80% 0.18 80.47);
+	--danger-500: oklch(54.26% 0.239 29.12);
 
-  --font-primary: Lato, sans-serif;
-  --font-secondary: Merriweather, sans-serif;
+	--font-primary: Lato, sans-serif;
+	--font-secondary: Merriweather, sans-serif;
 
-  margin: 0;
-  padding: 0;
-  background: var(--dark-500);
-  overflow: hidden;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	background: var(--dark-500);
+	overflow: hidden;
+	box-sizing: border-box;
 }
 
 body * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: var(--font-secondary);
-  color: var(--light-500);
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: var(--font-secondary);
+	color: var(--light-500);
 }
 
 a:focus {
-  border: none;
-  outline: none;
+	border: none;
+	outline: none;
 }
 
 p {
-  font-size: 0.9rem;
-  line-height: 1.5rem;
-  text-indent: 1rem;
+	font-size: 0.9rem;
+	line-height: 1.5rem;
+	text-indent: 1rem;
 
-  @media (min-width: 768px) {
-    font-size: 1rem;
-    line-height: 1.8rem;
-  }
+	@media (min-width: 768px) {
+		font-size: 1rem;
+		line-height: 1.8rem;
+	}
 }
 
 p:not(:last-child) {
-  margin-bottom: 1rem;
+	margin-bottom: 1rem;
 }
 
 h1,
@@ -120,8 +120,8 @@ h4,
 h5,
 h6,
 .header-font {
-  font-family: var(--font-primary);
-  color: var(--light-500);
+	font-family: var(--font-primary);
+	color: var(--light-500);
 }
 
 h1 *,
@@ -131,110 +131,110 @@ h4 *,
 h5 *,
 h6 *,
 .header-font * {
-  font-family: var(--font-primary);
-  color: var(--primary-500);
+	font-family: var(--font-primary);
+	color: var(--primary-500);
 }
 
 h1,
 h1 * {
-  font-size: 2rem;
-  text-align: center;
-  line-height: 2.6rem;
+	font-size: 2rem;
+	text-align: center;
+	line-height: 2.6rem;
 
-  @media (min-width: 768px) {
-    font-size: 3rem;
-    line-height: 3.6rem;
-  }
+	@media (min-width: 768px) {
+		font-size: 3rem;
+		line-height: 3.6rem;
+	}
 }
 
 h2,
 h2 * {
-  font-size: 1.75rem;
-  text-align: center;
-  line-height: 2.4rem;
+	font-size: 1.75rem;
+	text-align: center;
+	line-height: 2.4rem;
 
-  @media (min-width: 768px) {
-    font-size: 2.4rem;
-    line-height: 3rem;
-  }
+	@media (min-width: 768px) {
+		font-size: 2.4rem;
+		line-height: 3rem;
+	}
 }
 
 h3,
 h3 * {
-  font-size: 1.5rem;
-  text-align: center;
-  line-height: 2.2rem;
+	font-size: 1.5rem;
+	text-align: center;
+	line-height: 2.2rem;
 
-  @media (min-width: 768px) {
-    font-size: 2rem;
-    line-height: 2.6rem;
-  }
+	@media (min-width: 768px) {
+		font-size: 2rem;
+		line-height: 2.6rem;
+	}
 }
 
 h4,
 h4 * {
-  font-size: 1.3rem;
-  text-align: center;
-  line-height: 2rem;
+	font-size: 1.3rem;
+	text-align: center;
+	line-height: 2rem;
 
-  @media (min-width: 768px) {
-    font-size: 1.6rem;
-    line-height: 2.2rem;
-  }
+	@media (min-width: 768px) {
+		font-size: 1.6rem;
+		line-height: 2.2rem;
+	}
 }
 
 h5,
 h5 * {
-  font-size: 1.2rem;
-  text-align: center;
-  line-height: 1.8rem;
+	font-size: 1.2rem;
+	text-align: center;
+	line-height: 1.8rem;
 }
 
 h6,
 h6 * {
-  font-size: 0.9rem;
-  text-align: center;
-  line-height: 1.4rem;
+	font-size: 0.9rem;
+	text-align: center;
+	line-height: 1.4rem;
 }
 
 ol,
-ul { 
-  padding: 1rem 0 1rem 2rem;
+ul {
+	padding: 1rem 0 1rem 2rem;
 }
 
 ol:not(:last-child),
 ul:not(:last-child) {
-  margin-bottom: 1rem;
+	margin-bottom: 1rem;
 }
 
 li {
-  font-size: 0.9rem;
-  line-height: 1.5rem;
+	font-size: 0.9rem;
+	line-height: 1.5rem;
 
-  @media (min-width: 768px) {
-    font-size: 1rem;
-    line-height: 1.8rem;
-  }
+	@media (min-width: 768px) {
+		font-size: 1rem;
+		line-height: 1.8rem;
+	}
 }
 
 li:not(:last-child) {
-  margin-bottom: 0.5rem;
+	margin-bottom: 0.5rem;
 }
 
 /* helper classes */
 
 .error {
-  color: var(--danger-500);
-  font-size: 0.7rem;
-  line-height: 0.7rem;
-  text-indent: 0;
+	color: var(--danger-500);
+	font-size: 0.7rem;
+	line-height: 0.7rem;
+	text-indent: 0;
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+	display: none;
 }

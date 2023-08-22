@@ -4,12 +4,12 @@ import { PUBLIC_SENTRY_DSN } from '$env/static/public';
 import type { HandleServerError } from '@sveltejs/kit';
 
 const errorHandler = (({ error, event }) => {
-  console.error('An error occurred on the server side:', error, event);
+	console.error('An error occurred on the server side:', error, event);
 }) satisfies HandleServerError;
 
 Sentry.init({
-  dsn: PUBLIC_SENTRY_DSN,
-  tracesSampleRate: 1.0,
+	dsn: PUBLIC_SENTRY_DSN,
+	tracesSampleRate: 1.0
 });
 
 import { handleErrorWithSentry } from '@sentry/sveltekit';

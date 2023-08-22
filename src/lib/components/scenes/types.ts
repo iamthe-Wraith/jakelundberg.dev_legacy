@@ -1,4 +1,4 @@
 export interface ILoad {
-  loaded: number;
-  total: number;
+	loaded: number;
+	total: number;
 }

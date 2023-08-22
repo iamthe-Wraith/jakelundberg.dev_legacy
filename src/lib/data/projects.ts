@@ -1,29 +1,29 @@
 import type { IProject } from '$lib/types/projects';
 
 export const projects: IProject[] = [
-  {
-    id: 'jakelundberg-dev',
-    title: 'jakelundberg.dev',
-    urls: {
-      github: 'https://github.com/iamthe-Wraith/jakelundberg.dev',
-      url: 'https://jakelundberg.dev'
-    },
-    desc: `
+	{
+		id: 'jakelundberg-dev',
+		title: 'jakelundberg.dev',
+		urls: {
+			github: 'https://github.com/iamthe-Wraith/jakelundberg.dev',
+			url: 'https://jakelundberg.dev'
+		},
+		desc: `
       <p>This site!</p>
     
       <p>I wanted to have my own portfolio site where I could have a single place to share the things I'm working on, my experiences, and have a little fun along the way (have you found any hidden keys yet?).</p>
     
       <p>I chose SvelteKit because I already knew my site wouldn't require a high degree of interaction, but I knew I needed speed and performance. When working in 3d, there is already a lot more to deal with, both in code as well as in asset file sizes, so I wanted to keep my bundle sizes as small as possible, which is an area that SvelteKit shines.</p>`,
-    tags: ['sveltekit', 'typescript', 'threejs', 'blender'],
-  },
-  {
-    id: 'yumyum-recipes',
-    title: 'YumYum Recipes',
-    urls: {
-      github: 'https://github.com/iamthe-Wraith/yumyum-recipes',
-      url: 'https://yumyum.jakelundberg.dev',
-    },
-    desc: `
+		tags: ['sveltekit', 'typescript', 'threejs', 'blender']
+	},
+	{
+		id: 'yumyum-recipes',
+		title: 'YumYum Recipes',
+		urls: {
+			github: 'https://github.com/iamthe-Wraith/yumyum-recipes',
+			url: 'https://yumyum.jakelundberg.dev'
+		},
+		desc: `
       <p>A recipe and meal planning app I built to solve a problem for my spouse.</p>
     
       <p>In our house, my spouse handles the groceries and meal planning. And what a chore it can be. From having to decide what meals to have, to getting the list of ingredients compiled, and making sure everyone in the house has snacks and lunches for the week, it can be a lot to handle and would take a lot of time every week. So I built this app to help them out.</p>
@@ -59,16 +59,16 @@ export const projects: IProject[] = [
         <span style="display: inline-block; width: 5rem; margin-right: 1rem; color: var(--primary-500); text-align: right">Password:</span>
         <span style="display: inline-block; width: 14rem; text-align: left">Demo321!</span>
       </p>`,
-    tags: ['sveltekit', 'typescript', 'postgres', 'prisma'],
-  },
-  {
-    id: 'wraithnet',
-    title: 'Wraithnet',
-    urls: {
-      github: 'https://github.com/iamthe-Wraith/wraithnet/tree/main',
-      download: 'https://github.com/iamthe-Wraith/wraithnet/releases',
-    },
-    desc: `
+		tags: ['sveltekit', 'typescript', 'postgres', 'prisma']
+	},
+	{
+		id: 'wraithnet',
+		title: 'Wraithnet',
+		urls: {
+			github: 'https://github.com/iamthe-Wraith/wraithnet/tree/main',
+			download: 'https://github.com/iamthe-Wraith/wraithnet/releases'
+		},
+		desc: `
       <p>This is the client side of the Wraithnet project.</p>
 
       <p>Wraithnet is something I've been working on for a very long time now, and it continues to evolve and be a work in progress.</p>
@@ -100,15 +100,15 @@ export const projects: IProject[] = [
         <span style="display: inline-block; width: 14rem; text-align: left">Demo321!</span>
       </p>`,
 
-    tags: ['electron', 'typescript', 'react', 'mobx'],
-  },
-  {
-    id: 'wraithnet-api',
-    title: 'Wraithnet API',
-    urls: {
-      github: 'https://github.com/iamthe-Wraith/wraithnet-api',
-    },
-    desc: `
+		tags: ['electron', 'typescript', 'react', 'mobx']
+	},
+	{
+		id: 'wraithnet-api',
+		title: 'Wraithnet API',
+		urls: {
+			github: 'https://github.com/iamthe-Wraith/wraithnet-api'
+		},
+		desc: `
       <p>This is a RESTful API for the Wraithnet project.</p>
       
       <p>Wraithnet is something I've been working on for a very long time now, and it continues to evolve and be a work in progress.</p>
@@ -128,15 +128,15 @@ export const projects: IProject[] = [
       
       <h3>Why MongoDB and Mongoose?</h3>
       <p>I chose MongoDB because I wanted to use a NoSQL database for this project in order to become more familiar with them (not to mention Mongo Atlas has a great free tier). I chose Mongoose because I wanted to use an ORM to help me manage the database, and it was by far the most popular.</p>`,
-    tags: ['node, typescript', 'mongodb', 'mongoose', 'express', 'jwt'],
-  },
-  {
-    id: 'igor',
-    title: 'Igor',
-    urls: {
-      github: 'https://github.com/iamthe-Wraith/igor',
-    },
-    desc: `
+		tags: ['node, typescript', 'mongodb', 'mongoose', 'express', 'jwt']
+	},
+	{
+		id: 'igor',
+		title: 'Igor',
+		urls: {
+			github: 'https://github.com/iamthe-Wraith/igor'
+		},
+		desc: `
       <p>A CLI tool to automate the process of creating new A/B tests from internal libraries.</p>
     
       <p>Before Igor, each member of the team was using their own copies of templates and everyone's was different. Very few people were sharing code and results were quite inconsistent. Igor standardized and automated the entire process. Suddenly, every dev on the team was using the same, most up to date internal code libraries, and the process of creating a new test was as simple as running a single command.</p>
@@ -145,6 +145,6 @@ export const projects: IProject[] = [
       
       <h3>Why Node?</h3>
       <p>The reason I chose to use Node for this project was because we were a company full of Javascript developers and I knew the best chance of getting others to use and contribute to the project was to be if it was written in a language they were already familiar with.</p>`,
-    tags: ['node', 'javascript'],
-  }
+		tags: ['node', 'javascript']
+	}
 ];
