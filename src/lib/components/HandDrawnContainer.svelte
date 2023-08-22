@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getRandom } from "$lib/utils/number";
+	import { getRandomNum } from "$lib/utils/number";
 
   export let hoverable = false;
   export let hovered = false;
@@ -7,8 +7,8 @@
   export let type: 'primary' | 'secondary' | 'neutral' = 'neutral';
   export let background: 'transparent' | 'semi-transparent' | 'opaque' = 'semi-transparent';
 
-  const minorRadius = getRandom(13, 19);
-  const majorRadius = getRandom(230, 260);
+  const minorRadius = getRandomNum(13, 19);
+  const majorRadius = getRandomNum(230, 260);
 </script>
 
 <div
