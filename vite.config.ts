@@ -1,8 +1,7 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { sentrySvelteKit } from '@sentry/sveltekit';
 import { defineConfig } from 'vitest/config';
-
-const assetsRootDir = 'assets';
+import { searchForWorkspaceRoot } from 'vite';
 
 export default defineConfig({
   plugins: [
@@ -15,4 +14,11 @@ export default defineConfig({
     globals: true,
   },
   root: '.',
+  server: {
+    fs: {
+      allow: [
+        searchForWorkspaceRoot(process.cwd()),
+      ]
+    }
+  }
 });
