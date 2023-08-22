@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { IQuote } from "$lib/types/quotes";
+	import { getRandomNum } from "$lib/utils/number";
   import { onMount } from "svelte";
 
   export let text: string = 'loading';
@@ -30,7 +31,7 @@
     let nextQuote: IQuote;
 
     do {
-      nextQuote = quotes[Math.floor(Math.random() * (quotes.length - 1))];
+      nextQuote = quotes[Math.floor(getRandomNum() * (quotes.length - 1))];
     } while ((nextQuote.quote === quote?.quote))
 
     quote = nextQuote;

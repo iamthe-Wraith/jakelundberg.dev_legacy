@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getRandomNum } from "$lib/utils/number";
 	import { onMount } from "svelte";
 
   export let id = 'rain';
@@ -49,14 +50,14 @@
     ctx.lineCap = 'round';
 
     for (let i = 0; i < rainMaxDrops; i++) {
-      const end = Math.random() * canvasHeight / 2;
+      const end = getRandomNum() * canvasHeight / 2;
 
       const drop: IDrop = {
-        x: Math.random() * canvasWidth,
-        y: Math.random() * canvasHeight,
-        length: Math.random() * 1.8 + 0.5,
+        x: getRandomNum() * canvasWidth,
+        y: getRandomNum() * canvasHeight,
+        length: getRandomNum() * 1.8 + 0.5,
         moveX: 0,
-        moveY: Math.random() * 10 + 45,
+        moveY: getRandomNum() * 10 + 45,
         end: canvasHeight - end,
         strokeAlpha: 0.5 - (end / canvasHeight),
       };
@@ -87,7 +88,7 @@
       drop.x += drop.moveX;
       drop.y += drop.moveY;
       if(drop.x > canvasWidth || drop.y > drop.end) {
-        drop.x = Math.random() * canvasWidth;
+        drop.x = getRandomNum() * canvasWidth;
         drop.y = -20;
       }
     }

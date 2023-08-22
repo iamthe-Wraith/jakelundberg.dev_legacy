@@ -3,7 +3,7 @@
   import rough from 'roughjs';
 	import { removeChildren } from "$lib/utils/dom";
 	import { dark500, secondaryColor } from "$lib/constants/colors";
-	import { getRandom } from "$lib/utils/number";
+	import { getRandomNum } from "$lib/utils/number";
 
   export let id = `button-${crypto.randomUUID()}`;
   export let type: 'button' | 'submit' | 'reset' = 'button';
@@ -12,8 +12,8 @@
   export let className: string = '';
   export let disabled = false;
 
-  const minorRadius = getRandom(13, 19);
-  const majorRadius = getRandom(230, 260);
+  const minorRadius = getRandomNum(13, 19);
+  const majorRadius = getRandomNum(230, 260);
   const outlineStroke = kind === 'primary' || kind === 'neutral' ? secondaryColor : dark500; 
 
   onMount(() => {

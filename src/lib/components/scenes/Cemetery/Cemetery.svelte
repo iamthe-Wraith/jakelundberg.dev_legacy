@@ -8,6 +8,7 @@
   import { assets } from '$app/paths';
   import type { ILoad } from '../types';
 	import { mainMenu } from '$lib/stores/main-menu';
+	import { getRandomNum } from '$lib/utils/number';
 
   interface IWisp {
     mesh: THREE.Mesh;
@@ -150,11 +151,11 @@
     wisps.forEach(wisp => {
       if (wisp.mesh.position.distanceTo(wisp.moveTo) < 0.1) {
         wisp.moveTo = new THREE.Vector3(
-          userPos.x + (Math.random() * (Math.random() > 0.5 ? 8 : -8)),
-          (userPos.y - 1) + (Math.random() * (Math.random() > 0.5 ? 1 : -1)),
-          userPos.z + (Math.random() * -16 ) - 7
+          userPos.x + (getRandomNum() * (getRandomNum() > 0.5 ? 8 : -8)),
+          (userPos.y - 1) + (getRandomNum() * (getRandomNum() > 0.5 ? 1 : -1)),
+          userPos.z + (getRandomNum() * -16 ) - 7
         );
-        wisp.speed = Math.random() * 0.01;
+        wisp.speed = getRandomNum() * 0.01;
       }
       
       wisp.mesh.position.lerp(wisp.moveTo, wisp.speed);
@@ -189,7 +190,7 @@
 
   function initWisps() {
     const wispColor = 0x04cee0;
-    const size = 3 + Math.random() * 7;
+    const size = 3 + getRandomNum() * 7;
     const wispGeo = new THREE.SphereGeometry(0.1, size, size);
     const wispMaterial = new THREE.MeshStandardMaterial({
       color: wispColor,
@@ -213,9 +214,9 @@
       light.shadow.camera.far = 5000;
 
       const moveTo = new THREE.Vector3(
-        userPos.x + (Math.random() * (Math.random() > 0.5 ? 8 : -8)),
-        (userPos.y - 1) + (Math.random() * (Math.random() > 0.5 ? 1 : -1)),
-        userPos.z + (Math.random() * -16 ) - 7
+        userPos.x + (getRandomNum() * (getRandomNum() > 0.5 ? 8 : -8)),
+        (userPos.y - 1) + (getRandomNum() * (getRandomNum() > 0.5 ? 1 : -1)),
+        userPos.z + (getRandomNum() * -16 ) - 7
       );
       wisp.add(light);
       scene.add(wisp);
@@ -223,13 +224,13 @@
       wisps.push({
         mesh: wisp,
         moveTo,
-        speed: Math.random() * 0.1,
+        speed: getRandomNum() * 0.1,
       });
 
       wisp.position.set(
-        userPos.x + (Math.random() * (Math.random() > 0.5 ? 8 : -8)),
-        (userPos.y - 1) + (Math.random() * (Math.random() > 0.5 ? 1 : -1)),
-        userPos.z + (Math.random() * -16 ) - 7
+        userPos.x + (getRandomNum() * (getRandomNum() > 0.5 ? 8 : -8)),
+        (userPos.y - 1) + (getRandomNum() * (getRandomNum() > 0.5 ? 1 : -1)),
+        userPos.z + (getRandomNum() * -16 ) - 7
       )
     }
   }

@@ -7,6 +7,7 @@
   import { assets } from '$app/paths';
 	import type { ILoad } from './types';
 	import { mainMenu } from '$lib/stores/main-menu';
+	import { getRandomNum } from '$lib/utils/number';
 
   interface IFlame {
     mesh: THREE.Mesh;
@@ -137,15 +138,15 @@
     delta = clock.getDelta();
     torchLightCurrent += delta;
 
-    if (torchLightCurrent > interval && (Math.random() > 0.85 || torchLight.intensity > 0.45)) {
+    if (torchLightCurrent > interval && (getRandomNum() > 0.85 || torchLight.intensity > 0.45)) {
       torchLightCurrent = 0;
-      const intensity = 0.4 + (Math.random() * 0.25);
+      const intensity = 0.4 + (getRandomNum() * 0.25);
       torchLight.intensity = intensity;
 
       torchLight.position.set(
-        Math.random() / 4,
-        Math.random() / 4 + 1,
-        Math.random() / 4
+        getRandomNum() / 4,
+        getRandomNum() / 4 + 1,
+        getRandomNum() / 4
       );
     }
 
@@ -177,7 +178,7 @@
   }
 
   function initFlame() {
-    const color = flameColors[Math.round(Math.random() * (flameColors.length - 1))];
+    const color = flameColors[Math.round(getRandomNum() * (flameColors.length - 1))];
 
     const mesh = new THREE.Mesh(
       new THREE.BoxGeometry(1.4, 1, 1.15),
@@ -186,28 +187,28 @@
         emissive: color, 
         emissiveIntensity: 5, 
         transparent: true, 
-        opacity: Math.random() 
+        opacity: getRandomNum() 
       })
     );
 
     torch.add(mesh);
 
     mesh.position.set(
-      Math.random() * 0.55 * (Math.random() > 0.5 ? 1 : -1),
+      getRandomNum() * 0.55 * (getRandomNum() > 0.5 ? 1 : -1),
       1.1,
-      Math.random() * 0.55 * (Math.random() > 0.5 ? 1 : -1),
+      getRandomNum() * 0.55 * (getRandomNum() > 0.5 ? 1 : -1),
     );
 
     mesh.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 7.5);
 
-    const scale = Math.random() * 0.50;
+    const scale = getRandomNum() * 0.50;
     mesh.geometry.scale(scale, scale, scale);
 
     return {
       mesh,
-      speed: 2 * Math.random() + 0.8,
+      speed: 2 * getRandomNum() + 0.8,
       duration: 0,
-      lifespan: Math.random() * 0.5,
+      lifespan: getRandomNum() * 0.5,
     }
   };
 

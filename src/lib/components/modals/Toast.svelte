@@ -1,10 +1,10 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
   import { Toast } from "$lib/stores/toast";
-	import { getRandom } from "$lib/utils/number";
+	import { getRandomNum } from "$lib/utils/number";
 
-  const minorRadius = getRandom(13, 19);
-  const majorRadius = getRandom(230, 260);
+  const minorRadius = getRandomNum(13, 19);
+  const majorRadius = getRandomNum(230, 260);
 </script>
 
 {#if !!$Toast.length}

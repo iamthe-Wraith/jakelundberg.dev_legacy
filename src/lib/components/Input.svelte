@@ -1,5 +1,5 @@
 <script lang="ts">
-import { getRandom } from "$lib/utils/number";
+import { getRandomNum } from "$lib/utils/number";
   export let thickness = 3;
   export let kind: 'primary' | 'secondary' | 'neutral' = 'neutral';
   export let type: 'text' | 'email' | 'password' = 'text';
@@ -9,8 +9,8 @@ import { getRandom } from "$lib/utils/number";
   export let value: string = '';
   export let error: string = '';
 
-  const minorRadius = getRandom(6, 19);
-  const majorRadius = getRandom(230, 260);  
+  const minorRadius = getRandomNum(6, 19);
+  const majorRadius = getRandomNum(230, 260);  
 </script>
 
 <div
