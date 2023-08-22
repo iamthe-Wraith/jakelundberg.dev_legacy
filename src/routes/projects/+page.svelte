@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, getContext } from 'svelte';
 	import { fly, fade, scale } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 	import type { PageData } from './$types';
@@ -16,6 +16,7 @@
 	import { secondaryColor } from '$lib/constants/colors';
 	import Tag from '$components/Tag.svelte';
 	import Button from '$components/Button.svelte';
+	import type { IQuote } from '$lib/types/quotes';
 
 	export let data: PageData;
 
@@ -27,6 +28,8 @@
 
 	let selectedProjectVisible = false;
 	let selectedProject: IProject | null;
+
+	const quotes = getContext<IQuote[]>('quotes');
 
 	const projectTransitionDelay = 100;
 	const projectTransitionDuration = 300;
@@ -307,7 +310,7 @@
 		</div>
 	</UiLayer>
 {:else}
-	<Loading />
+	<Loading {quotes} />
 {/if}
 
 <style lang="scss">
