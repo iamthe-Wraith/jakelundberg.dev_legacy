@@ -7,29 +7,27 @@ import { processError } from '$lib/utils/errors';
 import type { ISkill } from '$lib/types/skills';
 
 interface IData {
-  quotes?: IQuote[];
-  skills?: ISkill[];
+	quotes?: IQuote[];
+	skills?: ISkill[];
 }
 
 export const load = wrapServerLoadWithSentry(async () => {
-  const data: IData = {};
+	const data: IData = {};
 
-  try {
-    const results = await Promise.allSettled([
-      getSkills(),
-    ]);
+	try {
+		const results = await Promise.allSettled([getSkills()]);
 
-    if (results[0].status === 'fulfilled') {
-      data.skills = results[0].value;
-    }
+		if (results[0].status === 'fulfilled') {
+			data.skills = results[0].value;
+		}
 
-    data.quotes = quotes;
-  } catch (err) {
-    processError(err as Error, () => {
-      console.error('Error in layout data retrieval');
-      console.error(err);
-    });
-  }
+		data.quotes = quotes;
+	} catch (err) {
+		processError(err as Error, () => {
+			console.error('Error in layout data retrieval');
+			console.error(err);
+		});
+	}
 
-  return data;
+	return data;
 }) satisfies LayoutServerLoad;

@@ -1,327 +1,308 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-  import Forest from '$components/scenes/Forest.svelte';
-  import type { ILoad } from '$components/scenes/types';
-  import UILayer from '$components/layers/UILayer.svelte';
-  import Loading from '$components/Loading.svelte';
-  import { getContext } from 'svelte';
-  import type { IQuote } from '$lib/types/quotes';
+	import Forest from '$components/scenes/Forest.svelte';
+	import type { ILoad } from '$components/scenes/types';
+	import UILayer from '$components/layers/UILayer.svelte';
+	import Loading from '$components/Loading.svelte';
+	import { getContext } from 'svelte';
+	import type { IQuote } from '$lib/types/quotes';
 	import { processError } from '$lib/utils/errors';
 	import Tag from '$components/Tag.svelte';
 	import HandDrawnContainer from '$components/HandDrawnContainer.svelte';
-  import { assets } from '$app/paths';
+	import { assets } from '$app/paths';
 	import ScrollDown from '$components/ScrollDown.svelte';
 	import { fade } from 'svelte/transition';
-  
-  export let data: PageData;
 
-  let amountLoaded = 0;
-  let totalToLoad = 0;
-  let displayUI = false;
-  let displayScene = true;
-  let displayScrollDownIndicator = true;
+	export let data: PageData;
 
-  let engagedBlogPost = '';
+	let amountLoaded = 0;
+	let totalToLoad = 0;
+	let displayUI = false;
+	let displayScene = true;
+	let displayScrollDownIndicator = true;
 
-  const quotes = getContext<IQuote[]>('quotes');
+	let engagedBlogPost = '';
 
-  function onSceneError(error: Error) {
-    processError(error, () => {
-      displayScene = false;
-      displayUI = true;
-    });
-  }
+	const quotes = getContext<IQuote[]>('quotes');
 
-  function onSceneLoad(loading: Record<string, ILoad>) {
-    const l = Object.values(loading).reduce((acc, curr) => {
-      acc.loaded += curr.loaded;
-      acc.total += curr.total;
-      return acc;
-    }, {
-      loaded: 0,
-      total: 0
-    });
+	function onSceneError(error: Error) {
+		processError(error, () => {
+			displayScene = false;
+			displayUI = true;
+		});
+	}
 
-    amountLoaded = l.loaded;
-    totalToLoad = l.total;
-    displayUI = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
-  }
+	function onSceneLoad(loading: Record<string, ILoad>) {
+		const l = Object.values(loading).reduce(
+			(acc, curr) => {
+				acc.loaded += curr.loaded;
+				acc.total += curr.total;
+				return acc;
+			},
+			{
+				loaded: 0,
+				total: 0
+			}
+		);
 
-  function onScroll(event: Event) {
-    const e = event.target as HTMLElement;
-    displayScrollDownIndicator = e.scrollTop < 100;
-  }
+		amountLoaded = l.loaded;
+		totalToLoad = l.total;
+		displayUI = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
+	}
+
+	function onScroll(event: Event) {
+		const e = event.target as HTMLElement;
+		displayScrollDownIndicator = e.scrollTop < 100;
+	}
 </script>
 
 {#if displayScene}
-  <Forest
-    onLoad={onSceneLoad}
-    onError={onSceneError}
-  />
+	<Forest onLoad={onSceneLoad} onError={onSceneError} />
 {/if}
 
 {#if displayUI}
-  <UILayer on:scroll={onScroll}>
-    <div class="ui-main">
-      <section class="greeting">
-        <div class="greeting-content">
-          <h1><span>Hi, I'm</span>Jake Lundberg<span>.</span></h1>
-          <p class="subheader header-font">I build stuff for the web.</p>
-          <p class="intro-text">I'm a software engineer with an uncommon passion for what I do. There are few things that bring me as much joy as digging into complex problems to find elegant solutions, or brainstorming with smart people to find the idea that will make someone's life better.</p>
-        </div>
+	<UILayer on:scroll={onScroll}>
+		<div class="ui-main">
+			<section class="greeting">
+				<div class="greeting-content">
+					<h1><span>Hi, I'm</span>Jake Lundberg<span>.</span></h1>
+					<p class="subheader header-font">I build stuff for the web.</p>
+					<p class="intro-text">
+						I'm a software engineer with an uncommon passion for what I do. There are few things
+						that bring me as much joy as digging into complex problems to find elegant solutions, or
+						brainstorming with smart people to find the idea that will make someone's life better.
+					</p>
+				</div>
 
-        {#if displayScrollDownIndicator}
-          <div
-            class="scroll-indicator-container"
-            transition:fade
-          >
-            <ScrollDown />
-          </div>
-        {/if}
-      </section>
+				{#if displayScrollDownIndicator}
+					<div class="scroll-indicator-container" transition:fade>
+						<ScrollDown />
+					</div>
+				{/if}
+			</section>
 
-      {#if data.blog_posts?.length}
-        <section class="blog-posts-section">
-          <h2>Recent Blog Posts</h2>
-          <div class="blog-posts">
-            {#each (data.blog_posts || []) as post}
-              <HandDrawnContainer
-                hoverable={true}
-                hovered={engagedBlogPost === post.id}
-              >
-                <article class="blog-post">
-                  <a
-                    href={post.url}
-                    target="_blank"
-                    on:focus={() => engagedBlogPost = post.id}
-                    on:blur={() => engagedBlogPost = ''}
-                  >
-                    <h3>{post.title}</h3>
-                  
-                    <div class="blog-post-tags">
-                      {#each post.tags as tag}
-                        <Tag>{tag}</Tag>
-                      {/each}
-                    </div>
-                    <p class="blog-post-desc">{post.description}</p>
-                  </a>
-                </article>
-              </HandDrawnContainer>
-            {/each}
-          </div>
-        </section>
-      {/if}
+			{#if data.blog_posts?.length}
+				<section class="blog-posts-section">
+					<h2>Recent Blog Posts</h2>
+					<div class="blog-posts">
+						{#each data.blog_posts || [] as post}
+							<HandDrawnContainer hoverable={true} hovered={engagedBlogPost === post.id}>
+								<article class="blog-post">
+									<a
+										href={post.url}
+										target="_blank"
+										on:focus={() => (engagedBlogPost = post.id)}
+										on:blur={() => (engagedBlogPost = '')}
+									>
+										<h3>{post.title}</h3>
 
-      {#if data.recommendations?.length}
-        <section class="recommendations-section">
-          <h2>Recommendations</h2>
-          <div class="recommendations">
-            <HandDrawnContainer>
-              {#each (data.recommendations || []) as recommendation}
-                <div class="recommendation">
-                  <header>
-                    <img src={`${assets}/${recommendation.image}`} alt="image of {recommendation.author}" />
-                    <p>{recommendation.author}</p>
-                  </header>
-                  <blockquote>{@html recommendation.quote}</blockquote>
-                </div>
-              {/each}
-            </HandDrawnContainer>
-          </div>
-          
-          <!-- <a class="read-more" href="/recommendations">Read More</a> -->
-        </section>
-      {/if}
-    </div>
-  </UILayer>
+										<div class="blog-post-tags">
+											{#each post.tags as tag}
+												<Tag>{tag}</Tag>
+											{/each}
+										</div>
+										<p class="blog-post-desc">{post.description}</p>
+									</a>
+								</article>
+							</HandDrawnContainer>
+						{/each}
+					</div>
+				</section>
+			{/if}
+
+			{#if data.recommendations?.length}
+				<section class="recommendations-section">
+					<h2>Recommendations</h2>
+					<div class="recommendations">
+						<HandDrawnContainer>
+							{#each data.recommendations || [] as recommendation}
+								<div class="recommendation">
+									<header>
+										<img
+											src={`${assets}/${recommendation.image}`}
+											alt="image of {recommendation.author}"
+										/>
+										<p>{recommendation.author}</p>
+									</header>
+									<blockquote>{@html recommendation.quote}</blockquote>
+								</div>
+							{/each}
+						</HandDrawnContainer>
+					</div>
+
+					<!-- <a class="read-more" href="/recommendations">Read More</a> -->
+				</section>
+			{/if}
+		</div>
+	</UILayer>
 {:else}
-  <Loading {quotes} />
+	<Loading {quotes} />
 {/if}
 
 <style lang="scss">
-  .ui-main {
-    width: 100%;
-    height: 100%;
-  }
+	.ui-main {
+		width: 100%;
+		height: 100%;
+	}
 
-  section {
-    padding-bottom: 8rem;
+	section {
+		padding-bottom: 8rem;
 
-    h2 {
-      margin: 0 0 1.5rem;
-    }
-  }
+		h2 {
+			margin: 0 0 1.5rem;
+		}
+	}
 
-  .greeting {
-    position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
+	.greeting {
+		position: relative;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
 
-    .greeting-content {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      max-width: 40rem;
-      padding: 2.5rem 2rem 2rem;
-      background: oklch(0% 0 0 / 0.5);
-      border: 3px solid var(--dark-500);
-      border-top-left-radius: 255px 15px;
-      border-top-right-radius: 18px 230px;
-      border-bottom-right-radius: 230px 14px;
-      border-bottom-left-radius:18px 255px;
-    }
+		.greeting-content {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			max-width: 40rem;
+			padding: 2.5rem 2rem 2rem;
+			background: oklch(0% 0 0 / 0.5);
+			border: 3px solid var(--dark-500);
+			border-top-left-radius: 255px 15px;
+			border-top-right-radius: 18px 230px;
+			border-bottom-right-radius: 230px 14px;
+			border-bottom-left-radius: 18px 255px;
+		}
 
-    h1 {
-      position: relative;
-      color: var(--primary-500);
+		h1 {
+			position: relative;
+			color: var(--primary-500);
 
-      span {
-        color: var(--light-500);
-        font-weight: 400;
-        font-size: 2rem;
-        line-height: 1rem;
+			span {
+				color: var(--light-500);
+				font-weight: 400;
+				font-size: 2rem;
+				line-height: 1rem;
 
-        &:first-child {
-          position: absolute;
-          bottom: 100%;
-          left: 1.5rem;
-          font-size: 1.2rem;
-        }
-      }
-    }
+				&:first-child {
+					position: absolute;
+					bottom: 100%;
+					left: 1.5rem;
+					font-size: 1.2rem;
+				}
+			}
+		}
 
-    .subheader {
-      margin: 0.75rem 0 1.25rem;
-      font-size: 1.3rem;
-      text-indent: 0;
-    }
+		.subheader {
+			margin: 0.75rem 0 1.25rem;
+			font-size: 1.3rem;
+			text-indent: 0;
+		}
 
-    .scroll-indicator-container {
-      position: absolute;
-      bottom: 1rem;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
+		.scroll-indicator-container {
+			position: absolute;
+			bottom: 1rem;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	}
 
-  .blog-posts {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
-    gap: 1rem;
-    max-width: 100rem;
-    margin: 0 auto;
+	.blog-posts {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: stretch;
+		gap: 1rem;
+		max-width: 100rem;
+		margin: 0 auto;
 
-    .blog-post {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: stretch;
+		.blog-post {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: stretch;
 
-      &:not(:last-child) {
-        margin-bottom: 1rem;
-      }
+			&:not(:last-child) {
+				margin-bottom: 1rem;
+			}
 
-      a {
-        color: var(--primary-500);
-        text-decoration: none;
-        transition: color 0.2s ease-in-out;
-        border: none;
-        outline: none;
+			a {
+				color: var(--primary-500);
+				text-decoration: none;
+				transition: color 0.2s ease-in-out;
+				border: none;
+				outline: none;
 
-        &:hover {
-          color: var(--light-500);
-        }
-      }
+				&:hover {
+					color: var(--light-500);
+				}
+			}
 
-      h3 {
-        margin: 0 0 0.5rem;
-        /* font-size: 1.2rem; */
-        text-align: center;
-      }
+			h3 {
+				margin: 0 0 0.5rem;
+				/* font-size: 1.2rem; */
+				text-align: center;
+			}
 
-      .blog-post-tags {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
-      }
+			.blog-post-tags {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				margin-bottom: 0.5rem;
+			}
 
-      p {
-        margin: 0;
-        text-align: left;
-      }
+			p {
+				margin: 0;
+				text-align: left;
+			}
 
-      @media (min-width: 970px) {
-        justify-content: flex-start;
+			@media (min-width: 970px) {
+				justify-content: flex-start;
 
-        &:not(:last-child) {
-          margin-bottom: 0;
-        }
-      }
-    }
+				&:not(:last-child) {
+					margin-bottom: 0;
+				}
+			}
+		}
 
-    @media (min-width: 970px) {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: stretch;
-      flex-wrap: nowrap;
-      gap: 1rem;
-    }
-  }
+		@media (min-width: 970px) {
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: stretch;
+			flex-wrap: nowrap;
+			gap: 1rem;
+		}
+	}
 
-  .recommendations {
-    max-width: 70rem;
-    margin: 0 auto;
+	.recommendations {
+		max-width: 70rem;
+		margin: 0 auto;
 
-    .recommendation {
-      margin: 2rem 0;
-    }
+		.recommendation {
+			margin: 2rem 0;
+		}
 
-    header {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: center;
-      margin-bottom: 1rem;
+		header {
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-start;
+			align-items: center;
+			margin-bottom: 1rem;
 
-      img {
-        width: 4rem;
-        height: 4rem;
-        border-radius: 50%;
-      }
-    }
-  }
-
-  .read-more {
-    display: block;
-    max-width: 20rem;
-    margin: 2rem auto 0;
-    padding: 0.5rem 1rem;
-    background-color: var(--light-500);
-    border-radius: 0.5rem;
-    color: var(--dark-500);
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out;
-
-    &:hover,
-    &:focus {
-      background-color: var(--dark-300);
-      color: var(--light-500);
-    }
-  }
+			img {
+				width: 4rem;
+				height: 4rem;
+				border-radius: 50%;
+			}
+		}
+	}
 </style>

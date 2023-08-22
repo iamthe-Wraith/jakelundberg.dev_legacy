@@ -7,33 +7,30 @@ import type { IRecommendation } from '$lib/types/recommendations';
 import { getRandomRecommendations } from '$lib/services/recommendations';
 
 interface IHomepageData {
-  blog_posts?: IBlogPost[];
-  recommendations?: IRecommendation[];
+	blog_posts?: IBlogPost[];
+	recommendations?: IRecommendation[];
 }
 
 export const load = wrapServerLoadWithSentry(async () => {
-  const data: IHomepageData = {};
+	const data: IHomepageData = {};
 
-  try {
-    const results = await Promise.allSettled([
-      getRecentBlogPosts(3),
-      getRandomRecommendations(3),
-    ]);
+	try {
+		const results = await Promise.allSettled([getRecentBlogPosts(3), getRandomRecommendations(3)]);
 
-    if (results[0].status === 'fulfilled') {
-      data.blog_posts = results[0].value;
-    }
+		if (results[0].status === 'fulfilled') {
+			data.blog_posts = results[0].value;
+		}
 
-    if (results[1].status === 'fulfilled') {
-      data.recommendations = results[1].value;
-    }
+		if (results[1].status === 'fulfilled') {
+			data.recommendations = results[1].value;
+		}
 
-    return data;
-  } catch (err) {
-    processError(err as Error, () => {
-      console.error('Error getting blog posts: ', err);
-    });
-  }
+		return data;
+	} catch (err) {
+		processError(err as Error, () => {
+			console.error('Error getting blog posts: ', err);
+		});
+	}
 
-  return data;
+	return data;
 }) satisfies PageServerLoad;

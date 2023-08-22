@@ -1,7 +1,7 @@
 <script lang="ts">
-  export let form;
+	export let form;
 
-  $: console.log({ form });
+	$: console.log({ form });
 </script>
 
 <div>asdf</div>

@@ -1,569 +1,568 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-  import { fly, fade, scale } from 'svelte/transition';
-  import { quintOut } from 'svelte/easing';
-  import type { PageData } from './$types';
-  import rough from 'roughjs';
-  import Icon from '@iconify/svelte';
-  import Loading from "$components/Loading.svelte";
-  import UiLayer from "$components/layers/UILayer.svelte";
-	import CemetaryWelcome from "$components/scenes/Cemetery/CemeteryWelcome.svelte";
-  import Cemetery from "$components/scenes/Cemetery/Cemetery.svelte";
-  import type { ILoad } from "$components/scenes/types";
-	import { processError } from "$lib/utils/errors";
-	import type { IProject } from "$lib/types/projects";
-	import { removeChildren } from "$lib/utils/dom";
-	import { secondaryColor } from "$lib/constants/colors";
-	import Tag from "$components/Tag.svelte";
-	import Button from "$components/Button.svelte";
+	import { onMount } from 'svelte';
+	import { fly, fade, scale } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
+	import type { PageData } from './$types';
+	import rough from 'roughjs';
+	import Icon from '@iconify/svelte';
+	import Loading from '$components/Loading.svelte';
+	import UiLayer from '$components/layers/UILayer.svelte';
+	import CemetaryWelcome from '$components/scenes/Cemetery/CemeteryWelcome.svelte';
+	import Cemetery from '$components/scenes/Cemetery/Cemetery.svelte';
+	import type { ILoad } from '$components/scenes/types';
+	import { processError } from '$lib/utils/errors';
+	import type { IProject } from '$lib/types/projects';
+	import { removeChildren } from '$lib/utils/dom';
+	import { secondaryColor } from '$lib/constants/colors';
+	import Tag from '$components/Tag.svelte';
+	import Button from '$components/Button.svelte';
 
-  export let data: PageData;
+	export let data: PageData;
 
-  let mounted = false;
-  let amountLoaded = 0;
-  let totalToLoad = 0;
-  let displayUI = false;
-  let displayScene = true;
+	let mounted = false;
+	let amountLoaded = 0;
+	let totalToLoad = 0;
+	let displayUI = false;
+	let displayScene = true;
 
-  let selectedProjectVisible = false;
-  let selectedProject: IProject | null;
+	let selectedProjectVisible = false;
+	let selectedProject: IProject | null;
 
-  const projectTransitionDelay = 100;
-  const projectTransitionDuration = 300;
+	const projectTransitionDelay = 100;
+	const projectTransitionDuration = 300;
 
-  let projects = data.projects.map((project) => {
-    return {
-      ...project,
-      viewDetails: false,
-    }
-  });
+	let projects = data.projects.map((project) => {
+		return {
+			...project,
+			viewDetails: false
+		};
+	});
 
-  $: {
-    projects = data.projects.map((project) => {
-    return {
-      ...project,
-      viewDetails: false,
-    }
-  });
-  }
+	$: {
+		projects = data.projects.map((project) => {
+			return {
+				...project,
+				viewDetails: false
+			};
+		});
+	}
 
-  $: displayUI = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
+	$: displayUI = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
 
-  $: {
-    if (mounted && displayUI && projects?.length) {
-      drawRoughSeps();
-    }
-  }
+	$: {
+		if (mounted && displayUI && projects?.length) {
+			drawRoughSeps();
+		}
+	}
 
-  $: {
-    if (selectedProjectVisible) {
-      drawRoughEngageables();
-    }
-  }
+	$: {
+		if (selectedProjectVisible) {
+			drawRoughEngageables();
+		}
+	}
 
-  onMount(() => {
-    mounted = true;
+	onMount(() => {
+		mounted = true;
 
-    return () => {
-      mounted = false;
-    }
-  })
-  
-  function closeSelectedProject() {
-    selectedProjectVisible = false;
-    
-    setTimeout(() => {
-      selectedProject = null;
-    }, projectTransitionDelay);
-  }
+		return () => {
+			mounted = false;
+		};
+	});
 
-  function drawRoughEngageables(count = 0) {
-    const svgs = document.querySelectorAll('.rough-engageable-link');
+	function closeSelectedProject() {
+		selectedProjectVisible = false;
 
-    // hack to get around timing issue of seps being rendered
-    if (!svgs.length && count < 10) {
-      setTimeout(() => drawRoughEngageables(count + 1), 100);
-      return;
-    }
+		setTimeout(() => {
+			selectedProject = null;
+		}, projectTransitionDelay);
+	}
 
-    for (let i = 0; i < svgs.length; i++) {
-      const svg = svgs[i] as unknown as SVGSVGElement;
-      removeChildren(svg);
-      const roughSvg = rough.svg(svg);
-      const circle = roughSvg.circle(25, 25, 40, {
-        stroke: secondaryColor,
-        strokeWidth: 2,
-        roughness: 1.5,
-      });
-      svg.appendChild(circle);
-    }
-  }
+	function drawRoughEngageables(count = 0) {
+		const svgs = document.querySelectorAll('.rough-engageable-link');
 
-  function drawRoughSeps(count = 0) {
-    const seps = document.querySelectorAll('.rough-sep');
+		// hack to get around timing issue of seps being rendered
+		if (!svgs.length && count < 10) {
+			setTimeout(() => drawRoughEngageables(count + 1), 100);
+			return;
+		}
 
-    // hack to get around timing issue of seps being rendered
-    if (!seps.length && count < 10) {
-      setTimeout(() => drawRoughSeps(count + 1), 100);
-      return;
-    }
+		for (let i = 0; i < svgs.length; i++) {
+			const svg = svgs[i] as unknown as SVGSVGElement;
+			removeChildren(svg);
+			const roughSvg = rough.svg(svg);
+			const circle = roughSvg.circle(25, 25, 40, {
+				stroke: secondaryColor,
+				strokeWidth: 2,
+				roughness: 1.5
+			});
+			svg.appendChild(circle);
+		}
+	}
 
-    for (let i = 0; i < seps.length; i++) {
-      const sep = seps[i] as unknown as SVGSVGElement;
-      removeChildren(sep);
-      const rect = sep.getBoundingClientRect();
-      const roughSvg = rough.svg(sep);
+	function drawRoughSeps(count = 0) {
+		const seps = document.querySelectorAll('.rough-sep');
 
-      const options = {
-        stroke: secondaryColor,
-        strokeWidth: 2,
-        roughness: 1.5,
-      }
+		// hack to get around timing issue of seps being rendered
+		if (!seps.length && count < 10) {
+			setTimeout(() => drawRoughSeps(count + 1), 100);
+			return;
+		}
 
-      const offset = 5;
+		for (let i = 0; i < seps.length; i++) {
+			const sep = seps[i] as unknown as SVGSVGElement;
+			removeChildren(sep);
+			const rect = sep.getBoundingClientRect();
+			const roughSvg = rough.svg(sep);
 
-      const line1 = roughSvg.line(offset, offset, (rect.width - offset), offset, options);
-      sep.appendChild(line1);
-    }
-  }
+			const options = {
+				stroke: secondaryColor,
+				strokeWidth: 2,
+				roughness: 1.5
+			};
 
-  function onSceneError(error: Error) {
-    processError(error, () => {
-      displayScene = false;
-      displayUI = true;
-    });
-  }
+			const offset = 5;
 
-  function onSceneLoad(loading: Record<string, ILoad>) {
-    const l = Object.values(loading).reduce((acc, curr) => {
-      acc.loaded += curr.loaded;
-      acc.total += curr.total;
-      return acc;
-    }, {
-      loaded: 0,
-      total: 0
-    });
+			const line1 = roughSvg.line(offset, offset, rect.width - offset, offset, options);
+			sep.appendChild(line1);
+		}
+	}
 
-    amountLoaded = l.loaded;
-    totalToLoad = l.total;
-  }
+	function onSceneError(error: Error) {
+		processError(error, () => {
+			displayScene = false;
+			displayUI = true;
+		});
+	}
 
-  function selectProject(project: IProject) {
-    selectedProject = project;
-    selectedProjectVisible = false;
+	function onSceneLoad(loading: Record<string, ILoad>) {
+		const l = Object.values(loading).reduce(
+			(acc, curr) => {
+				acc.loaded += curr.loaded;
+				acc.total += curr.total;
+				return acc;
+			},
+			{
+				loaded: 0,
+				total: 0
+			}
+		);
 
-    setTimeout(() => {
-      selectedProjectVisible = true;
-    }, projectTransitionDelay);
-  }
+		amountLoaded = l.loaded;
+		totalToLoad = l.total;
+	}
+
+	function selectProject(project: IProject) {
+		selectedProject = project;
+		selectedProjectVisible = false;
+
+		setTimeout(() => {
+			selectedProjectVisible = true;
+		}, projectTransitionDelay);
+	}
 </script>
 
-{#if displayScene} 
-  <Cemetery
-    onLoad={onSceneLoad}
-    onError={onSceneError}
-  />
+{#if displayScene}
+	<Cemetery onLoad={onSceneLoad} onError={onSceneError} />
 {/if}
 
 {#if displayUI}
-  <UiLayer>
-    <div class="ui-main">
-      <div class="left-col">
-        <div class="welcome-mobile">
-          <CemetaryWelcome
-            className="mobile-cemetery-welcome"
-            testid="mobile-cemetery-welcome"
-          />
-        </div>
+	<UiLayer>
+		<div class="ui-main">
+			<div class="left-col">
+				<div class="welcome-mobile">
+					<CemetaryWelcome className="mobile-cemetery-welcome" testid="mobile-cemetery-welcome" />
+				</div>
 
-        <div class="projects">
-          {#each projects as project (project) }
-            <div class="project mobile-project">
-              <button
-                class="project-title header-font {project.title === selectedProject?.title ? 'selected' : ''}"
-                disabled={project.title === selectedProject?.title}
-                on:click={() => selectProject(project)}
-              >
-                {project.title}
-              </button>
-              
-              <h2 class="mobile-header">{project.title}</h2>
+				<div class="projects">
+					{#each projects as project (project)}
+						<div class="project mobile-project">
+							<button
+								class="project-title header-font {project.title === selectedProject?.title
+									? 'selected'
+									: ''}"
+								disabled={project.title === selectedProject?.title}
+								on:click={() => selectProject(project)}
+							>
+								{project.title}
+							</button>
 
-              <div class="tags mobile-tags">
-                {#each project.tags as tag, i}
-                  <Tag>{tag}</Tag>
-                {/each}
-              </div>
+							<h2 class="mobile-header">{project.title}</h2>
 
-              {#if project.viewDetails}
-                <div
-                  class="desc mobile-desc"
-                  in:scale={{ duration: 300, start: 0, opacity: 0, easing: quintOut }}
-                >
-                  {@html project.desc}
-                </div>
-              {/if}
+							<div class="tags mobile-tags">
+								{#each project.tags as tag}
+									<Tag>{tag}</Tag>
+								{/each}
+							</div>
 
-              <div class="engageables mobile-engageables">
-                <div class="links">
-                  {#each Object.entries(project.urls) as [key, url]}
-                    <a
-                      class="link"
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {#if key === 'github'}
-                        <Icon icon="ion:logo-github" />
-                      {:else}
-                        <Icon icon="ion:browsers" />
-                      {/if}
-                    </a>
-                  {/each}
-                </div>
+							{#if project.viewDetails}
+								<div
+									class="desc mobile-desc"
+									in:scale={{ duration: 300, start: 0, opacity: 0, easing: quintOut }}
+								>
+									{@html project.desc}
+								</div>
+							{/if}
 
-                {#if !project.viewDetails}
-                  <Button
-                    className='view-details-btn'
-                    kind="primary"
-                    size="small"
-                    on:click={() => project.viewDetails = true}
-                  >
-                    View Details
-                  </Button>
-                {/if}
-              </div>
+							<div class="engageables mobile-engageables">
+								<div class="links">
+									{#each Object.entries(project.urls) as [key, url]}
+										<a class="link" href={url} target="_blank" rel="noopener noreferrer">
+											{#if key === 'github'}
+												<Icon icon="ion:logo-github" />
+											{:else}
+												<Icon icon="ion:browsers" />
+											{/if}
+										</a>
+									{/each}
+								</div>
 
-              <svg class="rough-sep" id="rough-sep-{project.id}" />
-            </div>
-          {/each}
-        </div>
-      </div>
+								{#if !project.viewDetails}
+									<Button
+										className="view-details-btn"
+										kind="primary"
+										size="small"
+										on:click={() => (project.viewDetails = true)}
+									>
+										View Details
+									</Button>
+								{/if}
+							</div>
 
-      <div class="details">
-        {#if selectedProject && selectedProjectVisible}
-          <div
-            class="project"
-            in:fly={{ delay: projectTransitionDelay, duration: projectTransitionDuration, x: 0, y: -100, opacity: 0, easing: quintOut }}
-            out:fade={{duration: projectTransitionDelay}}
-          >
-            <button
-              class="close"
-              on:click={closeSelectedProject}
-            >
-              <Icon icon="ion:close" />
-              <svg class="rough-engageable-link" />
-            </button>
+							<svg class="rough-sep" id="rough-sep-{project.id}" />
+						</div>
+					{/each}
+				</div>
+			</div>
 
-            <h2>{selectedProject.title}</h2>
+			<div class="details">
+				{#if selectedProject && selectedProjectVisible}
+					<div
+						class="project"
+						in:fly={{
+							delay: projectTransitionDelay,
+							duration: projectTransitionDuration,
+							x: 0,
+							y: -100,
+							opacity: 0,
+							easing: quintOut
+						}}
+						out:fade={{ duration: projectTransitionDelay }}
+					>
+						<button class="close" on:click={closeSelectedProject}>
+							<Icon icon="ion:close" />
+							<svg class="rough-engageable-link" />
+						</button>
 
-            <div class="tags">
-              {#each selectedProject.tags as tag, i}
-                <Tag>{tag}</Tag>
-              {/each}
-            </div>
+						<h2>{selectedProject.title}</h2>
 
-            <div class="desc">
-              {@html selectedProject.desc}
-            </div>
+						<div class="tags">
+							{#each selectedProject.tags as tag}
+								<Tag>{tag}</Tag>
+							{/each}
+						</div>
 
-            <div class="engageables">
-              <div class="links">
-                {#each Object.entries(selectedProject.urls) as [key, url]}
-                  <a
-                    class="link"
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {#if key === 'github'}
-                      <Icon icon="ion:logo-github" />
-                    {:else if key === 'download'}
-                      <Icon icon="ion:cloud-download-outline" />
-                    {:else}
-                      <Icon icon="ion:browsers" />
-                    {/if}
-                    <svg class="rough-engageable-link" />
-                  </a>
-                {/each}
-              </div>
-            </div>
-          </div>
-        {/if}
+						<div class="desc">
+							{@html selectedProject.desc}
+						</div>
 
-        {#if !selectedProject && !selectedProjectVisible}
-          <div
-            class="welcome-desktop"
-            in:fly={{ delay: projectTransitionDelay, duration: projectTransitionDuration, x: 0, y: -100, opacity: 0, easing: quintOut }}
-            out:fade={{duration: projectTransitionDelay}}
-          >
-            <CemetaryWelcome
-              className="desktop-cemetery-welcome"
-              testid="desktop-cemetery-welcome"
-            />
-          </div>
-        {/if}
-      </div>
-    </div>
-  </UiLayer>
+						<div class="engageables">
+							<div class="links">
+								{#each Object.entries(selectedProject.urls) as [key, url]}
+									<a class="link" href={url} target="_blank" rel="noopener noreferrer">
+										{#if key === 'github'}
+											<Icon icon="ion:logo-github" />
+										{:else if key === 'download'}
+											<Icon icon="ion:cloud-download-outline" />
+										{:else}
+											<Icon icon="ion:browsers" />
+										{/if}
+										<svg class="rough-engageable-link" />
+									</a>
+								{/each}
+							</div>
+						</div>
+					</div>
+				{/if}
+
+				{#if !selectedProject && !selectedProjectVisible}
+					<div
+						class="welcome-desktop"
+						in:fly={{
+							delay: projectTransitionDelay,
+							duration: projectTransitionDuration,
+							x: 0,
+							y: -100,
+							opacity: 0,
+							easing: quintOut
+						}}
+						out:fade={{ duration: projectTransitionDelay }}
+					>
+						<CemetaryWelcome
+							className="desktop-cemetery-welcome"
+							testid="desktop-cemetery-welcome"
+						/>
+					</div>
+				{/if}
+			</div>
+		</div>
+	</UiLayer>
 {:else}
-  <Loading />
+	<Loading />
 {/if}
 
 <style lang="scss">
-  .ui-main {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
+	.ui-main {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
 
-    @media (min-width: 768px) {
-      flex-direction: row;
-    }
-  }
+		@media (min-width: 768px) {
+			flex-direction: row;
+		}
+	}
 
-  .left-col {
-    width: 100%;
-    min-height: 100%;
+	.left-col {
+		width: 100%;
+		min-height: 100%;
 
-    @media (min-width: 768px) {
-      display: flex;
-      justify-content: flex-start;
-      align-items: flex-start;
-      max-width: 320px;
-    }
-  }
+		@media (min-width: 768px) {
+			display: flex;
+			justify-content: flex-start;
+			align-items: flex-start;
+			max-width: 320px;
+		}
+	}
 
-  .welcome-mobile {
-    display: flex;
-    height: 100%;
-    min-height: 100%;
+	.welcome-mobile {
+		display: flex;
+		height: 100%;
+		min-height: 100%;
 
-    @media (min-width: 768px) {
-      display: none;
-    }
-  }
+		@media (min-width: 768px) {
+			display: none;
+		}
+	}
 
-  .welcome-desktop {
-    display: none;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  
+	.welcome-desktop {
+		display: none;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
 
-    @media (min-width: 768px) {
-      display: flex;
-    }
-  }
+		@media (min-width: 768px) {
+			display: flex;
+		}
+	}
 
-  .projects {
-    width: 100%;
-  }
+	.projects {
+		width: 100%;
+	}
 
-  .project {
-    position: relative;
-    max-height: 100%;
-    padding: 1.5rem 1rem;
+	.project {
+		position: relative;
+		max-height: 100%;
+		padding: 1.5rem 1rem;
 
-    &:not(.mobile-project) {
-      width: 90%;
-      max-width: 55rem;
-    }
+		&:not(.mobile-project) {
+			width: 90%;
+			max-width: 55rem;
+		}
 
-    &:last-child {
-      .rough-sep {
-        opacity: 0;
-      }
-    }
+		&:last-child {
+			.rough-sep {
+				opacity: 0;
+			}
+		}
 
-    .close {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 3rem;
-      height: 3rem;
-      padding: 0.5rem;
-      font-size: 2rem;
-      outline: none;
-      border: none;
-      background: none;
+		.close {
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 3rem;
+			height: 3rem;
+			padding: 0.5rem;
+			font-size: 2rem;
+			outline: none;
+			border: none;
+			background: none;
 
-      &:hover,
-      &:focus {
-        .rough-engageable-link {
-          opacity: 1;
-          transition: opacity 0.25s ease-in-out;
-        }
-      }
-    }
+			&:hover,
+			&:focus {
+				.rough-engageable-link {
+					opacity: 1;
+					transition: opacity 0.25s ease-in-out;
+				}
+			}
+		}
 
-    h2 {
-      font-size: 1.3rem;
-      color: var(--light-500);
-      line-height: 1.7rem;
+		h2 {
+			font-size: 1.3rem;
+			color: var(--light-500);
+			line-height: 1.7rem;
 
-      @media (min-width: 768px) {
-        &.mobile-header {
-          display: none;
-        }
-      }
-    }
+			@media (min-width: 768px) {
+				&.mobile-header {
+					display: none;
+				}
+			}
+		}
 
-    .project-title {
-      display: none;
-      width: 100%;
-      font-size: 1.2rem;
-      border: none;
-      background: none;
-      text-align: right;
+		.project-title {
+			display: none;
+			width: 100%;
+			font-size: 1.2rem;
+			border: none;
+			background: none;
+			text-align: right;
 
-      &:hover {
-        cursor: pointer;
+			&:hover {
+				cursor: pointer;
 
-        & ~ .rough-sep {
-          right: 0;
-          transform: translateX(0%);
-          opacity: 1;
-          transition: 0.25s ease-in-out;
-        }
-      }
+				& ~ .rough-sep {
+					right: 0;
+					transform: translateX(0%);
+					opacity: 1;
+					transition: 0.25s ease-in-out;
+				}
+			}
 
-      @media (min-width: 768px) {
-        display: block;
-      }
-    }
-    
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
-      max-width: 90%;
-      margin: 0.5rem auto;
+			@media (min-width: 768px) {
+				display: block;
+			}
+		}
 
-      &.mobile-tags {
-        display: flex;
+		.tags {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+			gap: 0.5rem;
+			max-width: 90%;
+			margin: 0.5rem auto;
 
-        @media (min-width: 768px) {
-          display: none;
-        }
-      }
-    }
+			&.mobile-tags {
+				display: flex;
 
-    .desc {
-      width: 100%;
-      margin: 1rem 0;
+				@media (min-width: 768px) {
+					display: none;
+				}
+			}
+		}
 
-      &.mobile-desc {
-        display: block;
+		.desc {
+			width: 100%;
+			margin: 1rem 0;
 
-        @media (min-width: 768px) {
-          display: none;
-        }
-      }
-    }
+			&.mobile-desc {
+				display: block;
 
-    .engageables {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+				@media (min-width: 768px) {
+					display: none;
+				}
+			}
+		}
 
-      .links {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-      }
+		.engageables {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
 
-      a {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-width: 3rem;
-        max-width: 3rem;
-        min-height: 3rem;
-        max-height: 3rem;
-        padding: 0.5rem;
-        font-size: 2.5rem;
-        outline: none;
-        border: none;
+			.links {
+				display: flex;
+				justify-content: flex-start;
+				align-items: center;
+			}
 
-        &:not(:last-child) {
-          margin-right: 0.5rem;
-        }
+			a {
+				position: relative;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-width: 3rem;
+				max-width: 3rem;
+				min-height: 3rem;
+				max-height: 3rem;
+				padding: 0.5rem;
+				font-size: 2.5rem;
+				outline: none;
+				border: none;
 
-        &:hover,
-        &:focus {
-          .rough-engageable-link {
-            opacity: 1;
-            transition: opacity 0.25s ease-in-out;
-          }
-        }
-      }
+				&:not(:last-child) {
+					margin-right: 0.5rem;
+				}
 
-      &.mobile-engageables {
-        display: flex;
-        margin: 1rem 0;
+				&:hover,
+				&:focus {
+					.rough-engageable-link {
+						opacity: 1;
+						transition: opacity 0.25s ease-in-out;
+					}
+				}
+			}
 
-        @media (min-width: 768px) {
-          display: none;
-        }
-      }
-    }
+			&.mobile-engageables {
+				display: flex;
+				margin: 1rem 0;
 
-    .rough-sep {
-      position: absolute;
-      top: calc(100% - 0.5rem);
-      left: 50%;
-      width: 150px;
-      height: 14px;
-      opacity: 1;
-      transform: translateX(-50%);
-      transition: 0.25s ease-in-out;
+				@media (min-width: 768px) {
+					display: none;
+				}
+			}
+		}
 
-      @media (min-width: 768px) {
-        opacity: 0;
-      }
-    }
+		.rough-sep {
+			position: absolute;
+			top: calc(100% - 0.5rem);
+			left: 50%;
+			width: 150px;
+			height: 14px;
+			opacity: 1;
+			transform: translateX(-50%);
+			transition: 0.25s ease-in-out;
 
-    @media (min-width: 768px) {
-      padding: 0.35rem 1rem;
-    }
-  }
+			@media (min-width: 768px) {
+				opacity: 0;
+			}
+		}
 
-  .rough-engageable-link {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.25s ease-in-out;
-    pointer-events: none;
-  }
+		@media (min-width: 768px) {
+			padding: 0.35rem 1rem;
+		}
+	}
 
-  .details {
-    display: none;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    max-height: 100%;
-    border-left: 1px solid var(--dark-500);
-    overflow: auto;
+	.rough-engageable-link {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		transition: opacity 0.25s ease-in-out;
+		pointer-events: none;
+	}
 
-    @media (min-width: 768px) {
-      display: flex;
-    }
-  }
+	.details {
+		display: none;
+		flex: 1;
+		justify-content: center;
+		align-items: center;
+		max-height: 100%;
+		border-left: 1px solid var(--dark-500);
+		overflow: auto;
 
-  * :global(h3) {
-    margin-bottom: 0.5rem;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--primary-500);
-    line-height: 1.4rem;
-    text-align: left;
-  }
+		@media (min-width: 768px) {
+			display: flex;
+		}
+	}
+
+	* :global(h3) {
+		margin-bottom: 0.5rem;
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: var(--primary-500);
+		line-height: 1.4rem;
+		text-align: left;
+	}
 </style>

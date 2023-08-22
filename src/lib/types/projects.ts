@@ -1,13 +1,13 @@
 export interface IProject {
-  id: string;
-  title: string;
-  urls: IProjectUrls;
-  desc: string;
-  tags: string[];
+	id: string;
+	title: string;
+	urls: IProjectUrls;
+	desc: string;
+	tags: string[];
 }
 
 export interface IProjectUrls {
-  url?: string; // used for all urls that to do match other properties of this interface
-  github?: string; // only used for github urls
-  download?: string; // only used for download urls
+	url?: string; // used for all urls that to do match other properties of this interface
+	github?: string; // only used for github urls
+	download?: string; // only used for download urls
 }
