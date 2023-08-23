@@ -237,7 +237,7 @@
 				</div>
 			</div>
 
-			<div class="details">
+			<div class="details no-scrollbar">
 				{#if selectedProject && selectedProjectVisible}
 					<div
 						class="project"
