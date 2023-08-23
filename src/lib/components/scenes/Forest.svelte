@@ -54,9 +54,9 @@
 		main = document.querySelector('main') as HTMLElement;
 		rect = main.getBoundingClientRect();
 
-		camera = new THREE.PerspectiveCamera(75, rect.width / rect.height, 0.1, 1000);
+		camera = new THREE.PerspectiveCamera(50, rect.width / rect.height, 0.1, 1000);
 
-		camera.position.set(1, 0.6, 18.3);
+		camera.position.set(1, 0.6, 19.3);
 		scene.add(camera);
 
 		renderer = new THREE.WebGLRenderer({

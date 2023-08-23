@@ -25,7 +25,7 @@
 	const userPos = {
 		x: 0,
 		y: 3.2,
-		z: 39.3
+		z: 41.3
 	};
 
 	let stats: Stats;
@@ -56,7 +56,7 @@
 		main = document.querySelector('main') as HTMLElement;
 		rect = main.getBoundingClientRect();
 
-		camera = new THREE.PerspectiveCamera(75, rect.width / rect.height, 0.1, 1000);
+		camera = new THREE.PerspectiveCamera(50, rect.width / rect.height, 0.1, 1000);
 
 		camera.position.set(userPos.x, userPos.y, userPos.z);
 		look();
