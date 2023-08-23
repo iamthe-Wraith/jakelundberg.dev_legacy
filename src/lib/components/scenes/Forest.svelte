@@ -112,7 +112,8 @@
 		stats?.update();
 
 		if (!$mainMenu.isOpen) {
-			camera.lookAt(mouse.x * viewabilityThreshold, mouse.y * viewabilityThreshold, 0);
+			if (rect.width >= 768)
+				camera.lookAt(mouse.x * viewabilityThreshold, mouse.y * viewabilityThreshold, 0);
 
 			animateTorch();
 		}
