@@ -17,6 +17,7 @@
 	import Tag from '$components/Tag.svelte';
 	import Button from '$components/Button.svelte';
 	import type { IQuote } from '$lib/types/quotes';
+	import HandDrawnContainer from '$components/HandDrawnContainer.svelte';
 
 	export let data: PageData;
 
@@ -239,52 +240,54 @@
 
 			<div class="details no-scrollbar">
 				{#if selectedProject && selectedProjectVisible}
-					<div
-						class="project"
-						in:fly={{
-							delay: projectTransitionDelay,
-							duration: projectTransitionDuration,
-							x: 0,
-							y: -100,
-							opacity: 0,
-							easing: quintOut
-						}}
-						out:fade={{ duration: projectTransitionDelay }}
-					>
-						<button class="close" on:click={closeSelectedProject}>
-							<Icon icon="ion:close" />
-							<svg class="rough-engageable-link" />
-						</button>
+					<HandDrawnContainer>
+						<div
+							class="project"
+							in:fly={{
+								delay: projectTransitionDelay,
+								duration: projectTransitionDuration,
+								x: 0,
+								y: -100,
+								opacity: 0,
+								easing: quintOut
+							}}
+							out:fade={{ duration: projectTransitionDelay }}
+						>
+							<button class="close" on:click={closeSelectedProject}>
+								<Icon icon="ion:close" />
+								<svg class="rough-engageable-link" />
+							</button>
 
-						<h2>{selectedProject.title}</h2>
+							<h2>{selectedProject.title}</h2>
 
-						<div class="tags">
-							{#each selectedProject.tags as tag}
-								<Tag>{tag}</Tag>
-							{/each}
-						</div>
-
-						<div class="desc">
-							{@html selectedProject.desc}
-						</div>
-
-						<div class="engageables">
-							<div class="links">
-								{#each Object.entries(selectedProject.urls) as [key, url]}
-									<a class="link" href={url} target="_blank" rel="noopener noreferrer">
-										{#if key === 'github'}
-											<Icon icon="ion:logo-github" />
-										{:else if key === 'download'}
-											<Icon icon="ion:cloud-download-outline" />
-										{:else}
-											<Icon icon="ion:browsers" />
-										{/if}
-										<svg class="rough-engageable-link" />
-									</a>
+							<div class="tags">
+								{#each selectedProject.tags as tag}
+									<Tag>{tag}</Tag>
 								{/each}
 							</div>
+
+							<div class="desc">
+								{@html selectedProject.desc}
+							</div>
+
+							<div class="engageables">
+								<div class="links">
+									{#each Object.entries(selectedProject.urls) as [key, url]}
+										<a class="link" href={url} target="_blank" rel="noopener noreferrer">
+											{#if key === 'github'}
+												<Icon icon="ion:logo-github" />
+											{:else if key === 'download'}
+												<Icon icon="ion:cloud-download-outline" />
+											{:else}
+												<Icon icon="ion:browsers" />
+											{/if}
+											<svg class="rough-engageable-link" />
+										</a>
+									{/each}
+								</div>
+							</div>
 						</div>
-					</div>
+					</HandDrawnContainer>
 				{/if}
 
 				{#if !selectedProject && !selectedProjectVisible}
@@ -300,10 +303,12 @@
 						}}
 						out:fade={{ duration: projectTransitionDelay }}
 					>
-						<CemetaryWelcome
-							className="desktop-cemetery-welcome"
-							testid="desktop-cemetery-welcome"
-						/>
+						<HandDrawnContainer>
+							<CemetaryWelcome
+								className="desktop-cemetery-welcome"
+								testid="desktop-cemetery-welcome"
+							/>
+						</HandDrawnContainer>
 					</div>
 				{/if}
 			</div>
@@ -353,6 +358,7 @@
 		justify-content: center;
 		align-items: center;
 		width: 100%;
+		height: 100%;
 
 		@media (min-width: 768px) {
 			display: flex;
@@ -369,7 +375,6 @@
 		padding: 1.5rem 1rem;
 
 		&:not(.mobile-project) {
-			width: 90%;
 			max-width: 55rem;
 		}
 
@@ -550,8 +555,9 @@
 		display: none;
 		flex: 1;
 		justify-content: center;
-		align-items: center;
+		align-items: flex-start;
 		max-height: 100%;
+		padding-left: 1rem;
 		border-left: 1px solid var(--dark-500);
 		overflow: auto;
 
