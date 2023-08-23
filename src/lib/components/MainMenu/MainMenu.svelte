@@ -227,7 +227,7 @@
 		top: 50%;
 		left: 50%;
 		width: 96vw;
-		height: 98vh;
+		height: 90vh;
 		z-index: 1001;
 		transform: translate(-50%, -50%);
 
