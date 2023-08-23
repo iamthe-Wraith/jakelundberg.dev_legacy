@@ -94,14 +94,18 @@
 										on:focus={() => (engagedBlogPost = post.id)}
 										on:blur={() => (engagedBlogPost = '')}
 									>
-										<h3>{post.title}</h3>
-
-										<div class="blog-post-tags">
-											{#each post.tags as tag}
-												<Tag>{tag}</Tag>
-											{/each}
+										<div class="blog-post-header">
+											<h3>{post.title}</h3>
 										</div>
-										<p class="blog-post-desc">{post.description}</p>
+
+										<div class="blog-post-content">
+											<div class="blog-post-tags">
+												{#each post.tags as tag}
+													<Tag>{tag}</Tag>
+												{/each}
+											</div>
+											<p class="blog-post-desc">{post.description}</p>
+										</div>
 									</a>
 								</article>
 							</HandDrawnContainer>
@@ -233,6 +237,10 @@
 			}
 
 			a {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				height: 100%;
 				color: var(--primary-500);
 				text-decoration: none;
 				transition: color 0.2s ease-in-out;
@@ -267,6 +275,7 @@
 
 			@media (min-width: 970px) {
 				justify-content: flex-start;
+				height: 100%;
 
 				&:not(:last-child) {
 					margin-bottom: 0;
