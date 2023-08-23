@@ -368,7 +368,8 @@
 			spotLight.position.y + mouse.y * 0.8,
 			spotLight.position.z - 1
 		);
-		camera.lookAt(mouse.x * viewabilityThreshold, mouse.y * viewabilityThreshold, 0);
+		if (rect.width >= 768)
+			camera.lookAt(mouse.x * viewabilityThreshold, mouse.y * viewabilityThreshold, 0);
 	}
 
 	function render() {
