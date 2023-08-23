@@ -156,6 +156,7 @@
 	}
 
 	function selectProject(project: IProject) {
+		console.log('selectProject', project);
 		selectedProject = project;
 		selectedProjectVisible = false;
 
@@ -240,54 +241,52 @@
 
 			<div class="details no-scrollbar">
 				{#if selectedProject && selectedProjectVisible}
-					<HandDrawnContainer>
-						<div
-							class="project"
-							in:fly={{
-								delay: projectTransitionDelay,
-								duration: projectTransitionDuration,
-								x: 0,
-								y: -100,
-								opacity: 0,
-								easing: quintOut
-							}}
-							out:fade={{ duration: projectTransitionDelay }}
-						>
-							<button class="close" on:click={closeSelectedProject}>
-								<Icon icon="ion:close" />
-								<svg class="rough-engageable-link" />
-							</button>
+					<div
+						class="project"
+						in:fly={{
+							delay: projectTransitionDelay,
+							duration: projectTransitionDuration,
+							x: 0,
+							y: -100,
+							opacity: 0,
+							easing: quintOut
+						}}
+						out:fade={{ duration: projectTransitionDelay }}
+					>
+						<button class="close" on:click={closeSelectedProject}>
+							<Icon icon="ion:close" />
+							<svg class="rough-engageable-link" />
+						</button>
 
-							<h2>{selectedProject.title}</h2>
+						<h2>{selectedProject.title}</h2>
 
-							<div class="tags">
-								{#each selectedProject.tags as tag}
-									<Tag>{tag}</Tag>
+						<div class="tags">
+							{#each selectedProject.tags as tag}
+								<Tag>{tag}</Tag>
+							{/each}
+						</div>
+
+						<div class="desc">
+							{@html selectedProject.desc}
+						</div>
+
+						<div class="engageables">
+							<div class="links">
+								{#each Object.entries(selectedProject.urls) as [key, url]}
+									<a class="link" href={url} target="_blank" rel="noopener noreferrer">
+										{#if key === 'github'}
+											<Icon icon="ion:logo-github" />
+										{:else if key === 'download'}
+											<Icon icon="ion:cloud-download-outline" />
+										{:else}
+											<Icon icon="ion:browsers" />
+										{/if}
+										<svg class="rough-engageable-link" />
+									</a>
 								{/each}
 							</div>
-
-							<div class="desc">
-								{@html selectedProject.desc}
-							</div>
-
-							<div class="engageables">
-								<div class="links">
-									{#each Object.entries(selectedProject.urls) as [key, url]}
-										<a class="link" href={url} target="_blank" rel="noopener noreferrer">
-											{#if key === 'github'}
-												<Icon icon="ion:logo-github" />
-											{:else if key === 'download'}
-												<Icon icon="ion:cloud-download-outline" />
-											{:else}
-												<Icon icon="ion:browsers" />
-											{/if}
-											<svg class="rough-engageable-link" />
-										</a>
-									{/each}
-								</div>
-							</div>
 						</div>
-					</HandDrawnContainer>
+					</div>
 				{/if}
 
 				{#if !selectedProject && !selectedProjectVisible}
@@ -371,8 +370,26 @@
 
 	.project {
 		position: relative;
-		max-height: 100%;
-		padding: 1.5rem 1rem;
+		/* max-height: 100%; */
+		padding: 1.5rem 1rem 0.5rem;
+		background: oklch(0% 0 0 / 0.5);
+		border-style: solid;
+		border-color: var(--dark-500);
+		border-width: 3px;
+		border-top-left-radius: 250px 15px;
+		border-top-right-radius: 15px 250px;
+		border-bottom-right-radius: 250px 15px;
+		border-bottom-left-radius: 15px 250px;
+
+		&.mobile-project {
+			margin-bottom: 1rem;
+
+			@media (min-width: 768px) {
+				margin-bottom: 0;
+				border: none;
+				background: none;
+			}
+		}
 
 		&:not(.mobile-project) {
 			max-width: 55rem;
@@ -512,7 +529,7 @@
 
 			&.mobile-engageables {
 				display: flex;
-				margin: 1rem 0;
+				margin-top: 1rem;
 
 				@media (min-width: 768px) {
 					display: none;
@@ -526,17 +543,17 @@
 			left: 50%;
 			width: 150px;
 			height: 14px;
-			opacity: 1;
+			opacity: 0;
 			transform: translateX(-50%);
 			transition: 0.25s ease-in-out;
-
-			@media (min-width: 768px) {
-				opacity: 0;
-			}
 		}
 
 		@media (min-width: 768px) {
 			padding: 0.35rem 1rem;
+
+			&:not(.mobile-project) {
+				padding: 1.5rem 1.5rem 1rem;
+			}
 		}
 	}
 
@@ -552,14 +569,27 @@
 	}
 
 	.details {
+		position: relative;
 		display: none;
 		flex: 1;
 		justify-content: center;
 		align-items: flex-start;
 		max-height: 100%;
 		padding-left: 1rem;
-		border-left: 1px solid var(--dark-500);
+		/* border-left: 1px solid var(--dark-500); */
 		overflow: auto;
+
+		&:before {
+			content: ' ';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 5px;
+			height: 100%;
+			border-right: 2px solid var(--dark-500);
+			border-top-right-radius: 15px 250px;
+			border-bottom-right-radius: 15px 250px;
+		}
 
 		@media (min-width: 768px) {
 			display: flex;
