@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { removeChildren } from '$lib/utils/dom';
 	import rough from 'roughjs';
+	import { nanoid } from 'nanoid';
 	import Icon from '@iconify/svelte';
 	import { secondaryColor } from '$lib/constants/colors';
 	import { onMount } from 'svelte';
 
-	export let id: string = crypto.randomUUID();
+	export let id = `close-${nanoid()}`;
 
 	onMount(() => {
 		drawRoughEngageables();

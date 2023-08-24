@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { nanoid } from 'nanoid';
 	import { getRandomNum } from '$lib/utils/number';
+
 	export let thickness = 3;
 	export let kind: 'primary' | 'secondary' | 'neutral' = 'neutral';
 	export let name = '';
-	export let id = `input-${crypto.randomUUID()}`;
+	export let id = `input-${nanoid()}`;
 	export let label = '';
 	export let value = '';
 	export let error = '';
