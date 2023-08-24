@@ -32,8 +32,6 @@
 
 	let load: Record<string, ILoad> = {};
 
-	$: onLoad(load);
-
 	let controls: OrbitControls;
 	let main: HTMLElement;
 	let rect: DOMRect;
@@ -79,6 +77,7 @@
 			.then(() => {
 				initLights();
 				initWisps();
+				onLoad(load);
 			})
 			.catch(onError);
 

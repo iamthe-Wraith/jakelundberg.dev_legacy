@@ -8,7 +8,6 @@
 	import Loading from '$components/Loading.svelte';
 	import UiLayer from '$components/layers/UILayer.svelte';
 	import CemetaryWelcome from '$components/scenes/Cemetery/CemeteryWelcome.svelte';
-	import Cemetery from '$components/scenes/Cemetery/Cemetery.svelte';
 	import type { ILoad } from '$components/scenes/types';
 	import { processError } from '$lib/utils/errors';
 	import type { IProject } from '$lib/types/projects';
@@ -18,6 +17,7 @@
 	import Button from '$components/Button.svelte';
 	import type { IQuote } from '$lib/types/quotes';
 	import HandDrawnContainer from '$components/HandDrawnContainer.svelte';
+	import Cemetery from '$components/scenes/Cemetery/Cemetery.svelte';
 
 	export let data: PageData;
 
@@ -105,7 +105,6 @@
 
 	function drawRoughSeps(count = 0) {
 		const seps = document.querySelectorAll('.rough-sep');
-
 		// hack to get around timing issue of seps being rendered
 		if (!seps.length && count < 10) {
 			setTimeout(() => drawRoughSeps(count + 1), 100);
@@ -156,7 +155,6 @@
 	}
 
 	function selectProject(project: IProject) {
-		console.log('selectProject', project);
 		selectedProject = project;
 		selectedProjectVisible = false;
 

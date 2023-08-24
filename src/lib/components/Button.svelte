@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { nanoid } from 'nanoid';
 	import rough from 'roughjs';
 	import { removeChildren } from '$lib/utils/dom';
 	import { dark500, secondaryColor } from '$lib/constants/colors';
 	import { getRandomNum } from '$lib/utils/number';
 
-	export let id = `button-${crypto.randomUUID()}`;
+	export let id = `button-${nanoid()}`;
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let kind: 'primary' | 'secondary' | 'neutral' = 'primary';
 	export let size: 'small' | 'large' = 'large';
