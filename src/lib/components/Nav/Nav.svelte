@@ -444,6 +444,9 @@
 		width: unset;
 		margin: 0;
 		padding: 0.5rem 0;
+		font-family: var(--font-primary);
+		font-size: 0.9rem;
+		font-weight: 400;
 		background: none;
 		border: none;
 		outline: none;
@@ -455,6 +458,7 @@
 			width: 50px;
 			height: 50px;
 			margin-left: 1rem;
+			font-size: 2rem;
 		}
 	}
 
