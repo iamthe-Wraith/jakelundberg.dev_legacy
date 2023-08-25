@@ -9,6 +9,7 @@
 	import type { ILoad } from '../types';
 	import { mainMenu } from '$lib/stores/main-menu';
 	import { getRandomNum } from '$lib/utils/number';
+	import { page } from '$app/stores';
 
 	interface IWisp {
 		mesh: THREE.Mesh;
@@ -76,7 +77,7 @@
 		Promise.all([loadCemetery()])
 			.then(() => {
 				initLights();
-				initWisps();
+				if (!$page.data.device.isMobile && !$page.data.device.isTablet) initWisps();
 				onLoad(load);
 			})
 			.catch(onError);
@@ -124,16 +125,21 @@
 	});
 
 	function animate() {
-		requestAnimationFrame(animate);
+		if ($page.data.device.isMobile) {
+			if (!scene || !camera) requestAnimationFrame(animate);
+		} else {
+			requestAnimationFrame(animate);
 
-		stats?.update();
-		spotLightHelper?.update();
+			stats?.update();
 
-		if (isDevelopment) controls.update();
+			spotLightHelper?.update();
 
-		if (!$mainMenu.isOpen) {
-			animateWisps();
-			look();
+			if (isDevelopment) controls.update();
+
+			if (!$mainMenu.isOpen) {
+				animateWisps();
+				look();
+			}
 		}
 
 		render();
