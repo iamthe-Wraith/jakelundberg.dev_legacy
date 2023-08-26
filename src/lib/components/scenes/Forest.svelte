@@ -8,6 +8,7 @@
 	import type { ILoad } from './types';
 	import { mainMenu } from '$lib/stores/main-menu';
 	import { getRandomNum } from '$lib/utils/number';
+	import { page } from '$app/stores';
 
 	interface IFlame {
 		mesh: THREE.Mesh;
@@ -56,7 +57,7 @@
 
 		camera = new THREE.PerspectiveCamera(50, rect.width / rect.height, 0.1, 1000);
 
-		camera.position.set(1, 0.6, 19.3);
+		setCamPos();
 		scene.add(camera);
 
 		renderer = new THREE.WebGLRenderer({
@@ -79,6 +80,7 @@
 			camera.aspect = rect.width / rect.height;
 			camera.updateProjectionMatrix();
 
+			setCamPos();
 			positionTorch();
 
 			renderer.setSize(rect.width, rect.height);
@@ -306,11 +308,27 @@
 		let y = -0.13;
 		let z = -0.18;
 
+		if (!$page.data.device.isMobile) {
+			x = (rect.width / 2 / rect.height) * 0.13;
+			y = -0.13;
+			z = -0.18;
+		}
+
 		torch.position.set(x, y, z);
 	}
 
 	function render() {
 		renderer.render(scene, camera);
+	}
+
+	function setCamPos() {
+		if ($page.data.device.isMobile) {
+			camera.position.set(1, 0.6, 22.3);
+			camera.rotation.set(0, Math.PI * 1.95, 0);
+		} else {
+			camera.position.set(1, 0.6, 19.3);
+			camera.rotation.set(0, 0, 0);
+		}
 	}
 </script>
 
