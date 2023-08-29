@@ -9,7 +9,7 @@ const errorHandler = (({ error, event }) => {
 
 Sentry.init({
 	dsn: PUBLIC_SENTRY_DSN,
-	tracesSampleRate: 1.0
+	tracesSampleRate: 0.25
 });
 
 import { handleErrorWithSentry } from '@sentry/sveltekit';

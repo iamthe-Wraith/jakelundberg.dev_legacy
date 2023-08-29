@@ -9,7 +9,7 @@ const errorHandler = (({ error, event }) => {
 Sentry.init({
 	dsn: PUBLIC_SENTRY_DSN,
 	environment: PUBLIC_APP_ENV,
-	tracesSampleRate: 1.0,
+	tracesSampleRate: 0.25,
 	replaysSessionSampleRate: 0.1,
 	replaysOnErrorSampleRate: 1.0,
 	integrations: [new Sentry.Replay()]
