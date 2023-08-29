@@ -14,8 +14,8 @@ export const defaultDeviceData: IDevice = {
 	isiPad: false
 };
 
-export const getDevice = (userAgent = ''): IDevice => {
-	const ua = userAgent.toLowerCase();
+export const getDevice = (userAgent: string): IDevice => {
+	const ua = (userAgent || '').toLowerCase();
 
 	const isMobile = ua.match(/mobile/i);
 	const isTablet = ua.toLowerCase().match(/tablet/i);
