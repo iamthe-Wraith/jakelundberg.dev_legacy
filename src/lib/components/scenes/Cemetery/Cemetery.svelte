@@ -125,11 +125,9 @@
 	});
 
 	function animate() {
-		if ($page.data.device.isMobile) {
-			if (!scene || !camera) requestAnimationFrame(animate);
-		} else {
-			requestAnimationFrame(animate);
+		requestAnimationFrame(animate);
 
+		if (!$page.data.device.isMobile) {
 			stats?.update();
 
 			spotLightHelper?.update();
