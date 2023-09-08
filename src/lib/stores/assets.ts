@@ -14,6 +14,7 @@ type AssetNames = 'fence-1' |
   'stepstone-2' |
   'stepstone-3' |
   'stepstone-4' |
+  'stepstone-5' |
   'tombstone-1' |
   'tombstone-2' |
   'tombstone-3' |
@@ -43,6 +44,7 @@ const initAssets: IAssets = {
     'stepstone-2': null,
     'stepstone-3': null,
     'stepstone-4': null,
+    'stepstone-5': null,
     'tombstone-1': null,
     'tombstone-2': null,
     'tombstone-3': null,
@@ -69,8 +71,6 @@ function createAssetsStore() {
 	return {
 		subscribe,
 		load: async () => {
-      console.log('loading assets...');
-
       const assets = { ...initAssets };
 
       const loader = new GLTFLoader();
