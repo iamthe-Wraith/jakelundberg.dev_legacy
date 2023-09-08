@@ -221,7 +221,7 @@ export class WraithScene0 extends WraithScene {
     }
   }
 
-  animate = (
+  public animate = (
     scene: THREE.Scene, 
     camera: THREE.PerspectiveCamera,
     clock: THREE.Clock

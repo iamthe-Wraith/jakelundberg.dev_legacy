@@ -6,6 +6,7 @@
 	import { page } from '$app/stores';
 	import { WraithScene0 } from './scene0';
 	import type { WraithScene } from '$lib/utils/scene';
+	import FloatingContainer from '$components/FloatingContainer.svelte';
 
 	const blue = 0x0621a5;
 	const green = 0x0dbf95;
@@ -165,6 +166,18 @@
 
 <canvas id="c1" class={$page.data.device.isMobile && 'mobile'} />
 
+{#if camera && camera.position.z < 1}
+	<FloatingContainer>
+		<h1>Welcome</h1>
+	</FloatingContainer>
+{/if}
+
+{#if camera && camera.position.z > 4 && camera.position.z < 9}
+	<FloatingContainer>
+		<p>This is just some additional content...</p>
+	</FloatingContainer>
+{/if}
+
 <style>
 	canvas {
 		position: fixed;
@@ -178,5 +191,13 @@
 
 	canvas.mobile {
 		background-image: linear-gradient(#010405 25vh, #548277);
+	}
+
+	.container {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 1;
 	}
 </style>
