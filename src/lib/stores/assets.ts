@@ -3,7 +3,7 @@ import type * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { assets as assetsPath } from '$app/paths';
 
-type AssetNames = 'fence-1' |
+export type AssetNames = 'fence-1' |
   'fence-2' |
   'fence-3' |
   'gate-1-1' |
