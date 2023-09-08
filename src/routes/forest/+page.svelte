@@ -7,6 +7,7 @@
 	import { WraithScene0 } from './scene0';
 	import type { WraithScene } from '$lib/utils/scene';
 	import FloatingContainer from '$components/FloatingContainer.svelte';
+	import { WraithScene1 } from './scene1';
 
 	const blue = 0x0621a5;
 	const green = 0x0dbf95;
@@ -29,6 +30,7 @@
 	$: {
 		if (mounted && scene && $assets.loaded === $assets.total) {
 			scenes.push(new WraithScene0($assets.meshes));
+			scenes.push(new WraithScene1($assets.meshes));
 		}
 	}
 

@@ -26,10 +26,8 @@ export abstract class WraithScene {
   protected abstract isLoaded: () => boolean;
 
   protected animateIntoView = (scene: THREE.Scene) => {
-    // animate into view
     const o = scene.getObjectByName(this.name);
     if (!o) {
-      console.log('adding to scene');
       scene.add(this.anchor);
     }
 
