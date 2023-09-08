@@ -120,16 +120,23 @@ export class WraithScene1 extends WraithScene {
 
       const tree1_3 = assets['tree-1'].clone() as THREE.Group;
       tree1_3.name = 's1-tree1_3';
-      tree1_3.position.set(1.8, -1, -2.5);
+      tree1_3.position.set(1.8, -1, -1.2);
       tree1_3.scale.set(0.6, 1, 1.3);
       tree1_3.rotateY(THREE.MathUtils.degToRad(42));
       this.anchor.add(tree1_3);
+
+      const tree1_4 = assets['tree-1'].clone() as THREE.Group;
+      tree1_4.name = 's1-tree1_4';
+      tree1_4.position.set(5.8, -1, 7.2);
+      tree1_4.scale.set(0.6, 1, 1.3);
+      tree1_4.rotateY(THREE.MathUtils.degToRad(201));
+      this.anchor.add(tree1_4);
     }
 
     if (assets['tree-2']) {
       const tree2_1 = assets['tree-2'].clone() as THREE.Group;
       tree2_1.name = 's1-tree2_1';
-      tree2_1.position.set(-2, -1, 4.5);
+      tree2_1.position.set(-2.6, -1, 4.5);
       tree2_1.rotateY(THREE.MathUtils.degToRad(-92));
       this.anchor.add(tree2_1);
 
@@ -138,18 +145,30 @@ export class WraithScene1 extends WraithScene {
       tree2_2.position.set(1.5, -1, 2.5);
       tree2_2.rotateY(THREE.MathUtils.degToRad(30));
       this.anchor.add(tree2_2);
+
+      const tree2_3 = assets['tree-2'].clone() as THREE.Group;
+      tree2_3.name = 's1-tree2_3';
+      tree2_3.position.set(-1.2, -1, 0.6);
+      tree2_3.rotateY(THREE.MathUtils.degToRad(83));
+      this.anchor.add(tree2_3);
+
+      const tree2_4 = assets['tree-2'].clone() as THREE.Group;
+      tree2_4.name = 's1-tree2_4';
+      tree2_4.position.set(4.3, -1, 8.6);
+      tree2_4.rotateY(THREE.MathUtils.degToRad(213));
+      this.anchor.add(tree2_4);
     }
 
     if (assets['tree-3']) {
       const tree3_1 = assets['tree-3'].clone() as THREE.Group;
       tree3_1.name = 's1-tree3_1';
-      tree3_1.position.set(-4.5, -1, 4.5);
+      tree3_1.position.set(-5, -1, 8.5);
       tree3_1.rotateY(THREE.MathUtils.degToRad(-92));
       this.anchor.add(tree3_1);
 
       const tree3_2 = assets['tree-3'].clone() as THREE.Group;
       tree3_2.name = 's1-tree3_2';
-      tree3_2.position.set(4.5, -1, 3.5);
+      tree3_2.position.set(3.8, -1, 3.5);
       tree3_2.rotateY(THREE.MathUtils.degToRad(0));
       this.anchor.add(tree3_2);
 
@@ -158,6 +177,12 @@ export class WraithScene1 extends WraithScene {
       tree3_3.position.set(-1.5, -1, -1.5);
       tree3_3.rotateY(THREE.MathUtils.degToRad(-120));
       this.anchor.add(tree3_3);
+
+      const tree3_4 = assets['tree-3'].clone() as THREE.Group;
+      tree3_4.name = 's1-tree3_4';
+      tree3_4.position.set(-3.9, -1, 0.2);
+      tree3_4.rotateY(THREE.MathUtils.degToRad(-120));
+      this.anchor.add(tree3_4);
     }
 
     if (assets['tree-4']) {
@@ -172,6 +197,18 @@ export class WraithScene1 extends WraithScene {
       tree4_2.position.set(1.5, -1, 6);
       tree4_2.rotateY(THREE.MathUtils.degToRad(60));
       this.anchor.add(tree4_2);
+
+      const tree4_3 = assets['tree-4'].clone() as THREE.Group;
+      tree4_3.name = 's1-tree4_3';
+      tree4_3.position.set(-6.8, -1, 5);
+      tree4_3.rotateY(THREE.MathUtils.degToRad(60));
+      this.anchor.add(tree4_3);
+
+      const tree4_4 = assets['tree-4'].clone() as THREE.Group;
+      tree4_4.name = 's1-tree4_4';
+      tree4_4.position.set(5.3, -1, 0.9);
+      tree4_4.rotateY(THREE.MathUtils.degToRad(163));
+      this.anchor.add(tree4_4);
     }
   }
 
@@ -184,11 +221,11 @@ export class WraithScene1 extends WraithScene {
 		const distanceTo = this.position.active.z - camera.position.z;
 		const absDistanceTo = Math.abs(distanceTo);
 
-		if (absDistanceTo > 2.5 && absDistanceTo <= 7) {
+		if (absDistanceTo > 4.5 && absDistanceTo <= 10) {
 			this.animateIntoView(scene);
 		}
 
-		if (absDistanceTo > 7) {
+		if (absDistanceTo > 10) {
 			this.animateOutOfView(scene);
 		}
   };

@@ -9,14 +9,14 @@
 	export let right = 'auto';
 	export let bottom = 'auto';
 	export let left = '50%';
-	export let translateX = '-50%';
-	export let translateY = '-50%';
+	export let rotate3d = '0, 0, 0, 0';
+	export let translate3d = '-50%, -50%, 0';
 </script>
 
 <div
 	class="floating-container"
 	transition:scale={{ delay, duration, start, opacity }}
-	style="top: {top}; right: {right}; bottom: {bottom}; left: {left}; transform: translate({translateX}, {translateY})"
+	style="top: {top}; right: {right}; bottom: {bottom}; left: {left}; transform: perspective(400px)  rotate3d({rotate3d}) translate3d({translate3d})"
 >
 	<slot />
 </div>
