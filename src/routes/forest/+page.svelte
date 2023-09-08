@@ -61,7 +61,7 @@
 		const lightIntensity = $page.data.device.isMobile ? 4 : 1;
 		const lightPower = $page.data.device.isMobile ? 400 : 120;
 		light = new THREE.PointLight(green, lightIntensity, 15);
-		light.position.set(camera.position.x, camera.position.y, camera.position.z + 2.5);
+		light.position.set(camera.position.x, camera.position.y, camera.position.z + 1.75);
 		light.castShadow = true;
 		light.shadow!.bias = -0.003;
 		light.shadow.mapSize.width = 2048;
@@ -208,6 +208,16 @@
 		<p>This is just some additional content...</p>
 	</FloatingContainer>
 {/if}
+
+{#if camera && camera.position.z > 11.7 && camera.position.z < 17}
+	<FloatingContainer>
+		<p>These are my most recent blog posts...</p>
+	</FloatingContainer>
+{/if}
+
+<FloatingContainer top="auto" left="2%" bottom="2%">
+	{(camera?.position?.z || 0).toFixed(2)}
+</FloatingContainer>
 
 <style>
 	canvas {

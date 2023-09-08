@@ -256,7 +256,7 @@ export class WraithScene0 extends WraithScene {
 			this.animateIntoView(scene);
 		}
 
-		if (camera.position.z > 2.5) {
+		if (camera.position.z > 2.25) {
       if (this.gate1 && THREE.MathUtils.radToDeg(this.gate1.rotation.y) > -90) {
         this.gate1.rotation.y -= 3 * delta;
       }
