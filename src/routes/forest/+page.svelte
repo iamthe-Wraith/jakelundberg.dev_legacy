@@ -277,11 +277,6 @@
 				scenes[0].anchor.obj.add(tree4_2);
 				scenes[0].objects.push(tree4_2);
 			}
-
-			const light2 = new THREE.RectAreaLight(blue, 0.2, 30, 30);
-			light2.position.set(0, 6, 7);
-			light2.lookAt(0, 0, 6);
-			scene.add(light2);
 		}
 	}
 
@@ -295,6 +290,7 @@
 		const absDistanceTo = Math.abs(distanceTo);
 
 		if (absDistanceTo > 2.5 && absDistanceTo <= 7) {
+			// animate into view
 			const o = scene.getObjectByName(s.anchor.obj.name);
 			if (!o) scene.add(s.anchor.obj);
 
@@ -307,6 +303,7 @@
 		}
 
 		if (camera.position.z > 2.5) {
+			// open the gates
 			for (let j = 0; j < s.objects.length; j++) {
 				const obj = s.objects[j];
 
@@ -326,6 +323,7 @@
 		}
 
 		if (absDistanceTo > 7) {
+			// animate leaving view
 			const o = scene.getObjectByName(s.anchor.obj.name);
 
 			if (!o) return;
@@ -367,7 +365,9 @@
 
 		RectAreaLightUniformsLib.init();
 
-		const light = new THREE.PointLight(green, 1, 15);
+		const lightIntensity = $page.data.device.isMobile ? 4 : 1;
+		const lightPower = $page.data.device.isMobile ? 400 : 120;
+		const light = new THREE.PointLight(green, lightIntensity, 15);
 		light.position.set(camera.position.x, camera.position.y, camera.position.z + 2.5);
 		light.castShadow = true;
 		light.shadow!.bias = -0.003;
@@ -375,8 +375,14 @@
 		light.shadow.mapSize.height = 2048;
 		light.shadow.camera.near = 0.1;
 		light.shadow.camera.far = 10000;
-		light.power = 120;
+		light.power = lightPower;
 		scene.add(light);
+
+		const light2Instensity = $page.data.device.isMobile ? 0.4 : 0.2;
+		const light2 = new THREE.RectAreaLight(blue, light2Instensity, 30, 30);
+		light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
+		light2.lookAt(0, 0, 6);
+		scene.add(light2);
 
 		const planeGeo = new THREE.PlaneGeometry(100, 100);
 		const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x888888 });
@@ -429,6 +435,7 @@
 
 			camera.position.z = zPos;
 			light.position.set(camera.position.x, camera.position.y, camera.position.z + 2.5);
+			light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
 		}
 
 		function render() {
