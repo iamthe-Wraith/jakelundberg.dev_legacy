@@ -16,8 +16,11 @@
 	let scene: THREE.Scene;
 	let camera: THREE.PerspectiveCamera;
 	let renderer: THREE.WebGLRenderer;
+	let light: THREE.PointLight;
+	let light2: THREE.RectAreaLight;
 
 	let mounted = false;
+	let touchStart: number | null = null;
 
 	let zScroll = 0;
 	let zPos = 0;
@@ -54,7 +57,7 @@
 
 		const lightIntensity = $page.data.device.isMobile ? 4 : 1;
 		const lightPower = $page.data.device.isMobile ? 400 : 120;
-		const light = new THREE.PointLight(green, lightIntensity, 15);
+		light = new THREE.PointLight(green, lightIntensity, 15);
 		light.position.set(camera.position.x, camera.position.y, camera.position.z + 2.5);
 		light.castShadow = true;
 		light.shadow!.bias = -0.003;
@@ -66,7 +69,7 @@
 		scene.add(light);
 
 		const light2Instensity = $page.data.device.isMobile ? 0.4 : 0.2;
-		const light2 = new THREE.RectAreaLight(blue, light2Instensity, 30, 30);
+		light2 = new THREE.RectAreaLight(blue, light2Instensity, 30, 30);
 		light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
 		light2.lookAt(0, 0, 6);
 		scene.add(light2);
@@ -83,27 +86,10 @@
 		scene.add(ambientLight);
 
 		window.addEventListener('wheel', onWheelMove);
-		function onWheelMove(e: WheelEvent) {
-			zScroll = e.deltaY * 0.001;
-		}
-
-		let touchStart: number | null = null;
-
 		window.addEventListener('touchstart', onTouchStart);
-		function onTouchStart(e: TouchEvent) {
-			touchStart = e.touches[0].clientY;
-		}
-
 		window.addEventListener('touchmove', onTouchMove);
-		function onTouchMove(e: TouchEvent) {
-			if (touchStart === null) return;
-			zScroll = (touchStart - e.touches[0].clientY) * 0.001;
-		}
-
 		window.addEventListener('touchend', onTouchEnd);
-		function onTouchEnd() {
-			touchStart = null;
-		}
+		window.addEventListener('resize', onWindowResize, false);
 
 		function animate() {
 			requestAnimationFrame(animate);
@@ -114,25 +100,67 @@
 			render();
 		}
 
-		function moveCam() {
-			if ((zPos <= 0 && zScroll <= 0) || (zPos >= 80 && zScroll <= 0)) return;
-
-			zPos += zScroll;
-			zScroll *= 0.9;
-
-			camera.position.z = zPos;
-			light.position.set(camera.position.x, camera.position.y, camera.position.z + 2.5);
-			light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
-		}
-
-		function render() {
-			renderer.render(scene, camera);
-		}
-
 		animate();
 
 		mounted = true;
+
+		return () => {
+			window.removeEventListener('wheel', onWheelMove);
+			window.removeEventListener('touchstart', onTouchStart);
+			window.removeEventListener('touchmove', onTouchMove);
+			window.removeEventListener('touchend', onTouchEnd);
+			window.removeEventListener('resize', onWindowResize, false);
+		};
 	});
+
+	function moveCam() {
+		if ((zPos <= 0 && zScroll <= 0) || (zPos >= 80 && zScroll <= 0)) return;
+
+		zPos += zScroll;
+		zScroll *= 0.9;
+
+		camera.position.z = zPos;
+		light.position.set(camera.position.x, camera.position.y, camera.position.z + 2.5);
+		light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
+	}
+
+	function onTouchEnd() {
+		touchStart = null;
+	}
+
+	function onTouchMove(e: TouchEvent) {
+		if (touchStart === null) return;
+		zScroll = (touchStart - e.touches[0].clientY) * 0.001;
+	}
+
+	function onTouchStart(e: TouchEvent) {
+		touchStart = e.touches[0].clientY;
+	}
+
+	function onWheelMove(e: WheelEvent) {
+		zScroll = e.deltaY * 0.001;
+	}
+
+	function onWindowResize() {
+		const c1 = document.getElementById('c1') as HTMLElement;
+		if (!c1) return;
+		const parent = c1.parentElement as HTMLElement;
+		const rect = parent.getBoundingClientRect();
+
+		camera.aspect = rect.width / rect.height;
+		camera.updateProjectionMatrix();
+
+		moveCam();
+		scenes.forEach((s) => s.animate(scene, camera, clock));
+
+		renderer.setSize(rect.width, rect.height);
+
+		render();
+	}
+
+	function render() {
+		renderer.render(scene, camera);
+	}
 </script>
 
 <canvas id="c1" class={$page.data.device.isMobile && 'mobile'} />
