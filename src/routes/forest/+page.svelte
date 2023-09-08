@@ -8,6 +8,8 @@
 	import FloatingContainer from '$components/FloatingContainer.svelte';
 	import { WraithScene0 } from './scene0';
 	import { WraithScene1 } from './scene1';
+	import { WraithScene2 } from './scene2';
+	import HandDrawnContainer from '$components/HandDrawnContainer.svelte';
 
 	const blue = 0x0621a5;
 	const green = 0x0dbf95;
@@ -31,6 +33,7 @@
 		if (mounted && scene && $assets.loaded === $assets.total) {
 			scenes.push(new WraithScene0($assets.meshes));
 			scenes.push(new WraithScene1($assets.meshes));
+			scenes.push(new WraithScene2($assets.meshes));
 		}
 	}
 
@@ -211,7 +214,10 @@
 
 {#if camera && camera.position.z > 11.7 && camera.position.z < 17}
 	<FloatingContainer>
-		<p>These are my most recent blog posts...</p>
+		<HandDrawnContainer>
+			<h2>This is a header</h2>
+			<p>These are my most recent blog posts...</p>
+		</HandDrawnContainer>
 	</FloatingContainer>
 {/if}
 
