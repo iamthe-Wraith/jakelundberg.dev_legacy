@@ -4,9 +4,9 @@
 	import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib';
 	import { assets } from '$lib/stores/assets';
 	import { page } from '$app/stores';
-	import { WraithScene0 } from './scene0';
 	import type { WraithScene } from '$lib/utils/scene';
 	import FloatingContainer from '$components/FloatingContainer.svelte';
+	import { WraithScene0 } from './scene0';
 	import { WraithScene1 } from './scene1';
 
 	const blue = 0x0621a5;
@@ -88,6 +88,8 @@
 		const ambientLight = new THREE.AmbientLight(0x548277, 0.2);
 		scene.add(ambientLight);
 
+		renderStars();
+
 		window.addEventListener('wheel', onWheelMove);
 		window.addEventListener('touchstart', onTouchStart);
 		window.addEventListener('touchmove', onTouchMove);
@@ -163,6 +165,33 @@
 
 	function render() {
 		renderer.render(scene, camera);
+	}
+
+	function renderStars() {
+		const starsCount = 1000;
+		const distance = 1000;
+		const vertices = new Float32Array(starsCount * 3);
+
+		let vertex = new THREE.Vector3();
+
+		for (let i = 0; i < starsCount; i++) {
+			vertex.x = Math.random() * (distance * 2) - distance;
+			vertex.y = Math.random() * (distance * 2) - distance;
+			// vertex.z = Math.random() * (distance * 2) - distance;
+			vertex.z = distance;
+
+			vertex.toArray(vertices, i * 3);
+		}
+
+		const geometry = new THREE.BufferGeometry();
+		geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+
+		const material = new THREE.PointsMaterial({
+			color: 0xffffff
+		});
+
+		const particles = new THREE.Points(geometry, material);
+		scene.add(particles);
 	}
 </script>
 
