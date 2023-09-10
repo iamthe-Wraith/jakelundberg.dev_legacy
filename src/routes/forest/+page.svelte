@@ -12,6 +12,7 @@
 	import { WraithScene2 } from './scene2';
 	import RoughLine from '$components/rough/RoughLine.svelte';
 	import { primaryHexColor, tertiaryHexColor } from '$lib/constants/colors';
+	import { mainMenu } from '$lib/stores/main-menu';
 
 	const isDevelopment = PUBLIC_APP_ENV === 'development';
 
@@ -122,7 +123,7 @@
 	});
 
 	function moveCam() {
-		if ((zPos <= 0 && zScroll <= 0) || (zPos >= 20 && zScroll >= 0)) return;
+		if ($mainMenu.isOpen || (zPos <= 0 && zScroll <= 0) || (zPos >= 20 && zScroll >= 0)) return;
 
 		zPos += zScroll;
 		zScroll *= 0.9;
@@ -257,9 +258,9 @@
 		& .rough-line {
 			position: absolute;
 			top: 100%;
-			left: 0;
+			right: -0.5rem;
+			left: -0.5rem;
 			opacity: 0;
-			width: 100%;
 			transition: opacity 0.15s ease-in-out;
 			transform: translateY(-50%);
 		}
@@ -267,6 +268,8 @@
 
 	a:hover,
 	a:focus {
+		cursor: default;
+
 		& .rough-line {
 			opacity: 1;
 			transition: opacity 0.15s ease-in-out;
