@@ -25,28 +25,26 @@ export abstract class WraithScene {
 
   protected abstract isLoaded: () => boolean;
 
-  protected animateIntoView = (scene: THREE.Scene) => {
+  protected addToScene = (scene: THREE.Scene) => {
     const o = scene.getObjectByName(this.name);
     if (!o) {
       scene.add(this.anchor);
     }
+  };
 
-    // const destination = new THREE.Vector3(
-    //   this.position.active.x,
-    //   this.position.active.y,
-    //   this.position.active.z,
-    // );
-    // this.anchor.position.lerp(destination, 0.1);
+  protected animateIntoView = (scene: THREE.Scene) => {
+    this.addToScene(scene);
+
+    const destination = new THREE.Vector3(
+      this.position.active.x,
+      this.position.active.y,
+      this.position.active.z,
+    );
+    this.anchor.position.lerp(destination, 0.1);
   };
 
   protected animateOutOfView = (scene: THREE.Scene) => {
-    const o = scene.getObjectByName(this.name);
-
-    if (!o) return;
-
-    if (this.anchor.position.y - 0.5 <= this.position.inactive.y) {
-      scene.remove(o);
-    }
+    this.removeFromScene(scene);    
 
     const destination = new THREE.Vector3(
       this.position.inactive.x,
@@ -54,5 +52,15 @@ export abstract class WraithScene {
       this.position.inactive.z,
     );
     this.anchor.position.lerp(destination, 0.02);
+  };
+
+  protected removeFromScene = (scene: THREE.Scene) => {
+    const o = scene.getObjectByName(this.name);
+
+    if (!o) return;
+
+    if (this.anchor.position.y - 0.5 <= this.position.inactive.y) {
+      scene.remove(o);
+    }
   };
 }
