@@ -4,12 +4,15 @@
 	import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib';
 	import { assets } from '$lib/stores/assets';
 	import { page } from '$app/stores';
+	import { PUBLIC_APP_ENV } from '$env/static/public';
 	import type { WraithScene } from '$lib/utils/scene';
 	import FloatingContainer from '$components/FloatingContainer.svelte';
 	import { WraithScene0 } from './scene0';
 	import { WraithScene1 } from './scene1';
 	import { WraithScene2 } from './scene2';
-	import HandDrawnContainer from '$components/HandDrawnContainer.svelte';
+	import RoughLine from '$components/rough/RoughLine.svelte';
+
+	const isDevelopment = PUBLIC_APP_ENV === 'development';
 
 	const blue = 0x0621a5;
 	const green = 0x0dbf95;
@@ -41,6 +44,7 @@
 		const main = document.querySelector('main') as HTMLCanvasElement;
 		const rect = main.getBoundingClientRect();
 		scene = new THREE.Scene();
+		scene.fog = new THREE.Fog(0x030303, 10, 25);
 
 		const fov = 55;
 
@@ -61,8 +65,8 @@
 
 		RectAreaLightUniformsLib.init();
 
-		const lightIntensity = $page.data.device.isMobile ? 4 : 1;
-		const lightPower = $page.data.device.isMobile ? 400 : 120;
+		const lightIntensity = $page.data.device.isMobile ? 4 : 2.5;
+		const lightPower = $page.data.device.isMobile ? 400 : 250;
 		light = new THREE.PointLight(green, lightIntensity, 15);
 		light.position.set(camera.position.x, camera.position.y, camera.position.z + 1.75);
 		light.castShadow = true;
@@ -91,7 +95,7 @@
 		const ambientLight = new THREE.AmbientLight(0x548277, 0.2);
 		scene.add(ambientLight);
 
-		renderStars();
+		// renderStars();
 
 		window.addEventListener('wheel', onWheelMove);
 		window.addEventListener('touchstart', onTouchStart);
@@ -122,13 +126,13 @@
 	});
 
 	function moveCam() {
-		if ((zPos <= 0 && zScroll <= 0) || (zPos >= 80 && zScroll <= 0)) return;
+		if ((zPos <= 0 && zScroll <= 0) || (zPos >= 20 && zScroll >= 0)) return;
 
 		zPos += zScroll;
 		zScroll *= 0.9;
 
 		camera.position.z = zPos;
-		light.position.set(camera.position.x, camera.position.y, camera.position.z + 2.5);
+		light.position.set(camera.position.x, camera.position.y, camera.position.z + 1.75);
 		light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
 	}
 
@@ -169,33 +173,6 @@
 	function render() {
 		renderer.render(scene, camera);
 	}
-
-	function renderStars() {
-		const starsCount = 1000;
-		const distance = 1000;
-		const vertices = new Float32Array(starsCount * 3);
-
-		let vertex = new THREE.Vector3();
-
-		for (let i = 0; i < starsCount; i++) {
-			vertex.x = Math.random() * (distance * 2) - distance;
-			vertex.y = Math.random() * (distance * 2) - distance;
-			// vertex.z = Math.random() * (distance * 2) - distance;
-			vertex.z = distance;
-
-			vertex.toArray(vertices, i * 3);
-		}
-
-		const geometry = new THREE.BufferGeometry();
-		geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-
-		const material = new THREE.PointsMaterial({
-			color: 0xffffff
-		});
-
-		const particles = new THREE.Points(geometry, material);
-		scene.add(particles);
-	}
 </script>
 
 <canvas id="c1" class={$page.data.device.isMobile && 'mobile'} />
@@ -206,24 +183,48 @@
 	</FloatingContainer>
 {/if}
 
-{#if camera && camera.position.z > 4 && camera.position.z < 9}
+{#if camera && camera.position.z > 4 && camera.position.z < 7}
 	<FloatingContainer>
-		<p>This is just some additional content...</p>
+		<p>
+			These woods, and everything contained within, are said to be the home of a mad engineer named
+			Jake Lundberg, whose passion for building software led him to create many strange and
+			wonderful things for the web. But little else is known about him....
+		</p>
 	</FloatingContainer>
 {/if}
 
-{#if camera && camera.position.z > 11.7 && camera.position.z < 17}
+{#if camera && camera.position.z > 9 && camera.position.z < 12}
 	<FloatingContainer>
-		<HandDrawnContainer>
-			<h2>This is a header</h2>
-			<p>These are my most recent blog posts...</p>
-		</HandDrawnContainer>
+		<p>
+			There are stories, of course. People say they've heard eerie sounds coming from within. Others
+			claim they've seen strange things wandering the woods in the darkness. But these are just
+			stories...right?
+		</p>
 	</FloatingContainer>
 {/if}
 
-<FloatingContainer top="auto" left="2%" bottom="2%">
-	{(camera?.position?.z || 0).toFixed(2)}
-</FloatingContainer>
+{#if camera && camera.position.z > 14 && camera.position.z < 17}
+	<FloatingContainer>
+		<p>Perhaps you can discover the truth...</p>
+	</FloatingContainer>
+{/if}
+
+{#if camera && camera.position.z > 19}
+	<FloatingContainer>
+		<a href="/" class="primary-font">
+			<span>Continue to the manor...</span>
+			<div class="rough-line">
+				<RoughLine id="continue-to-manor-rough" />
+			</div>
+		</a>
+	</FloatingContainer>
+{/if}
+
+{#if isDevelopment}
+	<FloatingContainer top="auto" left="5%" bottom="2%">
+		{(camera?.position?.z || 0).toFixed(2)}
+	</FloatingContainer>
+{/if}
 
 <style>
 	canvas {
@@ -233,11 +234,6 @@
 		width: 100vw;
 		height: 100vh;
 		z-index: 1;
-		background-image: linear-gradient(#010405 35vh, #548277);
-	}
-
-	canvas.mobile {
-		background-image: linear-gradient(#010405 25vh, #548277);
 	}
 
 	.container {
@@ -246,5 +242,37 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 		z-index: 1;
+	}
+
+	h1 {
+		color: var(--secondary-500);
+		text-shadow: 10px 10px 30px var(--dark-100);
+	}
+
+	a {
+		position: relative;
+		text-decoration: none;
+
+		& span {
+			font-size: 1.75rem;
+			color: var(--secondary-500);
+		}
+
+		& .rough-line {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			opacity: 0;
+			width: 100%;
+			transition: opacity 0.15s ease-in-out;
+		}
+	}
+
+	a:hover,
+	a:focus {
+		& .rough-line {
+			opacity: 1;
+			transition: opacity 0.15s ease-in-out;
+		}
 	}
 </style>

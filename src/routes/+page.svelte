@@ -66,7 +66,7 @@
 			<section class="greeting">
 				<div class="greeting-content">
 					<h1><span>Hi, I'm</span>Jake Lundberg<span>.</span></h1>
-					<p class="subheader header-font">I build stuff for the web.</p>
+					<p class="subheader primary-font">I build stuff for the web.</p>
 					<p class="intro-text">
 						I'm a software engineer with an uncommon passion for what I do. There are few things
 						that bring me as much joy as digging into complex problems to find elegant solutions, or

@@ -76,7 +76,7 @@ h3,
 h4,
 h5,
 h6,
-.header-font {
+.primary-font {
 	font-family: var(--font-primary);
 	color: var(--light-500);
 	letter-spacing: 0.05rem;
@@ -88,7 +88,7 @@ h3 *,
 h4 *,
 h5 *,
 h6 *,
-.header-font * {
+.primary-font * {
 	font-family: var(--font-primary);
 	color: var(--primary-500);
 	letter-spacing: 0.05rem;

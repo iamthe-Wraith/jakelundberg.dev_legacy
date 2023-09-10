@@ -31,12 +31,12 @@ export abstract class WraithScene {
       scene.add(this.anchor);
     }
 
-    const destination = new THREE.Vector3(
-      this.position.active.x,
-      this.position.active.y,
-      this.position.active.z,
-    );
-    this.anchor.position.lerp(destination, 0.1);
+    // const destination = new THREE.Vector3(
+    //   this.position.active.x,
+    //   this.position.active.y,
+    //   this.position.active.z,
+    // );
+    // this.anchor.position.lerp(destination, 0.1);
   };
 
   protected animateOutOfView = (scene: THREE.Scene) => {

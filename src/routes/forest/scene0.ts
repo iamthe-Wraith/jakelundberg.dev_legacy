@@ -17,9 +17,9 @@ export class WraithScene0 extends WraithScene {
 
     this.anchor = new THREE.Object3D();
     this.anchor.position.set(
-      this.position.inactive.x, 
-      this.position.inactive.y, 
-      this.position.inactive.z,
+      this.position.active.x, 
+      this.position.active.y, 
+      this.position.active.z,
     );
     this.anchor.name = this.name;
 
@@ -249,12 +249,12 @@ export class WraithScene0 extends WraithScene {
 
 		const delta = clock.getDelta();
 
-		const distanceTo = this.position.active.z - camera.position.z;
-		const absDistanceTo = Math.abs(distanceTo);
+		// const distanceTo = this.position.active.z - camera.position.z;
+		// const absDistanceTo = Math.abs(distanceTo);
 
-		if (absDistanceTo > 2.5 && absDistanceTo <= 7) {
+		// if (absDistanceTo > 2.5 && absDistanceTo <= 7) {
 			this.animateIntoView(scene);
-		}
+		// }
 
 		if (camera.position.z > 2.25) {
       if (this.gate1 && THREE.MathUtils.radToDeg(this.gate1.rotation.y) > -90) {
@@ -266,9 +266,9 @@ export class WraithScene0 extends WraithScene {
       }
 		}
 
-		if (absDistanceTo > 7) {
-			this.animateOutOfView(scene);
-		}
+		// if (absDistanceTo > 7) {
+		// 	this.animateOutOfView(scene);
+		// }
   };
 
   protected isLoaded = () => {

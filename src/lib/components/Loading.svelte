@@ -39,7 +39,7 @@
 </script>
 
 <div class="loading">
-	<p class="loading-indicator header-font">{text}<span>{ellipsis}</span></p>
+	<p class="loading-indicator primary-font">{text}<span>{ellipsis}</span></p>
 
 	{#if quote}
 		<div class="sep-line" />

@@ -180,7 +180,7 @@
 					{#each projects as project (project)}
 						<div class="project mobile-project">
 							<button
-								class="project-title header-font {project.title === selectedProject?.title
+								class="project-title primary-font {project.title === selectedProject?.title
 									? 'selected'
 									: ''}"
 								disabled={project.title === selectedProject?.title}
