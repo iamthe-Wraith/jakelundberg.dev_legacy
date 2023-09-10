@@ -23,8 +23,6 @@
 			}, 50);
 		}
 
-		console.log('removing children');
-
 		removeChildren(svg);
 		const rect = svg.getBoundingClientRect();
 		const roughSvg = rough.svg(svg);

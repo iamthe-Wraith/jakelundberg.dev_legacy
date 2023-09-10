@@ -95,8 +95,6 @@
 		const ambientLight = new THREE.AmbientLight(0x548277, 0.2);
 		scene.add(ambientLight);
 
-		// renderStars();
-
 		window.addEventListener('wheel', onWheelMove);
 		window.addEventListener('touchstart', onTouchStart);
 		window.addEventListener('touchmove', onTouchMove);
