@@ -11,11 +11,9 @@
 	import { WraithScene1 } from './scene1';
 	import { WraithScene2 } from './scene2';
 	import RoughLine from '$components/rough/RoughLine.svelte';
+	import { primaryHexColor, tertiaryHexColor } from '$lib/constants/colors';
 
 	const isDevelopment = PUBLIC_APP_ENV === 'development';
-
-	const blue = 0x0621a5;
-	const green = 0x0dbf95;
 
 	const clock = new THREE.Clock();
 	const scenes: WraithScene[] = [];
@@ -67,7 +65,7 @@
 
 		const lightIntensity = $page.data.device.isMobile ? 4 : 2.5;
 		const lightPower = $page.data.device.isMobile ? 400 : 250;
-		light = new THREE.PointLight(green, lightIntensity, 15);
+		light = new THREE.PointLight(primaryHexColor, lightIntensity, 15);
 		light.position.set(camera.position.x, camera.position.y, camera.position.z + 1.75);
 		light.castShadow = true;
 		light.shadow!.bias = -0.003;
@@ -79,7 +77,7 @@
 		scene.add(light);
 
 		const light2Instensity = $page.data.device.isMobile ? 0.4 : 0.2;
-		light2 = new THREE.RectAreaLight(blue, light2Instensity, 30, 30);
+		light2 = new THREE.RectAreaLight(tertiaryHexColor, light2Instensity, 30, 30);
 		light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
 		light2.lookAt(0, 0, 6);
 		scene.add(light2);
