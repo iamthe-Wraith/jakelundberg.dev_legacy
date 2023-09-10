@@ -268,8 +268,6 @@
 
 	a:hover,
 	a:focus {
-		cursor: default;
-
 		& .rough-line {
 			opacity: 1;
 			transition: opacity 0.15s ease-in-out;
