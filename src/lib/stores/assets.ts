@@ -8,8 +8,12 @@ export type AssetNames = 'fence-1' |
   'fence-3' |
   'gate-1-1' |
   'gate-1-2' |
+  'gate-large-1-1' |
+  'gate-large-1-2' |
   'mausoleum-1' |
+  'pillar-1' |
   'pillar-lantern' |
+  'pillar-skull' |
   'stepstone-1' |
   'stepstone-2' |
   'stepstone-3' |
@@ -38,8 +42,12 @@ const initAssets: IAssets = {
     'fence-3': null,
     'gate-1-1': null,
     'gate-1-2': null,
+    'gate-large-1-1': null,
+    'gate-large-1-2': null,
     'mausoleum-1': null,
+    'pillar-1': null,
     'pillar-lantern': null,
+    'pillar-skull': null,
     'stepstone-1': null,
     'stepstone-2': null,
     'stepstone-3': null,

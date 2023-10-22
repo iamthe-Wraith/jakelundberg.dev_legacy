@@ -3,7 +3,7 @@
 	import rough from 'roughjs';
 	import { nanoid } from 'nanoid';
 	import Icon from '@iconify/svelte';
-	import { secondaryColor } from '$lib/constants/colors';
+	import { secondary500Color } from '$lib/constants/colors';
 	import { onMount } from 'svelte';
 
 	export let id = `close-${nanoid()}`;
@@ -28,7 +28,7 @@
 		removeChildren(svg);
 		const roughSvg = rough.svg(svg);
 		const circle = roughSvg.circle(rect.width / 2, rect.height / 2, rect.width - 10, {
-			stroke: secondaryColor,
+			stroke: secondary500Color,
 			strokeWidth: 2,
 			roughness: 1.5
 		});

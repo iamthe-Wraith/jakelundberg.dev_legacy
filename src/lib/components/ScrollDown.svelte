@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import rough from 'roughjs';
-	import { secondaryColor } from '$lib/constants/colors';
+	import { secondary500Color } from '$lib/constants/colors';
 	import { removeChildren } from '$lib/utils/dom';
 	import { mainMenu } from '$lib/stores/main-menu';
 
@@ -27,7 +27,7 @@
 		const roughSvg = rough.svg(svg);
 
 		const options = {
-			stroke: secondaryColor,
+			stroke: secondary500Color,
 			strokeWidth: 2,
 			roughness: 1.5
 		};

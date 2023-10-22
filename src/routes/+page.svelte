@@ -1,317 +1,284 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	import Forest from '$components/scenes/Forest.svelte';
-	import type { ILoad } from '$components/scenes/types';
-	import UILayer from '$components/layers/UILayer.svelte';
-	import Loading from '$components/Loading.svelte';
-	import { getContext } from 'svelte';
-	import type { IQuote } from '$lib/types/quotes';
-	import { processError } from '$lib/utils/errors';
-	import Tag from '$components/Tag.svelte';
-	import HandDrawnContainer from '$components/HandDrawnContainer.svelte';
-	import { assets } from '$app/paths';
-	import ScrollDown from '$components/ScrollDown.svelte';
-	import { fade } from 'svelte/transition';
+	import { onMount } from 'svelte';
+	import * as THREE from 'three';
+	import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib';
+	import { assets } from '$lib/stores/assets';
+	import { page } from '$app/stores';
+	import { PUBLIC_APP_ENV } from '$env/static/public';
+	import type { WraithScene } from '$lib/utils/scene';
+	import FloatingContainer from '$components/FloatingContainer.svelte';
+	import { WraithScene0 } from './scene0';
+	import { WraithScene1 } from './scene1';
+	import { WraithScene2 } from './scene2';
+	import RoughLine from '$components/rough/RoughLine.svelte';
+	import { primary500HexColor, primary800HexColor } from '$lib/constants/colors';
+	import { mainMenu } from '$lib/stores/main-menu';
 
-	export let data: PageData;
+	const isDevelopment = PUBLIC_APP_ENV === 'development';
 
-	let amountLoaded = 0;
-	let totalToLoad = 0;
-	let displayUI = false;
-	let displayScene = true;
-	let displayScrollDownIndicator = true;
+	const clock = new THREE.Clock();
+	const scenes: WraithScene[] = [];
 
-	let engagedBlogPost = '';
+	let scene: THREE.Scene;
+	let camera: THREE.PerspectiveCamera;
+	let renderer: THREE.WebGLRenderer;
+	let light: THREE.PointLight;
+	let light2: THREE.RectAreaLight;
 
-	const quotes = getContext<IQuote[]>('quotes');
+	let mounted = false;
+	let touchStart: number | null = null;
 
-	function onSceneError(error: Error) {
-		processError(error, () => {
-			displayScene = false;
-			displayUI = true;
+	let zScroll = 0;
+	let zPos = 0;
+
+	$: {
+		if (mounted && scene && $assets.loaded === $assets.total) {
+			scenes.push(new WraithScene0($assets.meshes));
+			scenes.push(new WraithScene1($assets.meshes));
+			scenes.push(new WraithScene2($assets.meshes));
+		}
+	}
+
+	onMount(async () => {
+		const main = document.querySelector('main') as HTMLCanvasElement;
+		const rect = main.getBoundingClientRect();
+		scene = new THREE.Scene();
+		scene.fog = new THREE.Fog(0x030303, 10, 25);
+
+		const fov = 55;
+
+		camera = new THREE.PerspectiveCamera(fov, rect.width / rect.height, 0.1, 1000);
+		camera.position.set(0, 0.5, 0);
+		camera.lookAt(0, 0, 7);
+
+		renderer = new THREE.WebGLRenderer({
+			alpha: true,
+			antialias: true,
+			precision: 'mediump',
+			canvas: document.querySelector('#c1') as HTMLCanvasElement
 		});
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize(rect.width, rect.height);
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+		RectAreaLightUniformsLib.init();
+
+		const lightIntensity = $page.data.device.isMobile ? 4 : 2.5;
+		const lightPower = $page.data.device.isMobile ? 400 : 250;
+		light = new THREE.PointLight(primary500HexColor, lightIntensity, 15);
+		light.position.set(camera.position.x, camera.position.y, camera.position.z + 1.75);
+		light.castShadow = true;
+		light.shadow!.bias = -0.003;
+		light.shadow.mapSize.width = 2048;
+		light.shadow.mapSize.height = 2048;
+		light.shadow.camera.near = 0.1;
+		light.shadow.camera.far = 10000;
+		light.power = lightPower;
+		scene.add(light);
+
+		const light2Instensity = $page.data.device.isMobile ? 0.4 : 0.2;
+		light2 = new THREE.RectAreaLight(primary800HexColor, light2Instensity, 30, 30);
+		light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
+		light2.lookAt(0, 0, 6);
+		scene.add(light2);
+
+		const planeGeo = new THREE.PlaneGeometry(100, 100);
+		const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x888888 });
+		const plane = new THREE.Mesh(planeGeo, planeMaterial);
+		plane.rotation.x = -Math.PI / 2;
+		plane.receiveShadow = true;
+		plane.position.set(0, -1, 50);
+		scene.add(plane);
+
+		const ambientLight = new THREE.AmbientLight(0x548277, 0.2);
+		scene.add(ambientLight);
+
+		window.addEventListener('wheel', onWheelMove);
+		window.addEventListener('touchstart', onTouchStart);
+		window.addEventListener('touchmove', onTouchMove);
+		window.addEventListener('touchend', onTouchEnd);
+		window.addEventListener('resize', onWindowResize, false);
+
+		function animate() {
+			requestAnimationFrame(animate);
+
+			moveCam();
+			scenes.forEach((s) => s.animate(scene, camera, clock));
+
+			render();
+		}
+
+		animate();
+
+		mounted = true;
+
+		return () => {
+			window.removeEventListener('wheel', onWheelMove);
+			window.removeEventListener('touchstart', onTouchStart);
+			window.removeEventListener('touchmove', onTouchMove);
+			window.removeEventListener('touchend', onTouchEnd);
+			window.removeEventListener('resize', onWindowResize, false);
+		};
+	});
+
+	function moveCam() {
+		if ($mainMenu.isOpen || (zPos <= 0 && zScroll <= 0) || (zPos >= 20 && zScroll >= 0)) return;
+
+		zPos += zScroll;
+		zScroll *= 0.9;
+
+		camera.position.z = zPos;
+		light.position.set(camera.position.x, camera.position.y, camera.position.z + 1.75);
+		light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
 	}
 
-	function onSceneLoad(loading: Record<string, ILoad>) {
-		const l = Object.values(loading).reduce(
-			(acc, curr) => {
-				acc.loaded += curr.loaded;
-				acc.total += curr.total;
-				return acc;
-			},
-			{
-				loaded: 0,
-				total: 0
-			}
-		);
-
-		amountLoaded = l.loaded;
-		totalToLoad = l.total;
-		displayUI = !!amountLoaded && !!totalToLoad && amountLoaded >= totalToLoad;
+	function onTouchEnd() {
+		touchStart = null;
 	}
 
-	function onScroll(event: Event) {
-		const e = event.target as HTMLElement;
-		displayScrollDownIndicator = e.scrollTop < 100;
+	function onTouchMove(e: TouchEvent) {
+		if (touchStart === null) return;
+		zScroll = (touchStart - e.touches[0].clientY) * 0.001;
+	}
+
+	function onTouchStart(e: TouchEvent) {
+		touchStart = e.touches[0].clientY;
+	}
+
+	function onWheelMove(e: WheelEvent) {
+		zScroll = e.deltaY * 0.001;
+	}
+
+	function onWindowResize() {
+		const c1 = document.getElementById('c1') as HTMLElement;
+		if (!c1) return;
+		const parent = c1.parentElement as HTMLElement;
+		const rect = parent.getBoundingClientRect();
+
+		camera.aspect = rect.width / rect.height;
+		camera.updateProjectionMatrix();
+
+		moveCam();
+		scenes.forEach((s) => s.animate(scene, camera, clock));
+
+		renderer.setSize(rect.width, rect.height);
+
+		render();
+	}
+
+	function render() {
+		renderer.render(scene, camera);
 	}
 </script>
 
-{#if displayScene}
-	<Forest onLoad={onSceneLoad} onError={onSceneError} />
+<canvas id="c1" class={$page.data.device.isMobile && 'mobile'} />
+
+{#if camera && camera.position.z < 1}
+	<FloatingContainer>
+		<h1>Welcome</h1>
+	</FloatingContainer>
 {/if}
 
-{#if displayUI}
-	<UILayer on:scroll={onScroll}>
-		<div class="ui-main">
-			<section class="greeting">
-				<div class="greeting-content">
-					<h1><span>Hi, I'm</span>Jake Lundberg<span>.</span></h1>
-					<p class="subheader primary-font">I build stuff for the web.</p>
-					<p class="intro-text">
-						I'm a software engineer with an uncommon passion for what I do. There are few things
-						that bring me as much joy as digging into complex problems to find elegant solutions, or
-						brainstorming with smart people to find the idea that will make someone's life better.
-					</p>
-				</div>
-
-				{#if displayScrollDownIndicator}
-					<div class="scroll-indicator-container" transition:fade>
-						<ScrollDown />
-					</div>
-				{/if}
-			</section>
-
-			{#if data.blog_posts?.length}
-				<section class="blog-posts-section">
-					<h2>Recent Blog Posts</h2>
-					<div class="blog-posts">
-						{#each data.blog_posts || [] as post}
-							<HandDrawnContainer hoverable={true} hovered={engagedBlogPost === post.id}>
-								<article class="blog-post">
-									<a
-										href={post.url}
-										target="_blank"
-										on:focus={() => (engagedBlogPost = post.id)}
-										on:blur={() => (engagedBlogPost = '')}
-									>
-										<div class="blog-post-header">
-											<h3>{post.title}</h3>
-										</div>
-
-										<div class="blog-post-content">
-											<div class="blog-post-tags">
-												{#each post.tags as tag}
-													<Tag>{tag}</Tag>
-												{/each}
-											</div>
-											<p class="blog-post-desc">{post.description}</p>
-										</div>
-									</a>
-								</article>
-							</HandDrawnContainer>
-						{/each}
-					</div>
-				</section>
-			{/if}
-
-			{#if data.recommendations?.length}
-				<section class="recommendations-section">
-					<h2>Recommendations</h2>
-					<div class="recommendations">
-						<HandDrawnContainer>
-							{#each data.recommendations || [] as recommendation}
-								<div class="recommendation">
-									<header>
-										<img
-											src={`${assets}/${recommendation.image}`}
-											alt="image of {recommendation.author}"
-										/>
-										<p>{recommendation.author}</p>
-									</header>
-									<blockquote>{@html recommendation.quote}</blockquote>
-								</div>
-							{/each}
-						</HandDrawnContainer>
-					</div>
-
-					<!-- <a class="read-more" href="/recommendations">Read More</a> -->
-				</section>
-			{/if}
-		</div>
-	</UILayer>
-{:else}
-	<Loading {quotes} />
+{#if camera && camera.position.z > 4 && camera.position.z < 7}
+	<FloatingContainer>
+		<p>
+			These woods, and everything contained within, are said to be the home of a mad engineer named
+			Jake Lundberg, whose passion for building software led him to create many strange and
+			wonderful things for the web. But little else is known about him....
+		</p>
+	</FloatingContainer>
 {/if}
 
-<style lang="scss">
-	.ui-main {
-		width: 100%;
-		height: 100%;
+{#if camera && camera.position.z > 9 && camera.position.z < 12}
+	<FloatingContainer>
+		<p>
+			There are stories, of course. People say they've heard eerie sounds coming from within. Others
+			claim they've seen strange things wandering the woods in the darkness. But these are just
+			stories...right?
+		</p>
+	</FloatingContainer>
+{/if}
+
+{#if camera && camera.position.z > 14 && camera.position.z < 17}
+	<FloatingContainer>
+		<p>Perhaps you can discover the truth...</p>
+	</FloatingContainer>
+{/if}
+
+{#if camera && camera.position.z > 19}
+	<FloatingContainer>
+		<a href="/" class="primary-font">
+			<span>Continue to the manor...</span>
+			<div class="rough-line">
+				<RoughLine id="continue-to-manor-rough" />
+			</div>
+		</a>
+	</FloatingContainer>
+{/if}
+
+{#if isDevelopment}
+	<FloatingContainer top="auto" left="5%" bottom="2%">
+		{(camera?.position?.z || 0).toFixed(2)}
+	</FloatingContainer>
+{/if}
+
+<style>
+	canvas {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		z-index: 1;
 	}
 
-	section {
-		padding-bottom: 8rem;
+	.container {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 1;
+	}
 
-		h2 {
-			margin: 0 0 1.5rem;
+	h1 {
+		color: var(--secondary-500);
+		text-shadow: 10px 10px 30px var(--dark-100);
+	}
+
+	p {
+		max-width: 90vh;
+
+		@media (min-width: 1024px) {
+			max-width: 50vh;
 		}
 	}
 
-	.greeting {
+	a {
 		position: relative;
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		width: 100%;
-		height: 100%;
+		text-decoration: none;
 
-		.greeting-content {
-			position: relative;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			width: 100%;
-			max-width: 40rem;
-			padding: 2.5rem 2rem 2rem;
-			background: oklch(0% 0 0 / 0.5);
-			border: 3px solid var(--dark-500);
-			border-top-left-radius: 255px 15px;
-			border-top-right-radius: 18px 230px;
-			border-bottom-right-radius: 230px 14px;
-			border-bottom-left-radius: 18px 255px;
+		& span {
+			font-size: 1.75rem;
+			color: var(--secondary-500);
 		}
 
-		h1 {
-			position: relative;
-			color: var(--primary-500);
-
-			span {
-				color: var(--light-500);
-				font-weight: 400;
-				font-size: 2rem;
-				line-height: 1rem;
-
-				&:first-child {
-					position: absolute;
-					bottom: 100%;
-					left: 1.5rem;
-					font-size: 1.2rem;
-				}
-			}
-		}
-
-		.subheader {
-			margin: 0.75rem 0 1.25rem;
-			font-size: 1.3rem;
-			text-indent: 0;
-		}
-
-		.scroll-indicator-container {
+		& .rough-line {
 			position: absolute;
-			bottom: 1rem;
-			left: 50%;
-			transform: translateX(-50%);
+			top: 100%;
+			right: -0.5rem;
+			left: -0.5rem;
+			opacity: 0;
+			transition: opacity 0.15s ease-in-out;
+			transform: translateY(-50%);
 		}
 	}
 
-	.blog-posts {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: stretch;
-		gap: 1rem;
-		max-width: 100rem;
-		margin: 0 auto;
-
-		.blog-post {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: stretch;
-
-			&:not(:last-child) {
-				margin-bottom: 1rem;
-			}
-
-			a {
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-				height: 100%;
-				color: var(--primary-500);
-				text-decoration: none;
-				transition: color 0.2s ease-in-out;
-				border: none;
-				outline: none;
-
-				&:hover {
-					color: var(--light-500);
-				}
-			}
-
-			h3 {
-				margin: 0 0 0.5rem;
-				/* font-size: 1.2rem; */
-				text-align: center;
-			}
-
-			.blog-post-tags {
-				display: flex;
-				flex-direction: row;
-				justify-content: center;
-				align-items: center;
-				flex-wrap: wrap;
-				gap: 0.5rem;
-				margin-bottom: 0.5rem;
-			}
-
-			p {
-				margin: 0;
-				text-align: left;
-			}
-
-			@media (min-width: 970px) {
-				justify-content: flex-start;
-				height: 100%;
-
-				&:not(:last-child) {
-					margin-bottom: 0;
-				}
-			}
-		}
-
-		@media (min-width: 970px) {
-			flex-direction: row;
-			justify-content: space-between;
-			align-items: stretch;
-			flex-wrap: nowrap;
-			gap: 1rem;
-		}
-	}
-
-	.recommendations {
-		max-width: 70rem;
-		margin: 0 auto;
-
-		.recommendation {
-			margin: 2rem 0;
-		}
-
-		header {
-			display: flex;
-			flex-direction: row;
-			justify-content: flex-start;
-			align-items: center;
-			margin-bottom: 1rem;
-
-			img {
-				width: 4rem;
-				height: 4rem;
-				border-radius: 50%;
-			}
+	a:hover,
+	a:focus {
+		& .rough-line {
+			opacity: 1;
+			transition: opacity 0.15s ease-in-out;
 		}
 	}
 </style>

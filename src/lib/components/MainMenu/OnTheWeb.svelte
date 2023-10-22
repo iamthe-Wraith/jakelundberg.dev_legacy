@@ -2,7 +2,7 @@
 	import rough from 'roughjs';
 	import { assets } from '$app/paths';
 	import { removeChildren } from '$lib/utils/dom';
-	import { secondaryColor } from '$lib/constants/colors';
+	import { secondary500Color } from '$lib/constants/colors';
 	import { onMount } from 'svelte';
 
 	interface IOnTheWebLink {
@@ -56,7 +56,7 @@
 			const offset = 5;
 			const roughSvg = rough.svg(svg);
 			const circle = roughSvg.line(offset, rect.height / 2, rect.width - offset, rect.height / 2, {
-				stroke: secondaryColor,
+				stroke: secondary500Color,
 				strokeWidth: 2,
 				roughness: 1.5
 			});

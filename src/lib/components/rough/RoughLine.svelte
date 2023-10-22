@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { secondaryColor } from '$lib/constants/colors';
+	import { secondary500Color } from '$lib/constants/colors';
 	import { removeChildren } from '$lib/utils/dom';
 	import rough from 'roughjs';
 	import { onMount } from 'svelte';
@@ -28,7 +28,7 @@
 		const roughSvg = rough.svg(svg);
 
 		const line = roughSvg.line(0, rect.height / 2, rect.width, rect.height / 2, {
-			stroke: secondaryColor,
+			stroke: secondary500Color,
 			strokeWidth: 2,
 			roughness: 1.5
 		});

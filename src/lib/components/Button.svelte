@@ -3,7 +3,7 @@
 	import { nanoid } from 'nanoid';
 	import rough from 'roughjs';
 	import { removeChildren } from '$lib/utils/dom';
-	import { dark500, secondaryColor } from '$lib/constants/colors';
+	import { dark500, secondary500Color } from '$lib/constants/colors';
 	import { getRandomNum } from '$lib/utils/number';
 
 	export let id = `button-${nanoid()}`;
@@ -15,7 +15,7 @@
 
 	const minorRadius = getRandomNum(13, 19);
 	const majorRadius = getRandomNum(230, 260);
-	const outlineStroke = kind === 'primary' || kind === 'neutral' ? secondaryColor : dark500;
+	const outlineStroke = kind === 'primary' || kind === 'neutral' ? secondary500Color : dark500;
 
 	onMount(() => {
 		drawOutline();
