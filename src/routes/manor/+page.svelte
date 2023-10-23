@@ -16,6 +16,7 @@
 	 */
 
 	const isDevelopment = PUBLIC_APP_ENV === 'development';
+	const canvasId = 'manor-canvas';
 
 	const clock = new THREE.Clock();
 	const scenes: WraithScene[] = [];
@@ -53,7 +54,7 @@
 			alpha: true,
 			antialias: true,
 			precision: 'mediump',
-			canvas: document.querySelector('#c1') as HTMLCanvasElement
+			canvas: document.getElementById(canvasId) as HTMLCanvasElement
 		});
 		renderer.setPixelRatio(window.devicePixelRatio);
 		renderer.setSize(rect.width, rect.height);
@@ -92,15 +93,6 @@
 		window.addEventListener('touchend', onTouchEnd);
 		window.addEventListener('resize', onWindowResize, false);
 
-		function animate() {
-			requestAnimationFrame(animate);
-
-			moveCam();
-			scenes.forEach((s) => s.animate(scene, camera, clock));
-
-			render();
-		}
-
 		animate();
 
 		mounted = true;
@@ -113,6 +105,15 @@
 			window.removeEventListener('resize', onWindowResize, false);
 		};
 	});
+
+	function animate() {
+		requestAnimationFrame(animate);
+
+		moveCam();
+		scenes.forEach((s) => s.animate(scene, camera, clock));
+
+		render();
+	}
 
 	function moveCam() {
 		if ($mainMenu.isOpen || (zPos <= 0 && zScroll <= 0) || (zPos >= 20 && zScroll >= 0)) {
@@ -144,9 +145,9 @@
 	}
 
 	function onWindowResize() {
-		const c1 = document.getElementById('c1') as HTMLElement;
-		if (!c1) return;
-		const parent = c1.parentElement as HTMLElement;
+		const canvas = document.getElementById(canvasId) as HTMLElement;
+		if (!canvas) return;
+		const parent = canvas.parentElement as HTMLElement;
 		const rect = parent.getBoundingClientRect();
 
 		camera.aspect = rect.width / rect.height;
@@ -165,7 +166,7 @@
 	}
 </script>
 
-<canvas id="c1" class={$page.data.device.isMobile && 'mobile'} />
+<canvas id="manor-canvas" class={$page.data.device.isMobile && 'mobile'} />
 
 {#if isDevelopment}
 	<FloatingContainer top="auto" left="5%" bottom="2%">

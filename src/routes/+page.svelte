@@ -11,10 +11,12 @@
 	import { WraithScene1 } from './scene1';
 	import { WraithScene2 } from './scene2';
 	import RoughLine from '$components/rough/RoughLine.svelte';
-	import { primary500HexColor, primary800HexColor } from '$lib/constants/colors';
+	import { primary500HexColor, tertiary100HexColor } from '$lib/constants/colors';
 	import { mainMenu } from '$lib/stores/main-menu';
+	import { goto } from '$app/navigation';
 
 	const isDevelopment = PUBLIC_APP_ENV === 'development';
+	const canvasId = 'forest-canvas';
 
 	const clock = new THREE.Clock();
 	const scenes: WraithScene[] = [];
@@ -55,7 +57,7 @@
 			alpha: true,
 			antialias: true,
 			precision: 'mediump',
-			canvas: document.querySelector('#c1') as HTMLCanvasElement
+			canvas: document.getElementById(canvasId) as HTMLCanvasElement
 		});
 		renderer.setPixelRatio(window.devicePixelRatio);
 		renderer.setSize(rect.width, rect.height);
@@ -78,7 +80,7 @@
 		scene.add(light);
 
 		const light2Instensity = $page.data.device.isMobile ? 0.4 : 0.2;
-		light2 = new THREE.RectAreaLight(primary800HexColor, light2Instensity, 30, 30);
+		light2 = new THREE.RectAreaLight(tertiary100HexColor, light2Instensity, 30, 30);
 		light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
 		light2.lookAt(0, 0, 6);
 		scene.add(light2);
@@ -100,15 +102,6 @@
 		window.addEventListener('touchend', onTouchEnd);
 		window.addEventListener('resize', onWindowResize, false);
 
-		function animate() {
-			requestAnimationFrame(animate);
-
-			moveCam();
-			scenes.forEach((s) => s.animate(scene, camera, clock));
-
-			render();
-		}
-
 		animate();
 
 		mounted = true;
@@ -122,6 +115,15 @@
 		};
 	});
 
+	function animate() {
+		requestAnimationFrame(animate);
+
+		moveCam();
+		scenes.forEach((s) => s.animate(scene, camera, clock));
+
+		render();
+	}
+
 	function moveCam() {
 		if ($mainMenu.isOpen || (zPos <= 0 && zScroll <= 0) || (zPos >= 20 && zScroll >= 0)) return;
 
@@ -132,6 +134,17 @@
 		light.position.set(camera.position.x, camera.position.y, camera.position.z + 1.75);
 		light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
 	}
+
+	const onNavAway = (url: string) => (e: MouseEvent) => {
+		e.preventDefault();
+		const canvas = document.getElementById(canvasId) as HTMLElement;
+		canvas.classList.add('nav-away');
+
+		setTimeout(() => {
+			canvas.remove();
+			goto(url);
+		}, 2000);
+	};
 
 	function onTouchEnd() {
 		touchStart = null;
@@ -151,9 +164,9 @@
 	}
 
 	function onWindowResize() {
-		const c1 = document.getElementById('c1') as HTMLElement;
-		if (!c1) return;
-		const parent = c1.parentElement as HTMLElement;
+		const canvas = document.getElementById(canvasId) as HTMLElement;
+		if (!canvas) return;
+		const parent = canvas.parentElement as HTMLElement;
 		const rect = parent.getBoundingClientRect();
 
 		camera.aspect = rect.width / rect.height;
@@ -172,7 +185,7 @@
 	}
 </script>
 
-<canvas id="c1" class={$page.data.device.isMobile && 'mobile'} />
+<canvas id={canvasId} class={$page.data.device.isMobile && 'mobile'} />
 
 {#if camera && camera.position.z < 1}
 	<FloatingContainer>
@@ -206,9 +219,9 @@
 	</FloatingContainer>
 {/if}
 
-{#if camera && camera.position.z > 19}
+{#if camera && camera.position.z > 20}
 	<FloatingContainer>
-		<a href="/" class="primary-font">
+		<a href="/manor" class="primary-font" on:click={onNavAway('/manor')}>
 			<span>Continue to the manor...</span>
 			<div class="rough-line">
 				<RoughLine id="continue-to-manor-rough" />
@@ -224,6 +237,17 @@
 {/if}
 
 <style>
+	@keyframes nav-away {
+		0% {
+			transform: scale(1);
+			opacity: 1;
+		}
+		100% {
+			transform: scale(1.5);
+			opacity: 0;
+		}
+	}
+
 	canvas {
 		position: fixed;
 		top: 0;
@@ -231,6 +255,10 @@
 		width: 100vw;
 		height: 100vh;
 		z-index: 1;
+	}
+
+	.nav-away {
+		animation: nav-away 2s ease-in-out forwards;
 	}
 
 	.container {

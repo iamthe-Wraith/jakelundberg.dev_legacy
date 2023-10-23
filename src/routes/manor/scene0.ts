@@ -4,7 +4,7 @@ import { WraithScene } from '$lib/utils/scene';
 import * as THREE from 'three';
 
 export class ManorScene0 extends WraithScene {
-  public name = 'manor-manor-s0-anchor';
+  public name = 'manor-s0-anchor';
   public position = {
     active: new THREE.Vector3(0, 0, 5),
     inactive: new THREE.Vector3(0, -10, 5),
