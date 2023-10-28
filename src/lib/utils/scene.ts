@@ -20,7 +20,8 @@ export abstract class WraithScene {
   public abstract animate: (
     scene: THREE.Scene,
     camera: THREE.PerspectiveCamera,
-    clock: THREE.Clock
+    clock: THREE.Clock,
+    inView?: boolean,
   ) => void;
 
   protected abstract isLoaded: () => boolean;
@@ -40,7 +41,7 @@ export abstract class WraithScene {
       this.position.active.y,
       this.position.active.z,
     );
-    this.anchor.position.lerp(destination, 0.1);
+    this.anchor.position.lerp(destination, 0.05);
   };
 
   protected animateOutOfView = (scene: THREE.Scene) => {
@@ -51,7 +52,7 @@ export abstract class WraithScene {
       this.position.inactive.y,
       this.position.inactive.z,
     );
-    this.anchor.position.lerp(destination, 0.02);
+    this.anchor.position.lerp(destination, 0.01);
   };
 
   protected removeFromScene = (scene: THREE.Scene) => {

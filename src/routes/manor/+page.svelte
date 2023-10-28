@@ -19,7 +19,7 @@
 	const canvasId = 'manor-canvas';
 
 	const clock = new THREE.Clock();
-	const scenes: WraithScene[] = [];
+	const scenes: { obj: WraithScene; activationAngle: number }[] = [];
 
 	let scene: THREE.Scene;
 	let camera: THREE.PerspectiveCamera;
@@ -34,7 +34,10 @@
 
 	$: {
 		if (mounted && scene && $assets.loaded === $assets.total) {
-			scenes.push(new ManorScene0($assets.meshes));
+			scenes.push({
+				obj: new ManorScene0($assets.meshes),
+				activationAngle: 0
+			});
 		}
 	}
 
@@ -81,7 +84,7 @@
 		const plane = new THREE.Mesh(planeGeo, planeMaterial);
 		plane.rotation.x = -Math.PI / 2;
 		plane.receiveShadow = true;
-		plane.position.set(0, -1, 50);
+		plane.position.set(0, -1, 0);
 		scene.add(plane);
 
 		const ambientLight = new THREE.AmbientLight(0x548277, 0.2);
@@ -109,8 +112,45 @@
 	function animate() {
 		requestAnimationFrame(animate);
 
-		moveCam();
-		scenes.forEach((s) => s.animate(scene, camera, clock));
+		const rotationSpeed = 0.0;
+
+		let camYAngle = THREE.MathUtils.radToDeg(camera.rotation.y);
+
+		// moveCam();
+		if (camYAngle > 360) {
+			camera.rotation.y = 0;
+		} else {
+			camera.rotation.y += rotationSpeed;
+		}
+
+		camYAngle = THREE.MathUtils.radToDeg(camera.rotation.y);
+
+		scenes.forEach((s) => {
+			const threshold = 50;
+
+			let inView = false;
+			let min = 0;
+			let max = 360;
+
+			if (s.activationAngle - threshold <= 0) {
+				min = 360 - (threshold - s.activationAngle);
+				max = 361;
+
+				inView = camYAngle >= min && camYAngle <= max;
+
+				if (!inView) {
+					min = -1;
+					max = s.activationAngle + threshold;
+					inView = camYAngle >= min && camYAngle <= max;
+				}
+			} else {
+				min = s.activationAngle - threshold;
+				max = s.activationAngle + threshold;
+				inView = camYAngle >= min && camYAngle <= max;
+			}
+
+			s.obj.animate(scene, camera, clock, inView);
+		});
 
 		render();
 	}
@@ -154,7 +194,7 @@
 		camera.updateProjectionMatrix();
 
 		moveCam();
-		scenes.forEach((s) => s.animate(scene, camera, clock));
+		scenes.forEach((s) => s.obj.animate(scene, camera, clock));
 
 		renderer.setSize(rect.width, rect.height);
 

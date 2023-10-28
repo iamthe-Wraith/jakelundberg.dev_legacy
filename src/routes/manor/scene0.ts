@@ -18,9 +18,9 @@ export class ManorScene0 extends WraithScene {
 
     this.anchor = new THREE.Object3D();
     this.anchor.position.set(
-      this.position.active.x, 
-      this.position.active.y, 
-      this.position.active.z,
+      this.position.inactive.x, 
+      this.position.inactive.y, 
+      this.position.inactive.z,
     );
     this.anchor.name = this.name;
 
@@ -211,41 +211,76 @@ export class ManorScene0 extends WraithScene {
       cemetaryLight0.name = 'manor-0-cemetaryLight0';
       cemetaryLight0.position.set(0.5, 3, 2.25);
       this.anchor.add(cemetaryLight0);
+    }
 
-      const cemetaryLight1 = new THREE.PointLight(quaternary700HexColor, 5, 40);
-      cemetaryLight1.name = 'manor-0-cemetaryLight1';
-      cemetaryLight1.position.set(1.5, 0.5, 2.25);
-      this.anchor.add(cemetaryLight1);
+    if (assets['brazier-1']) {
+      const brazier1_1 = assets['brazier-1'].clone() as THREE.Mesh;
+      brazier1_1.name = 'manor-s0-brazier1_1';
+      brazier1_1.position.set(-1.85, -1, 2.8);
+      brazier1_1.rotateY(THREE.MathUtils.degToRad(19));
+      this.anchor.add(brazier1_1);
 
-      const cemetaryLight2 = new THREE.PointLight(quaternary700HexColor, 5, 40);
-      cemetaryLight2.name = 'manor-s0-cemetaryLight2';
-      cemetaryLight2.position.set(-1.5, 0.5, 2.25);
-      this.anchor.add(cemetaryLight2);
+      const brazier1_2 = assets['brazier-1'].clone() as THREE.Mesh;
+      brazier1_2.name = 'manor-s0-brazier1_2';
+      brazier1_2.position.set(1.85, -1, 2.8);
+      brazier1_2.rotateY(THREE.MathUtils.degToRad(124));
+      this.anchor.add(brazier1_2);
+
+      const brazierLight1 = new THREE.PointLight(quaternary700HexColor, 5, 40);
+      brazierLight1.name = 'manor-0-brazierLight1';
+      brazierLight1.position.set(1.5, 0.5, 2.25);
+      brazierLight1.castShadow = true;
+      brazierLight1.shadow!.bias = -0.003;
+      brazierLight1.shadow.mapSize.width = 2048;
+      brazierLight1.shadow.mapSize.height = 2048;
+      brazierLight1.shadow.camera.near = 0.1;
+      brazierLight1.shadow.camera.far = 10000;
+      this.anchor.add(brazierLight1);
+
+      const brazierLight2 = new THREE.PointLight(quaternary700HexColor, 5, 40);
+      brazierLight2.name = 'manor-s0-brazierLight2';
+      brazierLight2.position.set(-1.5, 0.5, 2.25);
+      brazierLight2.castShadow = true;
+      brazierLight2.shadow!.bias = -0.003;
+      brazierLight2.shadow.mapSize.width = 2048;
+      brazierLight2.shadow.mapSize.height = 2048;
+      brazierLight2.shadow.camera.near = 0.1;
+      brazierLight2.shadow.camera.far = 10000;
+      this.anchor.add(brazierLight2);
     }
   }
 
   public animate = (
     scene: THREE.Scene, 
     camera: THREE.PerspectiveCamera,
-    clock: THREE.Clock
+    clock: THREE.Clock,
+    inView?: boolean,
   ) => {
     if (!this.isLoaded()) return; 
 
-		const delta = clock.getDelta();
+		// const delta = clock.getDelta();
 
-		this.addToScene(scene);
+    // console.log('rotation', camera.rotation.x, camera.rotation.y, camera.rotation.z);
 
-		if (camera.position.z > 2.25) {
-      if (this.gate1 && THREE.MathUtils.radToDeg(this.gate1.rotation.y) > -90) {
-        this.gate1.rotation.y -= 3 * delta;
-      }
+		// this.addToScene(scene);
+    
+    if (inView) {
+      this.animateIntoView(scene);
+    } else {
+      this.animateOutOfView(scene);
+    }
 
-      if (this.gate2 && THREE.MathUtils.radToDeg(this.gate2.rotation.y) < 90) {
-        this.gate2.rotation.y += 3 * delta;
-      }
-		}
+    // this.animateOutOfView(scene);
 
-    this.removeFromScene(scene);
+		// if (camera.position.z > 2.25) {
+    //   if (this.gate1 && THREE.MathUtils.radToDeg(this.gate1.rotation.y) > -90) {
+    //     this.gate1.rotation.y -= 3 * delta;
+    //   }
+
+    //   if (this.gate2 && THREE.MathUtils.radToDeg(this.gate2.rotation.y) < 90) {
+    //     this.gate2.rotation.y += 3 * delta;
+    //   }
+		// }
   };
 
   protected isLoaded = () => {

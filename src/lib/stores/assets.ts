@@ -3,7 +3,8 @@ import type * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { assets as assetsPath } from '$app/paths';
 
-export type AssetNames = 'fence-1' |
+export type AssetNames = 'brazier-1' |
+  'fence-1' |
   'fence-2' |
   'fence-3' |
   'gate-1-1' |
@@ -37,6 +38,7 @@ interface IAssets {
 
 const initAssets: IAssets = {
   meshes: {
+    'brazier-1': null,
     'fence-1': null,
     'fence-2': null,
     'fence-3': null,

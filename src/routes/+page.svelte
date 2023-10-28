@@ -189,13 +189,13 @@
 
 {#if camera && camera.position.z < 1}
 	<FloatingContainer>
-		<h1>Welcome</h1>
+		<h1 class="text-shadow">Welcome</h1>
 	</FloatingContainer>
 {/if}
 
 {#if camera && camera.position.z > 4 && camera.position.z < 7}
 	<FloatingContainer>
-		<p>
+		<p class="text-shadow">
 			These woods, and everything contained within, are said to be the home of a mad engineer named
 			Jake Lundberg, whose passion for building software led him to create many strange and
 			wonderful things for the web. But little else is known about him....
@@ -205,7 +205,7 @@
 
 {#if camera && camera.position.z > 9 && camera.position.z < 12}
 	<FloatingContainer>
-		<p>
+		<p class="text-shadow">
 			There are stories, of course. People say they've heard eerie sounds coming from within. Others
 			claim they've seen strange things wandering the woods in the darkness. But these are just
 			stories...right?
@@ -215,14 +215,14 @@
 
 {#if camera && camera.position.z > 14 && camera.position.z < 17}
 	<FloatingContainer>
-		<p>Perhaps you can discover the truth...</p>
+		<p class="text-shadow">Perhaps you can discover the truth...</p>
 	</FloatingContainer>
 {/if}
 
 {#if camera && camera.position.z > 20}
 	<FloatingContainer>
 		<a href="/manor" class="primary-font" on:click={onNavAway('/manor')}>
-			<span>Continue to the manor...</span>
+			<span class="text-shadow"> Continue to the manor </span>
 			<div class="rough-line">
 				<RoughLine id="continue-to-manor-rough" />
 			</div>
@@ -269,9 +269,12 @@
 		z-index: 1;
 	}
 
+	.text-shadow {
+		text-shadow: 10px 10px 30px var(--dark-100);
+	}
+
 	h1 {
 		color: var(--secondary-500);
-		text-shadow: 10px 10px 30px var(--dark-100);
 	}
 
 	p {
