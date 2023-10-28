@@ -55,7 +55,7 @@ export const tertiary500Color = 'oklch(41.91% 0.281 264.82)';
 export const tertiary600Color = 'oklch(46.91% 0.281 264.82)';
 export const tertiary700Color = 'oklch(51.91% 0.281 264.82)';
 export const tertiary800Color = 'oklch(56.91% 0.281 264.82)';
-export const tertiary900Color = 'oklch(61.91% 0.281 264.82)'; 
+export const tertiary900Color = 'oklch(61.91% 0.281 264.82)';
 
 export const tertiary100HexColor = 0x0000ff;
 export const tertiary200HexColor = 0x000dff;

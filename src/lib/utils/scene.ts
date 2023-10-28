@@ -1,67 +1,67 @@
 import * as THREE from 'three';
 
 interface IWraithScenePosition {
-  active: THREE.Vector3,
-  inactive: THREE.Vector3,
+	active: THREE.Vector3;
+	inactive: THREE.Vector3;
 }
 
 export abstract class WraithScene {
-  public anchor: THREE.Object3D;
+	public anchor: THREE.Object3D;
 
-  public abstract name: string;
-  public abstract position: IWraithScenePosition;
+	public abstract name: string;
+	public abstract position: IWraithScenePosition;
 
-  protected loaded = false;
+	protected loaded = false;
 
-  constructor() {
-    this.anchor = new THREE.Object3D();
-  }
+	constructor() {
+		this.anchor = new THREE.Object3D();
+	}
 
-  public abstract animate: (
-    scene: THREE.Scene,
-    camera: THREE.PerspectiveCamera,
-    clock: THREE.Clock,
-    inView?: boolean,
-  ) => void;
+	public abstract animate: (
+		scene: THREE.Scene,
+		camera: THREE.PerspectiveCamera,
+		clock: THREE.Clock,
+		inView?: boolean
+	) => void;
 
-  protected abstract isLoaded: () => boolean;
+	protected abstract isLoaded: () => boolean;
 
-  protected addToScene = (scene: THREE.Scene) => {
-    const o = scene.getObjectByName(this.name);
-    if (!o) {
-      scene.add(this.anchor);
-    }
-  };
+	protected addToScene = (scene: THREE.Scene) => {
+		const o = scene.getObjectByName(this.name);
+		if (!o) {
+			scene.add(this.anchor);
+		}
+	};
 
-  protected animateIntoView = (scene: THREE.Scene) => {
-    this.addToScene(scene);
+	protected animateIntoView = (scene: THREE.Scene) => {
+		this.addToScene(scene);
 
-    const destination = new THREE.Vector3(
-      this.position.active.x,
-      this.position.active.y,
-      this.position.active.z,
-    );
-    this.anchor.position.lerp(destination, 0.05);
-  };
+		const destination = new THREE.Vector3(
+			this.position.active.x,
+			this.position.active.y,
+			this.position.active.z
+		);
+		this.anchor.position.lerp(destination, 0.05);
+	};
 
-  protected animateOutOfView = (scene: THREE.Scene) => {
-    this.removeFromScene(scene);    
+	protected animateOutOfView = (scene: THREE.Scene) => {
+		this.removeFromScene(scene);
 
-    const destination = new THREE.Vector3(
-      this.position.inactive.x,
-      this.position.inactive.y,
-      this.position.inactive.z,
-    );
-    this.anchor.position.lerp(destination, 0.01);
-  };
+		const destination = new THREE.Vector3(
+			this.position.inactive.x,
+			this.position.inactive.y,
+			this.position.inactive.z
+		);
+		this.anchor.position.lerp(destination, 0.01);
+	};
 
-  protected removeFromScene = (scene: THREE.Scene) => {
-    const o = scene.getObjectByName(this.name);
+	protected removeFromScene = (scene: THREE.Scene) => {
+		const o = scene.getObjectByName(this.name);
 
-    if (!o) return;
+		if (!o) return;
 
-    if (this.anchor.position.y - 0.5 <= this.position.inactive.y) {
-      scene.remove(o);
-    }
-  };
+		if (this.anchor.position.y - 0.5 <= this.position.inactive.y) {
+			scene.remove(o);
+		}
+	};
 }
