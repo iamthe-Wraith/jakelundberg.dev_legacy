@@ -12,7 +12,7 @@
 	import { processError } from '$lib/utils/errors';
 	import type { IProject } from '$lib/types/projects';
 	import { removeChildren } from '$lib/utils/dom';
-	import { secondaryColor } from '$lib/constants/colors';
+	import { secondary500Color } from '$lib/constants/colors';
 	import Tag from '$components/Tag.svelte';
 	import Button from '$components/Button.svelte';
 	import type { IQuote } from '$lib/types/quotes';
@@ -95,7 +95,7 @@
 			removeChildren(svg);
 			const roughSvg = rough.svg(svg);
 			const circle = roughSvg.circle(25, 25, 40, {
-				stroke: secondaryColor,
+				stroke: secondary500Color,
 				strokeWidth: 2,
 				roughness: 1.5
 			});
@@ -118,7 +118,7 @@
 			const roughSvg = rough.svg(sep);
 
 			const options = {
-				stroke: secondaryColor,
+				stroke: secondary500Color,
 				strokeWidth: 2,
 				roughness: 1.5
 			};
@@ -180,7 +180,7 @@
 					{#each projects as project (project)}
 						<div class="project mobile-project">
 							<button
-								class="project-title header-font {project.title === selectedProject?.title
+								class="project-title primary-font {project.title === selectedProject?.title
 									? 'selected'
 									: ''}"
 								disabled={project.title === selectedProject?.title}

@@ -1,4 +1,4 @@
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad } from '../../$types';
 import { wrapServerLoadWithSentry } from '@sentry/sveltekit';
 import { processError } from '$lib/utils/errors';
 import { getRecentBlogPosts } from '$lib/services/blog';

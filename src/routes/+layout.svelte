@@ -3,15 +3,20 @@
 	import { PUBLIC_APP_ENV } from '$env/static/public';
 	import Nav from '$components/Nav/Nav.svelte';
 	import type { LayoutData } from './$types';
-	import { setContext } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import MainMenu from '$components/MainMenu/MainMenu.svelte';
 	import PressEscape from '$components/MainMenu/PressEscape.svelte';
 	import Toast from '$components/modals/Toast.svelte';
+	import { assets } from '$lib/stores/assets';
 
 	export let data: LayoutData;
 
 	$: if (data?.quotes) setContext('quotes', data.quotes);
 	$: if (data?.skills) setContext('skills', data.skills);
+
+	onMount(() => {
+		assets.load();
+	});
 </script>
 
 <svelte:head>

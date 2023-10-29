@@ -6,7 +6,7 @@
 	import Icon from '@iconify/svelte';
 	import rough from 'roughjs';
 	import { navItems as ni, type INavItem } from './nav-config';
-	import { secondaryColor } from '$lib/constants/colors';
+	import { secondary500Color } from '$lib/constants/colors';
 	import { removeChildren } from '$lib/utils/dom';
 	import { mainMenu } from '$lib/stores/main-menu';
 
@@ -49,7 +49,7 @@
 		const roughSvg = rough.svg(svg);
 
 		const options = {
-			stroke: secondaryColor,
+			stroke: secondary500Color,
 			strokeWidth: 2,
 			roughness: 1.5
 		};
@@ -68,7 +68,7 @@
 		removeChildren(svg);
 		const roughSvg = rough.svg(svg);
 		const circle = roughSvg.circle(25, 25, 40, {
-			stroke: secondaryColor,
+			stroke: secondary500Color,
 			strokeWidth: 2,
 			roughness: 1.5
 		});
@@ -83,7 +83,7 @@
 		const roughSvg = rough.svg(svg);
 
 		const line = roughSvg.line(0, rect.height / 2, rect.width, rect.height / 2, {
-			stroke: secondaryColor,
+			stroke: secondary500Color,
 			strokeWidth: 2,
 			roughness: 1.5
 		});

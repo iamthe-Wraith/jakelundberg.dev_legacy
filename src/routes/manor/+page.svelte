@@ -7,25 +7,24 @@
 	import { PUBLIC_APP_ENV } from '$env/static/public';
 	import type { WraithScene } from '$lib/utils/scene';
 	import FloatingContainer from '$components/FloatingContainer.svelte';
-	import { WraithScene0 } from './scene0';
-	import { WraithScene1 } from './scene1';
-	import { WraithScene2 } from './scene2';
-	import RoughLine from '$components/rough/RoughLine.svelte';
-	import { primary500HexColor, tertiary100HexColor } from '$lib/constants/colors';
+	import { ManorScene0 } from './scene0';
+	import { primary500HexColor } from '$lib/constants/colors';
 	import { mainMenu } from '$lib/stores/main-menu';
-	import { goto } from '$app/navigation';
+
+	/**
+	 * https://codepen.io/forerunrun/pen/gOwgGzq
+	 */
 
 	const isDevelopment = PUBLIC_APP_ENV === 'development';
-	const canvasId = 'forest-canvas';
+	const canvasId = 'manor-canvas';
 
 	const clock = new THREE.Clock();
-	const scenes: WraithScene[] = [];
+	const scenes: { obj: WraithScene; activationAngle: number }[] = [];
 
 	let scene: THREE.Scene;
 	let camera: THREE.PerspectiveCamera;
 	let renderer: THREE.WebGLRenderer;
 	let light: THREE.PointLight;
-	let light2: THREE.RectAreaLight;
 
 	let mounted = false;
 	let touchStart: number | null = null;
@@ -35,9 +34,10 @@
 
 	$: {
 		if (mounted && scene && $assets.loaded === $assets.total) {
-			scenes.push(new WraithScene0($assets.meshes));
-			scenes.push(new WraithScene1($assets.meshes));
-			scenes.push(new WraithScene2($assets.meshes));
+			scenes.push({
+				obj: new ManorScene0($assets.meshes),
+				activationAngle: 0
+			});
 		}
 	}
 
@@ -45,13 +45,13 @@
 		const main = document.querySelector('main') as HTMLCanvasElement;
 		const rect = main.getBoundingClientRect();
 		scene = new THREE.Scene();
-		scene.fog = new THREE.Fog(0x030303, 10, 25);
+		scene.fog = new THREE.Fog(0x030303, 10, 90);
 
 		const fov = 55;
 
 		camera = new THREE.PerspectiveCamera(fov, rect.width / rect.height, 0.1, 1000);
 		camera.position.set(0, 0.5, 0);
-		camera.lookAt(0, 0, 7);
+		camera.lookAt(0, 0, 15);
 
 		renderer = new THREE.WebGLRenderer({
 			alpha: true,
@@ -66,8 +66,8 @@
 
 		RectAreaLightUniformsLib.init();
 
-		const lightIntensity = $page.data.device.isMobile ? 4 : 2.5;
-		const lightPower = $page.data.device.isMobile ? 400 : 250;
+		const lightIntensity = $page.data.device.isMobile ? 4 : 1.5; // 2.5;
+		const lightPower = $page.data.device.isMobile ? 400 : 150; // 250;
 		light = new THREE.PointLight(primary500HexColor, lightIntensity, 15);
 		light.position.set(camera.position.x, camera.position.y, camera.position.z + 1.75);
 		light.castShadow = true;
@@ -79,18 +79,12 @@
 		light.power = lightPower;
 		scene.add(light);
 
-		const light2Instensity = $page.data.device.isMobile ? 0.4 : 0.2;
-		light2 = new THREE.RectAreaLight(tertiary100HexColor, light2Instensity, 30, 30);
-		light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
-		light2.lookAt(0, 0, 6);
-		scene.add(light2);
-
 		const planeGeo = new THREE.PlaneGeometry(100, 100);
 		const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x888888 });
 		const plane = new THREE.Mesh(planeGeo, planeMaterial);
 		plane.rotation.x = -Math.PI / 2;
 		plane.receiveShadow = true;
-		plane.position.set(0, -1, 50);
+		plane.position.set(0, -1, 0);
 		scene.add(plane);
 
 		const ambientLight = new THREE.AmbientLight(0x548277, 0.2);
@@ -118,33 +112,60 @@
 	function animate() {
 		requestAnimationFrame(animate);
 
-		moveCam();
-		scenes.forEach((s) => s.animate(scene, camera, clock));
+		const rotationSpeed = 0.0;
+
+		let camYAngle = THREE.MathUtils.radToDeg(camera.rotation.y);
+
+		// moveCam();
+		if (camYAngle > 360) {
+			camera.rotation.y = 0;
+		} else {
+			camera.rotation.y += rotationSpeed;
+		}
+
+		camYAngle = THREE.MathUtils.radToDeg(camera.rotation.y);
+
+		scenes.forEach((s) => {
+			const threshold = 50;
+
+			let inView = false;
+			let min = 0;
+			let max = 360;
+
+			if (s.activationAngle - threshold <= 0) {
+				min = 360 - (threshold - s.activationAngle);
+				max = 361;
+
+				inView = camYAngle >= min && camYAngle <= max;
+
+				if (!inView) {
+					min = -1;
+					max = s.activationAngle + threshold;
+					inView = camYAngle >= min && camYAngle <= max;
+				}
+			} else {
+				min = s.activationAngle - threshold;
+				max = s.activationAngle + threshold;
+				inView = camYAngle >= min && camYAngle <= max;
+			}
+
+			s.obj.animate(scene, camera, clock, inView);
+		});
 
 		render();
 	}
 
 	function moveCam() {
-		if ($mainMenu.isOpen || (zPos <= 0 && zScroll <= 0) || (zPos >= 20 && zScroll >= 0)) return;
+		if ($mainMenu.isOpen || (zPos <= 0 && zScroll <= 0) || (zPos >= 20 && zScroll >= 0)) {
+			return;
+		}
 
 		zPos += zScroll;
 		zScroll *= 0.9;
 
 		camera.position.z = zPos;
 		light.position.set(camera.position.x, camera.position.y, camera.position.z + 1.75);
-		light2.position.set(camera.position.x, camera.position.y + 5.5, camera.position.z + 7);
 	}
-
-	const onNavAway = (url: string) => (e: MouseEvent) => {
-		e.preventDefault();
-		const canvas = document.getElementById(canvasId) as HTMLElement;
-		canvas.classList.add('nav-away');
-
-		setTimeout(() => {
-			canvas.remove();
-			goto(url);
-		}, 2000);
-	};
 
 	function onTouchEnd() {
 		touchStart = null;
@@ -173,7 +194,7 @@
 		camera.updateProjectionMatrix();
 
 		moveCam();
-		scenes.forEach((s) => s.animate(scene, camera, clock));
+		scenes.forEach((s) => s.obj.animate(scene, camera, clock));
 
 		renderer.setSize(rect.width, rect.height);
 
@@ -185,50 +206,7 @@
 	}
 </script>
 
-<canvas id={canvasId} class={$page.data.device.isMobile && 'mobile'} />
-
-{#if camera && camera.position.z < 1}
-	<FloatingContainer>
-		<h1 class="text-shadow">Welcome</h1>
-	</FloatingContainer>
-{/if}
-
-{#if camera && camera.position.z > 4 && camera.position.z < 7}
-	<FloatingContainer>
-		<p class="text-shadow">
-			These woods, and everything contained within, are said to be the home of a mad engineer named
-			Jake Lundberg, whose passion for building software led him to create many strange and
-			wonderful things for the web. But little else is known about him....
-		</p>
-	</FloatingContainer>
-{/if}
-
-{#if camera && camera.position.z > 9 && camera.position.z < 12}
-	<FloatingContainer>
-		<p class="text-shadow">
-			There are stories, of course. People say they've heard eerie sounds coming from within. Others
-			claim they've seen strange things wandering the woods in the darkness. But these are just
-			stories...right?
-		</p>
-	</FloatingContainer>
-{/if}
-
-{#if camera && camera.position.z > 14 && camera.position.z < 17}
-	<FloatingContainer>
-		<p class="text-shadow">Perhaps you can discover the truth...</p>
-	</FloatingContainer>
-{/if}
-
-{#if camera && camera.position.z > 20}
-	<FloatingContainer>
-		<a href="/manor" class="primary-font" on:click={onNavAway('/manor')}>
-			<span class="text-shadow"> Continue to the manor </span>
-			<div class="rough-line">
-				<RoughLine id="continue-to-manor-rough" />
-			</div>
-		</a>
-	</FloatingContainer>
-{/if}
+<canvas id="manor-canvas" class={$page.data.device.isMobile && 'mobile'} />
 
 {#if isDevelopment}
 	<FloatingContainer top="auto" left="5%" bottom="2%">
@@ -237,17 +215,6 @@
 {/if}
 
 <style>
-	@keyframes nav-away {
-		0% {
-			transform: scale(1);
-			opacity: 1;
-		}
-		100% {
-			transform: scale(1.5);
-			opacity: 0;
-		}
-	}
-
 	canvas {
 		position: fixed;
 		top: 0;
@@ -255,61 +222,5 @@
 		width: 100vw;
 		height: 100vh;
 		z-index: 1;
-	}
-
-	.nav-away {
-		animation: nav-away 2s ease-in-out forwards;
-	}
-
-	.container {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		z-index: 1;
-	}
-
-	.text-shadow {
-		text-shadow: 10px 10px 30px var(--dark-100);
-	}
-
-	h1 {
-		color: var(--secondary-500);
-	}
-
-	p {
-		max-width: 90vh;
-
-		@media (min-width: 1024px) {
-			max-width: 50vh;
-		}
-	}
-
-	a {
-		position: relative;
-		text-decoration: none;
-
-		& span {
-			font-size: 1.75rem;
-			color: var(--secondary-500);
-		}
-
-		& .rough-line {
-			position: absolute;
-			top: 100%;
-			right: -0.5rem;
-			left: -0.5rem;
-			opacity: 0;
-			transition: opacity 0.15s ease-in-out;
-			transform: translateY(-50%);
-		}
-	}
-
-	a:hover,
-	a:focus {
-		& .rough-line {
-			opacity: 1;
-			transition: opacity 0.15s ease-in-out;
-		}
 	}
 </style>
