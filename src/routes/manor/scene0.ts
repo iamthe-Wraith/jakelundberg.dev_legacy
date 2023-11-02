@@ -19,17 +19,13 @@ export class ManorScene0 extends WraithScene {
 		inactive: new THREE.Vector3(0, -10, 5)
 	};
 
-	private clock = new THREE.Clock();
-
 	private gate1: THREE.Mesh | null = null;
 	private gate2: THREE.Mesh | null = null;
 
 	// #region sparks
-	private readonly sparksCount = 20;
-	// private readonly flameColors = [0xefc909, 0xdd6802, 0xdd5202];
+	private readonly sparksCount = 16;
 	private readonly sparkColors = [quaternary400HexColor, quaternary600HexColor, quaternary800HexColor];
 	private sparks: ISpark[] = [];
-	private delta = 0;
 	// #endregion
 
 	constructor(assets: Record<AssetNames, THREE.Mesh | THREE.Group | null>) {
@@ -274,21 +270,12 @@ export class ManorScene0 extends WraithScene {
 	) => {
 		if (!this.isLoaded()) return;
 
-		// const delta = clock.getDelta();
-
-		// console.log('rotation', camera.rotation.x, camera.rotation.y, camera.rotation.z);
-
-		// this.addToScene(scene);
-
 		if (inView) {
 			this.animateIntoView(scene);
+			this.animateSparks(clock);
 		} else {
 			this.animateOutOfView(scene);
 		}
-
-		this.animateSparks();
-
-		// this.animateOutOfView(scene);
 
 		// if (camera.position.z > 2.25) {
 		//   if (this.gate1 && THREE.MathUtils.radToDeg(this.gate1.rotation.y) > -90) {
@@ -306,38 +293,29 @@ export class ManorScene0 extends WraithScene {
 		return this.loaded;
 	};
 
-	private animateSparks = () => {
-		if (!this.sparks.length) return;
-		this.delta = this.clock.getDelta();
-		// torchLightCurrent += this.delta;
-
-		// if (torchLightCurrent > interval && (getRandomNum() > 0.85 || torchLight.intensity > 0.45)) {
-		// 	torchLightCurrent = 0;
-		// 	const intensity = 0.4 + getRandomNum() * 0.25;
-		// 	torchLight.intensity = intensity;
-
-		// 	torchLight.position.set(getRandomNum() / 4, getRandomNum() / 4 + 1, getRandomNum() / 4);
-		// }
+	private animateSparks = (clock: THREE.Clock) => {
+		const delta = clock.getDelta();
 
 		for (let i = 0; i < this.sparks.length; i++) {
-			const spark = this.sparks[i];
+			let spark = this.sparks[i];
 
 			if (spark.duration > spark.lifespan) {
-				spark.mesh.remove(spark.mesh);
-				const newSpark = this.initSpark(spark.parent);
-				this.sparks[i] = newSpark;
+				spark.parent.remove(spark.mesh);
+				this.sparks.splice(i, 1);
+				spark = this.initSpark(spark.parent);
+				this.sparks.push(spark);
 			}
 
-			spark.duration += this.delta;
+			spark.duration += delta;
 			(spark.mesh.material as THREE.Material).opacity = 1 - spark.duration / spark.lifespan;
 
-			const scaleDegradation = 1 - this.delta;
+			const scaleDegradation = 1 - delta;
 			spark.mesh.geometry.scale(scaleDegradation, scaleDegradation, scaleDegradation);
 
 			spark.mesh.position.set(
-				spark.mesh.position.x + (spark.duration / spark.lifespan) * this.delta,
-				spark.mesh.position.y + spark.speed * this.delta,
-				spark.mesh.position.z + (spark.duration / spark.lifespan) * this.delta
+				spark.mesh.position.x + (spark.duration / spark.lifespan) * delta,
+				spark.mesh.position.y + spark.speed * delta,
+				spark.mesh.position.z + (spark.duration / spark.lifespan) * delta
 			);
 		}
 	};
@@ -372,9 +350,9 @@ export class ManorScene0 extends WraithScene {
 		return {
 			parent: base,
 			mesh,
-			speed: 2 * getRandomNum() + 0.8,
+			speed: 3 * getRandomNum() + 0.8,
 			duration: 0,
-			lifespan: getRandomNum() * 0.5
+			lifespan: getRandomNum() * 0.7
 		};
 	};
 

@@ -10,6 +10,7 @@
 	import { ManorScene0 } from './scene0';
 	import { primary500HexColor } from '$lib/constants/colors';
 	import { mainMenu } from '$lib/stores/main-menu';
+	import Stats from 'three/examples/jsm/libs/stats.module';
 
 	/**
 	 * https://codepen.io/forerunrun/pen/gOwgGzq
@@ -31,6 +32,8 @@
 
 	let zScroll = 0;
 	let zPos = 0;
+
+	let stats: Stats;
 
 	$: {
 		if (mounted && scene && $assets.loaded === $assets.total) {
@@ -98,6 +101,11 @@
 
 		animate();
 
+		if (isDevelopment) {
+			stats = new Stats();
+			document.body.appendChild(stats.dom);
+		}
+
 		mounted = true;
 
 		return () => {
@@ -151,6 +159,8 @@
 
 			s.obj.animate(scene, camera, clock, inView);
 		});
+
+		stats?.update?.();
 
 		render();
 	}
