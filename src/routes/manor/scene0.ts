@@ -1,4 +1,10 @@
-import { quaternary400HexColor, quaternary600HexColor, quaternary700HexColor, quaternary800HexColor, tertiary100HexColor } from '$lib/constants/colors';
+import {
+	quaternary400HexColor,
+	quaternary600HexColor,
+	quaternary700HexColor,
+	quaternary800HexColor,
+	tertiary100HexColor
+} from '$lib/constants/colors';
 import type { AssetNames } from '$lib/stores/assets';
 import { getRandomNum } from '$lib/utils/number';
 import { WraithScene } from '$lib/utils/scene';
@@ -24,7 +30,11 @@ export class ManorScene0 extends WraithScene {
 
 	// #region sparks
 	private readonly sparksCount = 16;
-	private readonly sparkColors = [quaternary400HexColor, quaternary600HexColor, quaternary800HexColor];
+	private readonly sparkColors = [
+		quaternary400HexColor,
+		quaternary600HexColor,
+		quaternary800HexColor
+	];
 	private sparks: ISpark[] = [];
 	// #endregion
 
@@ -320,7 +330,12 @@ export class ManorScene0 extends WraithScene {
 		}
 	};
 
-	private initSpark = (base: THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material | THREE.Material[]>): ISpark => {
+	private initSpark = (
+		base: THREE.Mesh<
+			THREE.BufferGeometry<THREE.NormalBufferAttributes>,
+			THREE.Material | THREE.Material[]
+		>
+	): ISpark => {
 		const color = this.sparkColors[Math.round(getRandomNum() * (this.sparkColors.length - 1))];
 
 		const mesh = new THREE.Mesh(
@@ -356,7 +371,12 @@ export class ManorScene0 extends WraithScene {
 		};
 	};
 
-	private initSparks = (base: THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material | THREE.Material[]>) => {
+	private initSparks = (
+		base: THREE.Mesh<
+			THREE.BufferGeometry<THREE.NormalBufferAttributes>,
+			THREE.Material | THREE.Material[]
+		>
+	) => {
 		for (let i = 0; i < this.sparksCount; i++) {
 			this.sparks.push(this.initSpark(base));
 		}
